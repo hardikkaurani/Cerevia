@@ -6,11 +6,15 @@ const prisma = new PrismaClient();
  * Calculates the ISO 8601 week number for a given date.
  */
 function getWeekNumber(date: Date): { week: number; year: number } {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const d = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+  );
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const week = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  const week = Math.ceil(
+    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
+  );
   return { week, year: d.getUTCFullYear() };
 }
 
@@ -25,7 +29,12 @@ export async function completeLesson(userId: string, lessonId: string) {
     // 1. Get the user's current streak state
     const user = await tx.user.findUnique({
       where: { id: userId },
-      select: { currentStreak: true, maxStreak: true, lastActivityAt: true, totalXP: true },
+      select: {
+        currentStreak: true,
+        maxStreak: true,
+        lastActivityAt: true,
+        totalXP: true,
+      },
     });
 
     if (!user) throw new Error('User not found');
@@ -151,4 +160,3 @@ export async function refreshLeaderboardCache() {
     await Promise.all(cacheCreates);
   });
 }
-

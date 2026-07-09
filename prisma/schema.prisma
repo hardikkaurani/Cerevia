@@ -36,7 +36,7 @@ model Lesson {
   title       String
   description String?
   xpReward    Int              @default(10)
-  difficulty  String           // e.g. "Beginner", "Intermediate", "Advanced"
+  difficulty  String // e.g. "Beginner", "Intermediate", "Advanced"
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   progress    LessonProgress[]
@@ -59,10 +59,10 @@ model LessonProgress {
 model Leaderboard {
   id        String   @id @default(uuid())
   userId    String
-  score     Int      // Accumulated score/points for the week
-  rank      Int      // User rank in the current hourly snapshot
-  week      Int      // Week number of the year
-  year      Int      // Year of the leaderboard
+  score     Int // Accumulated score/points for the week
+  rank      Int // User rank in the current hourly snapshot
+  week      Int // Week number of the year
+  year      Int // Year of the leaderboard
   updatedAt DateTime @default(now())
 
   // Relations
@@ -77,17 +77,17 @@ model Achievement {
   id          String            @id @default(uuid())
   title       String            @unique
   description String
-  badgeIcon   String            // badge image / identifier
+  badgeIcon   String // badge image / identifier
   xpReward    Int               @default(0)
   createdAt   DateTime          @default(now())
   users       UserAchievement[]
 }
 
 model UserAchievement {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   userId        String
   achievementId String
-  unlockedAt    DateTime    @default(now())
+  unlockedAt    DateTime @default(now())
 
   // Relations
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)

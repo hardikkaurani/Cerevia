@@ -155,6 +155,40 @@ This setup spins up Next.js (with hot reload enabled), PostgreSQL, and Redis in 
 
 ---
 
+## 🗄️ Database Architecture & Setup
+
+Cerevia uses **PostgreSQL** as its primary relational database and **Prisma ORM** for data modeling and type safety.
+
+### 1. Database Schema Models
+
+*   **User**: Handles profiles, logins (`password` hashes), current and maximum streaks, total XP (`totalXP`), and activity tracking.
+*   **Lesson**: Holds course titles, difficulty tiers (`Beginner`, `Intermediate`, `Advanced`), and XP rewards (`xpReward`).
+*   **LessonProgress**: Records completions connecting a `User` to a completed `Lesson`.
+*   **Achievement & UserAchievement**: Supports a reusable badge system allowing users to unlock milestone achievements with timestamped unlock dates.
+*   **Leaderboard**: Stores weekly leaderboard caches tracking user points and ranks for any given week of a year.
+
+### 2. Schema Relations
+
+```mermaid
+erDiagram
+    User ||--o{ LessonProgress : "completes"
+    Lesson ||--o{ LessonProgress : "progress"
+    User ||--o{ UserAchievement : "earns"
+    Achievement ||--o{ UserAchievement : "linked"
+    User ||--o{ Leaderboard : "has rank"
+```
+
+### 3. Migrations & Seeding
+
+*   **Create/Apply Migrations**: Sync your schema changes to the local PostgreSQL database:
+    ```bash
+    npx prisma migrate dev
+    ```
+*   **Seed static data**: Populate the database with default lessons required for development:
+    ```bash
+    npx prisma db seed
+    ```
+
 ---
 
 ## 💻 Development Commands
