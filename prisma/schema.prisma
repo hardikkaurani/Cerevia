@@ -26,21 +26,22 @@ model User {
   lastActivityAt DateTime?
 
   // Relations
-  completions      LessonCompletion[]
+  lessonProgress   LessonProgress[]
   leaderboardEntry LeaderboardCache?
 }
 
 model Lesson {
-  id          String             @id @default(uuid())
+  id          String           @id @default(uuid())
   title       String
   description String?
-  points      Int                @default(10) // Points awarded for completing this lesson
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-  completions LessonCompletion[]
+  xpReward    Int              @default(10)
+  difficulty  String           // e.g. "Beginner", "Intermediate", "Advanced"
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  progress    LessonProgress[]
 }
 
-model LessonCompletion {
+model LessonProgress {
   id          String   @id @default(uuid())
   userId      String
   lessonId    String
