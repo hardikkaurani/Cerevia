@@ -85,7 +85,9 @@ export async function completeLesson(userId: string, lessonId: string) {
  * Resolves progress stats for a user.
  * Returns arrays of completed/remaining lessons along with counts.
  */
-export async function getUserProgress(userId: string): Promise<UserProgressResponse> {
+export async function getUserProgress(
+  userId: string,
+): Promise<UserProgressResponse> {
   // 1. Verify user exists
   const user = await prisma.user.findUnique({
     where: { id: userId },

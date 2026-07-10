@@ -5,7 +5,7 @@ import { completeLesson } from '@/lib/services/progress';
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // 1. Authenticate the request
@@ -22,7 +22,7 @@ export async function POST(
           error: 'Validation failed',
           details: validationResult.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -35,7 +35,10 @@ export async function POST(
   } catch (error) {
     if (error instanceof Error) {
       // Map error types to correct HTTP statuses
-      if (error.message === 'Lesson not found' || error.message === 'User not found') {
+      if (
+        error.message === 'Lesson not found' ||
+        error.message === 'User not found'
+      ) {
         return NextResponse.json({ error: error.message }, { status: 404 });
       }
       if (error.message === 'Lesson already completed') {
