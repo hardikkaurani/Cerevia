@@ -23,7 +23,9 @@ export interface PaginatedLessonsResponse {
 /**
  * Fetches a list of lessons matching pagination, sorting, and search filters.
  */
-export async function getLessons(filters: LessonQueryInput): Promise<PaginatedLessonsResponse> {
+export async function getLessons(
+  filters: LessonQueryInput,
+): Promise<PaginatedLessonsResponse> {
   const { page, limit, search, sortBy, sortOrder, difficulty } = filters;
 
   const skip = (page - 1) * limit;

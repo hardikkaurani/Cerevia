@@ -5,7 +5,7 @@ import { getLessonById } from '@/lib/services/lessons';
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     // 1. Authenticate the request
@@ -22,7 +22,7 @@ export async function GET(
           error: 'Validation failed',
           details: validationResult.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

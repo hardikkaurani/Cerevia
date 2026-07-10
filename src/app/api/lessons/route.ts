@@ -27,7 +27,7 @@ export async function GET(request: Request) {
           error: 'Validation failed',
           details: validationResult.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
