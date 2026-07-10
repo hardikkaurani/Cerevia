@@ -228,20 +228,50 @@ sequenceDiagram
 
 ---
 
-## 👤 User Profile Management
+## 📖 Lessons Module
 
-Cerevia provides authenticated endpoints to retrieve and modify user profiles securely.
+Cerevia provides authenticated catalog routes to list and detail available learning content.
 
 ### 1. Endpoints
-*   **`GET /api/user/profile`**: Fetches the currently authenticated user's profile details. Rejects requests with missing, invalid, or expired tokens.
-*   **`PUT /api/user/profile`**: Updates the profile fields of the currently authenticated user. Supported fields:
-    *   `fullName` (string, min 2 chars, max 100 chars, optional)
-    *   `avatar` (string, valid URL, optional)
-    *   `bio` (string, max 500 chars, optional)
+*   **`GET /api/lessons`**: Retrieves a paginated, filterable list of lessons.
+    *   **Authorization**: Bearer Token
+    *   **Query Parameters**:
+        *   `page`: Page number (default: `1`)
+        *   `limit`: Number of records (default: `10`, max: `100`)
+        *   `search`: Case-insensitive title search (optional)
+        *   `difficulty`: Filter by difficulty (`Beginner`, `Intermediate`, `Advanced`) (optional)
+        *   `sortBy`: Sort field (`createdAt`, `difficulty`, `title`) (default: `createdAt`)
+        *   `sortOrder`: Sort direction (`asc`, `desc`) (default: `asc`)
+    *   **Response (200 OK)**:
+        ```json
+        {
+          "lessons": [
+            {
+              "id": "uuid-string",
+              "title": "Lesson Title",
+              "description": "Lesson Description",
+              "xpReward": 10,
+              "difficulty": "Beginner",
+              "createdAt": "date-string",
+              "updatedAt": "date-string"
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "totalCount": 1,
+            "totalPages": 1
+          }
+        }
+        ```
+*   **`GET /api/lessons/[id]`**: Retrieves details of a specific lesson by its UUID.
+    *   **Authorization**: Bearer Token
+    *   **Response (200 OK)**: Returns the single lesson object.
+    *   **Response (404 Not Found)**: If the lesson does not exist.
 
-### 2. Validation & Security Guardrails
-*   **Zod Schema Validation**: Input parameters are parsed and verified using `Zod` schemas before database execution.
-*   **Authorization Enforcement**: Modifying a profile is only permitted for the authenticated owner. Database updates target the user ID resolved from the verified access token.
+### 2. Implementation Specifications
+*   **Query and Parameters Validation**: Handled strictly via Zod. Invalid UUIDs or page/limit arguments trigger immediate `400 Bad Request` responses.
+*   **Case-Insensitive Search**: Resolves search patterns using case-insensitive SQL matching modes.
 
 ---
 
