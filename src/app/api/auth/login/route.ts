@@ -16,7 +16,7 @@ export async function POST(request: Request) {
           error: 'Validation failed',
           details: validationResult.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -58,13 +58,13 @@ export async function POST(request: Request) {
         user: userWithoutPassword,
         token,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error('Error during login:', error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

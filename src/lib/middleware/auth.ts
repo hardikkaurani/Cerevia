@@ -15,7 +15,9 @@ export interface AuthenticatedUser {
  * Validates the Authorization Bearer token from the request.
  * Resolves the authenticated user from the database or throws an appropriate error.
  */
-export async function authenticateRequest(request: Request): Promise<AuthenticatedUser> {
+export async function authenticateRequest(
+  request: Request,
+): Promise<AuthenticatedUser> {
   const authHeader = request.headers.get('authorization');
 
   if (!authHeader) {
@@ -60,13 +62,13 @@ export async function authenticateRequest(request: Request): Promise<Authenticat
  */
 export function handleAuthError(error: unknown) {
   const message = error instanceof Error ? error.message : 'Unauthorized';
-  
+
   // Choose standard HTTP statuses depending on the type of error
   let status = 401;
   if (message.includes('Missing') || message.includes('format')) {
     status = 401;
   }
-  
+
   return {
     error: message,
     status,

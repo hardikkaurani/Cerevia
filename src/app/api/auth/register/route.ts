@@ -6,7 +6,7 @@ import { registerSchema } from '@/lib/validation/auth';
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    
+
     // 1. Validate request body with Zod
     const validationResult = registerSchema.safeParse(body);
     if (!validationResult.success) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
           error: 'Validation failed',
           details: validationResult.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     if (existingUser) {
       return NextResponse.json(
         { error: 'Email is already registered' },
-        { status: 409 } // 409 Conflict is standard for duplicate resources
+        { status: 409 }, // 409 Conflict is standard for duplicate resources
       );
     }
 
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     console.error('Error during registration:', error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
