@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { DashboardShell } from '@/components/layout/DashboardShell';
 import './globals.css';
 
 const geistSans = Geist({
@@ -40,7 +39,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background text-foreground selection:bg-orange-500/20 selection:text-orange-500">
-        <DashboardShell>{children}</DashboardShell>
+        {children}
       </body>
     </html>
   );

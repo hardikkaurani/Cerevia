@@ -3,7 +3,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ContentWrapper } from '@/components/layout/ContentWrapper';
 import { Sparkles } from 'lucide-react';
 
-export default function Home() {
+export default function DashboardPage() {
   return (
     <PageContainer>
       <PageHeader
