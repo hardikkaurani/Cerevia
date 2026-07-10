@@ -228,6 +228,23 @@ sequenceDiagram
 
 ---
 
+## 👤 User Profile Management
+
+Cerevia provides authenticated endpoints to retrieve and modify user profiles securely.
+
+### 1. Endpoints
+*   **`GET /api/user/profile`**: Fetches the currently authenticated user's profile details. Rejects requests with missing, invalid, or expired tokens.
+*   **`PUT /api/user/profile`**: Updates the profile fields of the currently authenticated user. Supported fields:
+    *   `fullName` (string, min 2 chars, max 100 chars, optional)
+    *   `avatar` (string, valid URL, optional)
+    *   `bio` (string, max 500 chars, optional)
+
+### 2. Validation & Security Guardrails
+*   **Zod Schema Validation**: Input parameters are parsed and verified using `Zod` schemas before database execution.
+*   **Authorization Enforcement**: Modifying a profile is only permitted for the authenticated owner. Database updates target the user ID resolved from the verified access token.
+
+---
+
 ## 💻 Development Commands
 
 The following scripts are available in `package.json`:
