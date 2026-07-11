@@ -59,9 +59,9 @@ export async function getCache<T>(key: string): Promise<T | null> {
 /**
  * Stores a value in the cache with an optional TTL (Time To Live) in seconds.
  */
-export async function setCache(
+export async function setCache<T>(
   key: string,
-  value: any,
+  value: T,
   ttlSeconds: number = 3600, // Default to 1 hour
 ): Promise<void> {
   if (!redis || !isRedisConnected) {
