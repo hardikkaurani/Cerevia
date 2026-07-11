@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { calculateStreak } from './streak';
+import { awardXp } from './gamification';
 
 export interface LessonProgressItem {
   id: string;
@@ -96,6 +97,16 @@ export async function completeLesson(
         lastActivityAt: now,
       },
     });
+
+    // Award XP to the user
+    await awardXp(
+      tx,
+      userId,
+      lesson.xpReward,
+      'LESSON_COMPLETION',
+      lessonId,
+      now,
+    );
 
     const progress = await tx.lessonProgress.create({
       data: {

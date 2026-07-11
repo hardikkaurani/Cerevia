@@ -7,6 +7,7 @@ export interface AuthenticatedUser {
   fullName: string | null;
   avatar: string | null;
   totalXP: number;
+  currentXP: number;
   currentStreak: number;
   maxStreak: number;
 }
@@ -45,6 +46,7 @@ export async function authenticateRequest(
       fullName: true,
       avatar: true,
       totalXP: true,
+      currentXP: true,
       currentStreak: true,
       maxStreak: true,
     },

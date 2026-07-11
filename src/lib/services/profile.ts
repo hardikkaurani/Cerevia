@@ -8,6 +8,7 @@ export interface UserProfileResponse {
   avatar: string | null;
   bio: string | null;
   totalXP: number;
+  currentXP: number;
   currentStreak: number;
   maxStreak: number;
   createdAt: Date;
@@ -30,6 +31,7 @@ export async function getUserProfile(
       avatar: true,
       bio: true,
       totalXP: true,
+      currentXP: true,
       currentStreak: true,
       maxStreak: true,
       createdAt: true,
@@ -77,6 +79,7 @@ export async function updateUserProfile(
       avatar: true,
       bio: true,
       totalXP: true,
+      currentXP: true,
       currentStreak: true,
       maxStreak: true,
       createdAt: true,

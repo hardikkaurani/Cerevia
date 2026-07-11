@@ -24,12 +24,14 @@ model User {
   currentStreak  Int       @default(0)
   maxStreak      Int       @default(0)
   totalXP        Int       @default(0)
+  currentXP      Int       @default(0)
   lastActivityAt DateTime?
 
   // Relations
   lessonProgress     LessonProgress[]
   achievements       UserAchievement[]
   leaderboardEntries Leaderboard[]
+  xpHistory          XPHistory[]
 }
 
 model Lesson {
@@ -41,6 +43,7 @@ model Lesson {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   progress    LessonProgress[]
+  xpHistory   XPHistory[]
 }
 
 model LessonProgress {
@@ -97,4 +100,20 @@ model UserAchievement {
   @@unique([userId, achievementId])
   @@index([userId])
   @@index([achievementId])
+}
+
+model XPHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  lessonId  String?
+  xpEarned  Int
+  reason    String // e.g. "LESSON_COMPLETION", "DAILY_STREAK", "ACHIEVEMENT"
+  timestamp DateTime @default(now())
+
+  // Relations
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([lessonId])
 }
