@@ -210,6 +210,63 @@ The application integrates an automatic, in-process background scheduling engine
 
 ---
 
+## Global Validation, Error Handling & API Standardization
+
+### API Standardization
+
+Every API endpoint in Cerevia returns a standardized JSON response format.
+
+#### Success Response
+- **Status Code**: `200 OK` or `201 Created`
+- **Body**:
+  ```json
+  {
+    "success": true,
+    "message": "User profile updated successfully",
+    "data": { ... }
+  }
+  ```
+
+#### Error Response
+- **Status Code**: `4xx` or `5xx` depending on the failure type
+- **Body**:
+  ```json
+  {
+    "success": false,
+    "message": "Validation failed",
+    "errorCode": "VALIDATION_ERROR",
+    "details": [
+      {
+        "path": "user.email",
+        "message": "Invalid email address"
+      }
+    ]
+  }
+  ```
+
+### Custom Error Classes
+
+The system defines custom subclasses of `Error` in `src/lib/errors.ts` representing domain-specific failure modes. This guarantees precise HTTP status codes and API error codes when bubble up to the global handler:
+- `ValidationError` (400, `VALIDATION_ERROR`): Raised when request fields fail syntax constraints or business rules.
+- `AuthenticationError` (401, `UNAUTHORIZED`): Raised when authorization tokens are missing, expired, or invalid.
+- `AuthorizationError` (403, `FORBIDDEN`): Raised when authenticated users lack permissions for requested resources.
+- `NotFoundError` (404, `NOT_FOUND`): Raised when query references missing entities (e.g. invalid lesson ID).
+- `ConflictError` (409, `CONFLICT`): Raised for concurrent database states violating unique indexes (e.g. duplicate email registration).
+- `InternalServerError` (500, `INTERNAL_SERVER_ERROR`): Raised for general unexpected runtime conditions.
+
+### Centralized Global Error Handler
+
+Cerevia uses a centralized global error handler utility `handleGlobalError` combined with a higher-order route wrapper `withApiHandler` inside `src/lib/api-response.ts`.
+- **Fault Tolerance**: It intercepts uncaught handler failures, logs detailed system traces server-side, and transforms low-level stack/driver traces (like Prisma database connection issues) into friendly standardized user-facing formats to prevent information disclosure.
+- **Zod Error Translation**: Automatically maps Zod parsing errors into validation error detail matrices.
+
+### Global Validation Strategy
+
+- Every API endpoint validates its incoming JSON bodies, URL query strings, and dynamic route parameters using Zod schemas located in `src/lib/validation/`.
+- Duplicate checks and manual validation logic are removed from the route handlers. Instead, the handlers call `.parse()` directly. Any syntax mismatch instantly throws a `ZodError`, triggering automated mapping to a 400 Bad Request by the global wrapper.
+
+---
+
 ## Getting Started
 
 ```bash
