@@ -10,7 +10,7 @@ import {
   InternalServerError,
 } from './errors';
 
-export interface StandardSuccessResponse<T = any> {
+export interface StandardSuccessResponse<T = unknown> {
   success: true;
   message: string;
   data?: T;
@@ -20,13 +20,13 @@ export interface StandardErrorResponse {
   success: false;
   message: string;
   errorCode: string;
-  details?: any;
+  details?: unknown;
 }
 
 /**
  * Standardized success response builder.
  */
-export function successResponse<T = any>(
+export function successResponse<T = unknown>(
   message: string,
   data?: T,
   statusCode: number = 200,
@@ -46,7 +46,7 @@ export function errorResponse(
   message: string,
   errorCode: string,
   statusCode: number,
-  details?: any,
+  details?: unknown,
 ): NextResponse {
   const body: StandardErrorResponse = {
     success: false,
@@ -60,7 +60,7 @@ export function errorResponse(
 /**
  * Handles errors globally and maps them to standard JSON error responses.
  */
-export function handleGlobalError(error: any): NextResponse {
+export function handleGlobalError(error: unknown): NextResponse {
   // Log server-side error for debugging (avoiding exposure of internal details to client)
   console.error('[API Error Logger]:', error);
 
@@ -128,10 +128,10 @@ export function handleGlobalError(error: any): NextResponse {
 /**
  * A higher-order function to wrap route handlers, providing global error handling.
  */
-export function withApiHandler(
-  handler: (request: Request, context: any) => Promise<NextResponse>,
+export function withApiHandler<T = { params: Promise<Record<string, string>> }>(
+  handler: (request: Request, context: T) => Promise<NextResponse>,
 ) {
-  return async (request: Request, context: any) => {
+  return async (request: Request, context: T) => {
     try {
       return await handler(request, context);
     } catch (error) {

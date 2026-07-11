@@ -162,7 +162,7 @@ async function runErrorHandlerTests() {
     console.log('- Testing withApiHandler wrapper behavior...');
 
     // Success path
-    const successHandler = withApiHandler(async () => {
+    const successHandler = withApiHandler<any>(async () => {
       return successResponse('OK');
     });
     const wrapSuccessRes = await successHandler({} as Request, {});
@@ -172,7 +172,7 @@ async function runErrorHandlerTests() {
     }
 
     // Error path throwing Custom Error
-    const errorHandler = withApiHandler(async () => {
+    const errorHandler = withApiHandler<any>(async () => {
       throw new AuthenticationError('Invalid credentials');
     });
     const wrapErrorRes = await errorHandler({} as Request, {});
