@@ -55,13 +55,86 @@ export async function getWeeklyLeaderboard(filters: {
 
   const { start, end } = getWeekRange(targetDate);
 
-  // Return base skeleton
+  // 1. Fetch all users from the system
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      fullName: true,
+      avatar: true,
+    },
+  });
+
+  // 2. Query XP logs for the week range to sum weekly XP per user
+  const weeklyXpLogs = await prisma.xPHistory.groupBy({
+    by: ['userId'],
+    where: {
+      timestamp: {
+        gte: start,
+        lt: end,
+      },
+    },
+    _sum: {
+      xpEarned: true,
+    },
+  });
+
+  // Fast map lookup
+  const xpMap = new Map<string, number>();
+  for (const log of weeklyXpLogs) {
+    xpMap.set(log.userId, log._sum.xpEarned ?? 0);
+  }
+
+  // 3. Map users to entries and sort by weekly XP (Highest First)
+  // Sub-sort by userId to ensure consistent tie breaking order
+  const entries: Omit<LeaderboardEntry, 'rank'>[] = users.map((user) => {
+    const weeklyXP = xpMap.get(user.id) ?? 0;
+    return {
+      userId: user.id,
+      fullName: user.fullName,
+      avatar: user.avatar,
+      weeklyXP,
+    };
+  });
+
+  entries.sort((a, b) => {
+    if (b.weeklyXP !== a.weeklyXP) {
+      return b.weeklyXP - a.weeklyXP;
+    }
+    return a.userId.localeCompare(b.userId);
+  });
+
+  // 4. Assign ranks (Standard Competition Ranking: "1-2-2-4")
+  const rankedEntries: LeaderboardEntry[] = [];
+  let currentRank = 1;
+  let skipped = 0;
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    if (i > 0) {
+      const prevEntry = entries[i - 1];
+      if (entry.weeklyXP < prevEntry.weeklyXP) {
+        currentRank = currentRank + skipped + 1;
+        skipped = 0;
+      } else {
+        skipped++;
+      }
+    }
+    rankedEntries.push({
+      ...entry,
+      rank: currentRank,
+    });
+  }
+
+  // 5. Slice for pagination
+  const paginatedEntries = rankedEntries.slice(skip, skip + limit);
+  const totalCount = rankedEntries.length;
+
   return {
-    leaderboard: [],
+    leaderboard: paginatedEntries,
     pagination: {
       limit,
       skip,
-      totalCount: 0,
+      totalCount,
     },
     metadata: {
       week,
