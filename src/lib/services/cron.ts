@@ -1,4 +1,4 @@
-import cron from 'node-cron';
+import cron, { ScheduledTask } from 'node-cron';
 import { getWeeklyLeaderboard } from './leaderboard';
 import { setCache } from '@/lib/redis';
 import { getWeekNumber } from '@/utils/date';
@@ -84,8 +84,8 @@ export async function verifyAndResetExpiredStreaksJob(now: Date = new Date()) {
   }
 }
 
-let leaderboardJobInstance: cron.ScheduledTask | null = null;
-let streakJobInstance: cron.ScheduledTask | null = null;
+let leaderboardJobInstance: ScheduledTask | null = null;
+let streakJobInstance: ScheduledTask | null = null;
 
 /**
  * Initializes all cron jobs in the system.
