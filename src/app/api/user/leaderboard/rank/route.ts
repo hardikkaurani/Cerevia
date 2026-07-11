@@ -16,7 +16,9 @@ export async function GET(request: Request) {
     };
 
     // 3. Validate request parameters using Zod
-    const validationResult = leaderboardQuerySchema.pick({ week: true, year: true }).safeParse(queryParams);
+    const validationResult = leaderboardQuerySchema
+      .pick({ week: true, year: true })
+      .safeParse(queryParams);
     if (!validationResult.success) {
       return NextResponse.json(
         {
