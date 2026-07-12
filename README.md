@@ -395,6 +395,55 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ---
 
+## Security Hardening & API Protection
+
+Cerevia employs production-grade security practices aligned with OWASP Top 10 guidelines to defend against common attack vectors while keeping security concerns modular and independent of business logic.
+
+### 1. Security Architecture
+All request/response pipelines are intercepted by a higher-order API Route Handler wrapper (`withApiHandler`). This wrapper coordinates the application of HTTP security headers, CORS policies, rate limiting, request validation, input sanitization, and secure logging.
+
+### 2. HTTP Security Headers (Helmet)
+We dynamically generate and inject standard secure headers recommended by **Helmet** to protect clients and obscure server details:
+- **Content-Security-Policy (CSP)**: Disallows unauthorized styles/scripts; restricts font/image origins.
+- **X-Frame-Options**: Set to `SAMEORIGIN` to prevent clickjacking attacks.
+- **X-Content-Type-Options**: Set to `nosniff` to prevent MIME-sniffing.
+- **Referrer-Policy**: Set to `no-referrer` to prevent referrer information leaks.
+- **Strict-Transport-Security (HSTS)**: Enforces TLS encryption for 180 days.
+- **X-Download-Options / X-Permitted-Cross-Domain-Policies**: Protects legacy browsers against cross-domain content execution.
+- **Information Leak Prevention**: Explicitly removes server-disclosing headers like `X-Powered-By`.
+
+### 3. Cross-Origin Resource Sharing (CORS)
+- **Environment Isolation**: CORS policies match against the comma-separated `ALLOWED_ORIGINS` environment variable.
+- **Development/Production Controls**: In development, CORS defaults to allow `http://localhost:3000`. In production, CORS uses strict matching (no wildcards) and preemptively handles preflight `OPTIONS` requests by responding with status `204 No Content`.
+
+### 4. API Rate Limiting
+- **Sliding-Window Limiter**: Implemented using a Redis sorted set (`ZSET`) structure. It tracks client requests per IP per route within a sliding time window.
+- **Graceful Fallback**: If Redis is offline, it falls back to an in-memory sliding-window cache to ensure uninterrupted service availability.
+- **Endpoint Policies**:
+  - Authentication routes (`/api/auth/login`, `/api/auth/register`): Stricter limit of **5 requests per 60 seconds** to mitigate brute-force attacks.
+  - General routes: **60 requests per 60 seconds**.
+- **Standard Headers**: Rate-limited responses return status `429 Too Many Requests` and standard headers:
+  - `Retry-After`: Reset duration in seconds.
+  - `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
+
+### 5. Input Sanitization
+- **XSS Mitigation**: A recursive string sanitizer scans incoming JSON bodies (`POST`, `PUT`, `PATCH`) and escapes dangerous HTML special characters (converting tags like `<` and `>` into HTML entities) to prevent Cross-Site Scripting (XSS).
+- **Malformed Request Rejection**: Inbound body streams are verified to be syntactically valid JSON. Malformed requests are rejected immediately with a `400 Bad Request` before parsing.
+
+### 6. Authentication Security (JWT Hardening)
+- **Algorithm Spoofing Prevention**: Access token validation explicitly requires the `HS256` signature algorithm. Any token using alternative algorithms (such as the `none` algorithm) is instantly rejected.
+- **JWT Secret Checks**: Fallback secrets are removed. The application throws a runtime startup exception if `JWT_SECRET` is not set.
+
+### 7. Secure Logger
+- **Credential Masking**: A custom logger wrapper intercepts all system outputs (`console.log`, `console.error`) and uses regex patterns to redact passwords, bearer auth tokens, and JSON Web Tokens.
+- **Safe Diagnostics**: Stack traces are filtered to prevent leaking internal database schemas or network configurations.
+
+### 8. Environment Variables
+- `ALLOWED_ORIGINS`: Comma-separated list of permitted CORS origins.
+- `JWT_SECRET`: High-entropy string used for token signatures (required in all environments).
+
+---
+
 ## Contributors
 
 Squad 116 · Team 03
