@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { calculateStreak } from './streak';
 import { awardXp } from './gamification';
+import { deleteCachePattern } from '@/lib/redis';
 
 export interface LessonProgressItem {
   id: string;
@@ -68,7 +69,7 @@ export async function completeLesson(
   }
 
   // 4. Update both progress and user streak inside a transaction
-  return await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const dbUser = await tx.user.findUnique({
       where: { id: userId },
       select: {
@@ -127,6 +128,15 @@ export async function completeLesson(
 
     return progress;
   });
+
+  // Invalidate leaderboard cache wildcard keys
+  try {
+    await deleteCachePattern('leaderboard:weekly:*');
+  } catch (error) {
+    console.error('❌ Failed to invalidate leaderboard cache:', error);
+  }
+
+  return result;
 }
 
 /**
