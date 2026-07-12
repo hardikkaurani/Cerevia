@@ -80,13 +80,13 @@ async function runSecurityTests() {
     };
 
     const sanitized = sanitizeData(maliciousPayload);
-    if (sanitized.title !== 'Hello World! &lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;') {
+    if (sanitized.title !== 'Hello World! &lt;script&gt;alert(&quot;XSS&quot;)&lt;&#x2F;script&gt;') {
       throw new Error(`HTML injection was not escaped or trimmed: ${sanitized.title}`);
     }
-    if (sanitized.nested.code !== '&lt;img src=&quot;x&quot; onerror=&quot;stealCookies()&quot;/&gt;') {
+    if (sanitized.nested.code !== '&lt;img src=&quot;x&quot; onerror=&quot;stealCookies()&quot;&#x2F;&gt;') {
       throw new Error(`Nested HTML injection was not escaped: ${sanitized.nested.code}`);
     }
-    if (sanitized.list[0] !== 'safe string' || sanitized.list[1] !== '&lt;iframe src=&quot;url&quot;&gt;&lt;/iframe&gt;') {
+    if (sanitized.list[0] !== 'safe string' || sanitized.list[1] !== '&lt;iframe src=&quot;url&quot;&gt;&lt;&#x2F;iframe&gt;') {
       throw new Error(`Array values were not correctly sanitized: ${JSON.stringify(sanitized.list)}`);
     }
     if (sanitized.safeInt !== 42) {

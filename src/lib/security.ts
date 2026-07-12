@@ -36,6 +36,9 @@ export function getHelmetHeaders(): Record<string, string> {
     getHeader(name: string) {
       return headers[name.toLowerCase()];
     },
+    removeHeader(name: string) {
+      delete headers[name.toLowerCase()];
+    },
     writeHead() {},
     end() {},
   } as unknown as ServerResponse;
