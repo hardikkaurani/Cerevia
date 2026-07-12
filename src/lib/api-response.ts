@@ -148,7 +148,7 @@ export function withApiHandler<T = { params: Promise<Record<string, string>> }>(
     }
 
     // 2. Rate Limiting Protection
-    const { pathname } = new URL(request.url);
+    const { pathname } = new URL(request.url || 'http://localhost/');
     const isAuthLimit =
       pathname.startsWith('/api/auth/login') ||
       pathname.startsWith('/api/auth/register');

@@ -165,7 +165,7 @@ async function runErrorHandlerTests() {
     const successHandler = withApiHandler<any>(async () => {
       return successResponse('OK');
     });
-    const wrapSuccessRes = await successHandler({} as Request, {});
+    const wrapSuccessRes = await successHandler(new Request('http://localhost/api/test'), {});
     const wrapSuccessData = await wrapSuccessRes.json();
     if (wrapSuccessRes.status !== 200 || wrapSuccessData.success !== true) {
       throw new Error(`withApiHandler success path failed: ${JSON.stringify(wrapSuccessData)}`);
@@ -175,7 +175,7 @@ async function runErrorHandlerTests() {
     const errorHandler = withApiHandler<any>(async () => {
       throw new AuthenticationError('Invalid credentials');
     });
-    const wrapErrorRes = await errorHandler({} as Request, {});
+    const wrapErrorRes = await errorHandler(new Request('http://localhost/api/test'), {});
     const wrapErrorData = await wrapErrorRes.json();
     if (wrapErrorRes.status !== 401 || wrapErrorData.errorCode !== 'UNAUTHORIZED') {
       throw new Error(`withApiHandler error path failed: ${JSON.stringify(wrapErrorData)}`);
