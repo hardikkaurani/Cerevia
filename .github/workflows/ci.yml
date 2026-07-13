@@ -46,34 +46,6 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Debug Environment and Workspace
-        run: |
-          echo "=== CURRENT WORKING DIRECTORY ==="
-          pwd
-          echo "=== REPOSITORY FILES ==="
-          ls -la
-          echo "=== GIT STATUS ==="
-          git status
-          echo "=== CURRENT COMMIT ==="
-          git rev-parse HEAD
-          echo "=== CURRENT BRANCH ==="
-          git branch
-          echo "=== DETECT FILES ==="
-          test -f package.json && echo "package.json FOUND" || echo "package.json MISSING"
-          test -f package-lock.json && echo "package-lock.json FOUND" || echo "package-lock.json MISSING"
-          echo "=== LOCKFILE VERSION ==="
-          node -e "console.log(require('./package-lock.json').lockfileVersion)" || echo "failed to print lockfile version"
-          echo "=== RUNTIME VERSIONS ==="
-          node -v
-          npm -v
-          echo "=== DIRECTORY TREE ==="
-          find . -maxdepth 2
-          echo "=== REPOSITORY ROOT ==="
-          echo "$GITHUB_WORKSPACE"
-          echo "=== FILE SIZES ==="
-          ls -lh package-lock.json || echo "package-lock.json size check failed"
-          ls -lh package.json || echo "package.json size check failed"
-
       - name: Install Dependencies
         run: npm ci
 
