@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation';
 import { Menu, Bell } from 'lucide-react';
 import { Logo } from './Logo';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { useAuth } from '@/providers/AuthProvider';
+import Image from 'next/image';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -11,18 +13,31 @@ interface NavbarProps {
 
 export function Navbar({ onMenuClick }: NavbarProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   // Generate page title based on path for mobile view
   const getPageTitle = (path: string) => {
-    if (path === '/') return 'Dashboard';
-    const segment = path.split('/').filter(Boolean).pop();
-    if (!segment) return 'Dashboard';
-    return segment.charAt(0).toUpperCase() + segment.slice(1).replace(/[-_]/g, ' ');
+    switch (path) {
+      case '/dashboard':
+        return 'Dashboard';
+      case '/lessons':
+        return 'Lessons';
+      case '/leaderboard':
+        return 'Leaderboard';
+      case '/xp':
+        return 'XP Tracker';
+      case '/profile':
+        return 'Profile';
+      case '/settings':
+        return 'Settings';
+      default:
+        return 'Cerevia';
+    }
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background/95 backdrop-blur px-4 md:px-8">
-      {/* Mobile left side: Menu trigger & Logo */}
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-card px-4 md:px-6 shadow-sm">
+      {/* Left side: Hamburger menu & logo on mobile, breadcrumb on desktop */}
       <div className="flex items-center gap-4">
         <button
           type="button"
@@ -33,16 +48,15 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           <Menu className="h-5 w-5" />
         </button>
         <div className="md:hidden">
-          <Logo showText={false} />
+          <Logo />
         </div>
-        {/* Desktop left side: Dynamic Breadcrumbs */}
         <div className="hidden md:block">
           <Breadcrumb />
         </div>
       </div>
 
-      {/* Mobile center side: Title */}
-      <h1 className="md:hidden text-sm font-semibold text-foreground">
+      {/* Mobile Title View */}
+      <h1 className="text-sm font-semibold text-foreground md:hidden absolute left-1/2 -translate-x-1/2">
         {getPageTitle(pathname)}
       </h1>
 
@@ -56,9 +70,20 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           <Bell className="h-5 w-5" />
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-orange-500 ring-2 ring-background" />
         </button>
-        <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center text-sm font-semibold text-foreground border border-border select-none">
-          S
-        </div>
+        {user?.avatar ? (
+          <Image
+            src={user.avatar}
+            alt="Avatar"
+            width={32}
+            height={32}
+            unoptimized
+            className="h-8 w-8 rounded-full object-cover border border-border"
+          />
+        ) : (
+          <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center text-sm font-semibold text-foreground border border-border select-none">
+            {(user?.fullName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
+          </div>
+        )}
       </div>
     </header>
   );
