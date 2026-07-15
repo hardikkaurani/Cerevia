@@ -51,3 +51,5 @@ export default function ForgotPasswordPage() {
 // style: adjust forgot password visual polish step 18
 
 // style: adjust forgot password visual polish step 7
+
+// style: adjust forgot password visual polish step 8
