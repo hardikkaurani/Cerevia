@@ -159,3 +159,5 @@ export function NotificationsMenu() {
     </div>
   );
 }
+
+// style: adjust notifications visual polish step 4
