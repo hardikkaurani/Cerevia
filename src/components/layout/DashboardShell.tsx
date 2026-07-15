@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { cn } from '@/lib/utils';
+import { GamificationOverlay } from '@/components/gamification/GamificationOverlay';
 
 interface DashboardShellProps {
   children: ReactNode;
@@ -37,6 +38,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
         <main className="flex-1 flex flex-col">
           {children}
         </main>
+        <GamificationOverlay />
       </div>
     </div>
   );
