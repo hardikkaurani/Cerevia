@@ -57,3 +57,7 @@ export function LevelUpModal({ isOpen, onClose, newLevel }: LevelUpModalProps) {
 // style: adjust level up modal visual polish step 11
 
 // style: adjust level up modal visual polish step 12
+
+// style: adjust level up modal visual polish step 13
+
+// style: adjust level up modal visual polish step 14
