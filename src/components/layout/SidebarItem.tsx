@@ -32,7 +32,7 @@ export function SidebarItem({
       aria-current={isActive ? 'page' : undefined}
       title={isCollapsed ? label : undefined}
       className={cn(
-        'group flex items-center gap-3 rounded-lg p-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+        'group flex items-center gap-3 rounded-lg p-2 text-sm font-medium transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         isCollapsed ? 'justify-center' : 'px-3 py-2',
         isActive
           ? 'bg-secondary text-foreground'
