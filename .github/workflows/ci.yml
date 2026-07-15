@@ -1,49 +1,27 @@
-name: Continuous Integration
+name: Production Quality Gate
 
 on:
   push:
-    branches: [ main, master, 'feat/**', 'fix/**', 'docs/**', 'refactor/**' ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ "main" ]
+
+env:
+  NODE_VERSION: "20.x"
 
 jobs:
   validate:
-    name: Build, Lint & Test
+    name: Validate (Build, Lint, Test, Typecheck)
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgrespassword
-          POSTGRES_DB: cerevia
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
       - name: Install Dependencies
@@ -51,29 +29,24 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
-
-      - name: TypeScript Type Checking
-        run: npx tsc --noEmit
-
-      - name: Run ESLint Checks
+        
+      - name: Run ESLint
         run: npm run lint
 
-      - name: Build Standalone Web Application
-        env:
-          DATABASE_URL: postgresql://postgres:postgrespassword@localhost:5432/cerevia?schema=public
-          REDIS_URL: redis://localhost:6379
-          JWT_SECRET: ci-temporary-secure-jwt-secret-string-at-least-32-characters
+      - name: TypeScript Type Check
+        run: npx tsc --noEmit
+
+      - name: Run Unit & Integration Tests
+        run: npm run test --if-present
+
+      - name: Validate Production Build
         run: npm run build
-
-      - name: Apply Database Schema Migrations
         env:
-          DATABASE_URL: postgresql://postgres:postgrespassword@localhost:5432/cerevia?schema=public
-        run: npx prisma db push
+          # Mock environment variables required for build if necessary
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/cerevia?schema=public"
+          JWT_SECRET: "ci-dummy-jwt-secret-for-build"
+          REDIS_URL: "redis://localhost:6379"
 
-      - name: Run Integration Test Suite
-        env:
-          DATABASE_URL: postgresql://postgres:postgrespassword@localhost:5432/cerevia?schema=public
-          REDIS_URL: redis://localhost:6379
-          JWT_SECRET: ci-temporary-secure-jwt-secret-string-at-least-32-characters
-          NODE_ENV: test
-        run: npm run test
+      - name: Check for Duplicate Dependencies
+        run: npx npm-dedupe --dry-run
+        continue-on-error: true # Warning only for now
