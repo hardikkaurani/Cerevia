@@ -87,3 +87,5 @@ export function ProfileCard({ user }: ProfileCardProps) {
 // style: adjust profile card visual polish step 15
 
 // style: adjust profile card visual polish step 16
+
+// style: adjust profile card visual polish step 17
