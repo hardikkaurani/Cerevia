@@ -84,3 +84,5 @@ export function QuizComponent({ question, options, correctOptionId, onComplete }
     </div>
   );
 }
+
+// style: adjust quiz component visual polish step 5
