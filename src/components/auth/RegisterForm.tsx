@@ -4,48 +4,57 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock, User as UserIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
 
 // Validation schema using Zod
-const loginSchema = z.object({
+const registerSchema = z.object({
+  fullName: z.string().min(1, 'Full name is required').max(100, 'Name must be less than 100 characters'),
   email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  rememberMe: z.boolean().optional(),
+  confirmPassword: z.string().min(1, 'Confirm password is required'),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export function LoginForm() {
-  const { login } = useAuth();
+export function RegisterForm() {
+  const { register: registerUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Form hook definition
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      fullName: '',
       email: '',
       password: '',
-      rememberMe: false,
+      confirmPassword: '',
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
     setSubmitError(null);
 
     try {
-      await login({ email: data.email, password: data.password });
+      await registerUser({
+        email: data.email,
+        password: data.password,
+        fullName: data.fullName,
+      });
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : 'An unexpected authentication error occurred. Please try again.');
+      setSubmitError(error instanceof Error ? error.message : 'An unexpected registration error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -53,22 +62,45 @@ export function LoginForm() {
 
   return (
     <div className="flex flex-col gap-6 relative z-10">
-      
-      {/* simulated submit error alert banner */}
       {submitError && (
         <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive flex flex-col gap-1">
-          <span className="font-semibold">Authentication failure</span>
+          <span className="font-semibold">Registration failure</span>
           <span>{submitError}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Email input field */}
+        {/* Full Name field */}
         <div className="space-y-1.5">
-          <label
-            htmlFor="email"
-            className="text-xs font-semibold text-foreground flex items-center justify-between"
-          >
+          <label htmlFor="fullName" className="text-xs font-semibold text-foreground">
+            Full Name
+          </label>
+          <div className="relative">
+            <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              id="fullName"
+              type="text"
+              placeholder="Aarav Sharma"
+              disabled={isLoading}
+              aria-invalid={errors.fullName ? 'true' : 'false'}
+              aria-describedby={errors.fullName ? 'fullName-error' : undefined}
+              className={cn(
+                'flex h-10 w-full rounded-lg border border-input bg-transparent pl-10 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors',
+                errors.fullName ? 'border-destructive focus-visible:ring-destructive' : 'border-border'
+              )}
+              {...register('fullName')}
+            />
+          </div>
+          {errors.fullName && (
+            <p id="fullName-error" className="text-[10px] font-medium text-destructive">
+              {errors.fullName.message}
+            </p>
+          )}
+        </div>
+
+        {/* Email Field */}
+        <div className="space-y-1.5">
+          <label htmlFor="email" className="text-xs font-semibold text-foreground">
             Email Address
           </label>
           <div className="relative">
@@ -95,30 +127,17 @@ export function LoginForm() {
           )}
         </div>
 
-        {/* Password input field */}
+        {/* Password field */}
         <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="password"
-              className="text-xs font-semibold text-foreground"
-            >
-              Password
-            </label>
-            <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              className="text-[10px] font-semibold text-orange-500 hover:text-orange-600 transition-colors"
-            >
-              Forgot password?
-            </a>
-          </div>
+          <label htmlFor="password" className="text-xs font-semibold text-foreground">
+            Password
+          </label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
               placeholder="••••••••"
-              autoComplete="current-password"
               disabled={isLoading}
               aria-invalid={errors.password ? 'true' : 'false'}
               aria-describedby={errors.password ? 'password-error' : undefined}
@@ -145,24 +164,44 @@ export function LoginForm() {
           )}
         </div>
 
-        {/* Remember Me checkbox */}
-        <div className="flex items-center gap-2 select-none py-1">
-          <input
-            id="rememberMe"
-            type="checkbox"
-            disabled={isLoading}
-            className="h-4 w-4 rounded border-border text-orange-500 focus:ring-orange-500 focus:ring-offset-0 transition-colors accent-orange-500 cursor-pointer disabled:cursor-not-allowed"
-            {...register('rememberMe')}
-          />
-          <label
-            htmlFor="rememberMe"
-            className="text-[11px] text-muted-foreground font-medium cursor-pointer disabled:cursor-not-allowed"
-          >
-            Remember me on this device
+        {/* Confirm Password field */}
+        <div className="space-y-1.5">
+          <label htmlFor="confirmPassword" className="text-xs font-semibold text-foreground">
+            Confirm Password
           </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              id="confirmPassword"
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              disabled={isLoading}
+              aria-invalid={errors.confirmPassword ? 'true' : 'false'}
+              aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
+              className={cn(
+                'flex h-10 w-full rounded-lg border border-input bg-transparent pl-10 pr-10 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors',
+                errors.confirmPassword ? 'border-destructive focus-visible:ring-destructive' : 'border-border'
+              )}
+              {...register('confirmPassword')}
+            />
+            <button
+              type="button"
+              disabled={isLoading}
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus-visible:outline-none rounded-md"
+              aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+            >
+              {showConfirmPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+            </button>
+          </div>
+          {errors.confirmPassword && (
+            <p id="confirmPassword-error" className="text-[10px] font-medium text-destructive">
+              {errors.confirmPassword.message}
+            </p>
+          )}
         </div>
 
-        {/* Submit Action Button */}
+        {/* Register Action Button */}
         <button
           type="submit"
           disabled={isLoading}
@@ -171,28 +210,27 @@ export function LoginForm() {
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin text-primary-foreground" />
           ) : (
-            <span>Sign In</span>
+            <span>Create Account</span>
           )}
         </button>
       </form>
 
-      {/* Divider line */}
+      {/* Divider */}
       <div className="relative flex py-2 items-center">
         <div className="flex-grow border-t border-border" />
         <span className="flex-shrink mx-4 text-[10px] text-muted-foreground uppercase font-mono tracking-wider">
-          or continue with
+          or register with
         </span>
         <div className="flex-grow border-t border-border" />
       </div>
 
       {/* Social login buttons */}
       <div className="grid grid-cols-2 gap-3">
-        {/* Google Placeholder */}
         <button
           type="button"
           disabled={isLoading}
           onClick={() => {}}
-          className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none"
         >
           <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
             <path
@@ -215,12 +253,11 @@ export function LoginForm() {
           <span>Google</span>
         </button>
 
-        {/* GitHub Placeholder */}
         <button
           type="button"
           disabled={isLoading}
           onClick={() => {}}
-          className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-background px-3 text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none"
         >
           <svg className="h-4 w-4 shrink-0 fill-current" viewBox="0 0 24 24">
             <path
@@ -233,14 +270,14 @@ export function LoginForm() {
         </button>
       </div>
 
-      {/* Redirect back to signup link */}
+      {/* Redirect back to signin link */}
       <p className="text-center text-[11px] text-muted-foreground mt-2">
-        Don&apos;t have an account?{' '}
+        Already have an account?{' '}
         <Link
-          href="/register"
+          href="/login"
           className="font-semibold text-orange-500 hover:text-orange-600 transition-colors"
         >
-          Sign up
+          Sign in
         </Link>
       </p>
     </div>
