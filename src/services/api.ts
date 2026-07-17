@@ -19,6 +19,13 @@ class ApiClient {
       headers.set('Content-Type', 'application/json');
     }
 
+    if (typeof window !== 'undefined' && !headers.has('Authorization')) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+    }
+
     try {
       const response = await fetch(url, {
         ...options,
