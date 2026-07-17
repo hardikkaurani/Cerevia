@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 import { Logo } from '@/components/layout/Logo';
 import { usePathname } from 'next/navigation';
 
 export function AuthLeftPanel() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const pathname = usePathname();
-  const [mouse, setMouse] = useState({ x: 0, y: 0, isHovering: false });
 
   // Get dynamic titles and subtitles based on route
   const getPanelText = () => {
@@ -41,166 +41,243 @@ export function AuthLeftPanel() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    // 1. Scene, Camera, Renderer
+    const scene = new THREE.Scene();
+    
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+    
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
+    camera.position.set(0, 0, 15);
+    camera.lookAt(0, 0, 0);
 
-    let animationFrameId: number;
-    let width = 0;
-    let height = 0;
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+      alpha: true,
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const resize = () => {
-      if (!canvas || !containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      canvas.width = width * window.devicePixelRatio;
-      canvas.height = height * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    };
+    // 2. Wave Grid / Particles
+    const countX = 65;
+    const countY = 65;
+    const numParticles = countX * countY;
 
-    resize();
-    window.addEventListener('resize', resize);
+    const positions = new Float32Array(numParticles * 3);
+    const colors = new Float32Array(numParticles * 3);
 
-    // Particle flow-field setup
-    const particleCount = 180;
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      speed: number;
-      alpha: number;
-      size: number;
-      color: string;
-      angleOffset: number;
-    }> = [];
+    // Initial positioning & styling
+    let idx = 0;
+    const colorCyan = new THREE.Color('#06b6d4');
+    const colorBlue = new THREE.Color('#3b82f6');
+    const colorIndigo = new THREE.Color('#6366f1');
 
-    const colors = [
-      'rgba(6, 182, 212, 0.45)',  // Vibrant Cyan
-      'rgba(59, 130, 246, 0.4)',   // Deep Blue
-      'rgba(99, 102, 241, 0.35)',  // Indigo
-      'rgba(168, 85, 247, 0.3)',   // Purple
-    ];
+    for (let x = 0; x < countX; x++) {
+      for (let y = 0; y < countY; y++) {
+        // Grid spacing centered around (0,0)
+        const posX = (x - countX / 2) * 0.4;
+        const posY = (y - countY / 2) * 0.4;
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: 0,
-        vy: 0,
-        speed: 0.5 + Math.random() * 1.5,
-        alpha: 0.1 + Math.random() * 0.6,
-        size: 1 + Math.random() * 2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        angleOffset: Math.random() * Math.PI * 2,
-      });
-    }
+        positions[idx] = posX;
+        positions[idx + 1] = posY;
+        positions[idx + 2] = 0;
 
-    let time = 0;
-
-    const render = () => {
-      time += 0.4;
-      
-      // Semitransparent fill to create a smooth trailing motion blur
-      ctx.fillStyle = 'rgba(3, 7, 18, 0.12)';
-      ctx.fillRect(0, 0, width, height);
-
-      // Draw subtle swirling abstract grids/vortexes in background
-      ctx.strokeStyle = 'rgba(59, 130, 246, 0.03)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i < width; i += 60) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.bezierCurveTo(
-          i + Math.sin(time * 0.01) * 30,
-          height / 2,
-          i - Math.cos(time * 0.01) * 30,
-          height / 2,
-          i,
-          height
-        );
-        ctx.stroke();
-      }
-
-      // Update and draw particles
-      particles.forEach((p) => {
-        // Compute fluid field angle based on sin/cos noise fields and mouse interaction
-        let angle =
-          Math.sin(p.x * 0.005 + time * 0.002) * Math.cos(p.y * 0.005 - time * 0.002) * Math.PI * 2 +
-          p.angleOffset;
-
-        // If mouse is hovering, influence particles to swirl around it
-        if (mouse.isHovering) {
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 180) {
-            const force = (180 - dist) / 180;
-            // Swirl direction vector perpendicular to mouse pointer
-            const swirlAngle = Math.atan2(dy, dx) + Math.PI / 2;
-            angle = angle * (1 - force) + swirlAngle * force;
-            p.speed = (0.5 + Math.random() * 1.5) * (1 + force * 1.5);
-          } else {
-            p.speed = 0.5 + Math.random() * 1.5;
-          }
+        // Blending colors based on coordinates
+        const ratio = x / countX;
+        const color = new THREE.Color();
+        if (ratio < 0.5) {
+          color.lerpColors(colorCyan, colorBlue, ratio * 2);
+        } else {
+          color.lerpColors(colorBlue, colorIndigo, (ratio - 0.5) * 2);
         }
 
-        p.vx = Math.cos(angle) * p.speed;
-        p.vy = Math.sin(angle) * p.speed;
+        colors[idx] = color.r;
+        colors[idx + 1] = color.g;
+        colors[idx + 2] = color.b;
 
-        // Draw trail connector line
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        p.x += p.vx;
-        p.y += p.vy;
-        ctx.lineTo(p.x, p.y);
+        idx += 3;
+      }
+    }
 
-        ctx.strokeStyle = p.color;
-        ctx.lineWidth = p.size;
-        ctx.stroke();
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-        // Wrap around borders
-        if (p.x < -10) p.x = width + 10;
-        if (p.x > width + 10) p.x = -10;
-        if (p.y < -10) p.y = height + 10;
-        if (p.y > height + 10) p.y = -10;
-      });
+    // Custom shader material for glowing round points
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uMouse: { value: new THREE.Vector2(0, 0) },
+      },
+      vertexShader: `
+        uniform float uTime;
+        uniform vec2 uMouse;
+        varying vec3 vColor;
+        varying float vElevation;
 
-      animationFrameId = requestAnimationFrame(render);
-    };
+        void main() {
+          vColor = color;
+          
+          vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+          
+          // Wave equations (multiple overlapping sine waves for organic fluid motion)
+          float elevation = sin(modelPosition.x * 0.2 + uTime * 0.5) * 0.8;
+          elevation += cos(modelPosition.y * 0.2 + uTime * 0.4) * 0.8;
+          elevation += sin((modelPosition.x + modelPosition.y) * 0.1 + uTime * 0.6) * 0.5;
+          
+          // Mouse interaction (displace height based on proximity to mouse)
+          float dist = distance(modelPosition.xy, uMouse * 10.0);
+          if (dist < 8.0) {
+            float strength = (8.0 - dist) / 8.0;
+            elevation += sin(uTime * 2.0) * strength * 1.5;
+          }
 
-    render();
+          modelPosition.z += elevation;
+          vElevation = elevation;
 
-    return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [mouse]);
+          vec4 viewPosition = viewMatrix * modelPosition;
+          vec4 projectedPosition = projectionMatrix * viewPosition;
+          
+          gl_Position = projectedPosition;
+          
+          // Size attenuation
+          gl_PointSize = (12.0 + elevation * 4.0) * (1.0 / -viewPosition.z);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        varying float vElevation;
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!canvasRef.current) return;
-    const rect = canvasRef.current.getBoundingClientRect();
-    setMouse({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      isHovering: true,
+        void main() {
+          // Circular particle shape
+          float dist = distance(gl_PointCoord, vec2(0.5));
+          if (dist > 0.5) {
+            discard;
+          }
+          
+          // Soft glowing edges
+          float glow = 1.0 - (dist * 2.0);
+          glow = pow(glow, 1.5);
+          
+          // Brightness boost based on elevation
+          vec3 finalColor = vColor * (1.0 + vElevation * 0.2);
+          gl_FragColor = vec4(finalColor, glow * 0.85);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true,
     });
-  };
 
-  const handleMouseLeave = () => {
-    setMouse((prev) => ({ ...prev, isHovering: false }));
-  };
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // 3. Ambient / Background glowing orb meshes
+    const backgroundGeo1 = new THREE.SphereGeometry(6, 32, 32);
+    const backgroundMat1 = new THREE.MeshBasicMaterial({
+      color: 0x06b6d4,
+      transparent: true,
+      opacity: 0.08,
+      blending: THREE.AdditiveBlending,
+    });
+    const orb1 = new THREE.Mesh(backgroundGeo1, backgroundMat1);
+    orb1.position.set(-5, 3, -5);
+    scene.add(orb1);
+
+    const backgroundGeo2 = new THREE.SphereGeometry(8, 32, 32);
+    const backgroundMat2 = new THREE.MeshBasicMaterial({
+      color: 0x6366f1,
+      transparent: true,
+      opacity: 0.06,
+      blending: THREE.AdditiveBlending,
+    });
+    const orb2 = new THREE.Mesh(backgroundGeo2, backgroundMat2);
+    orb2.position.set(5, -4, -8);
+    scene.add(orb2);
+
+    // 4. Mouse tracking & interaction
+    const mouse = new THREE.Vector2(0, 0);
+    const targetMouse = new THREE.Vector2(0, 0);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / width) * 2 - 1;
+      const y = -((e.clientY - rect.top) / height) * 2 + 1;
+      targetMouse.set(x, y);
+    };
+
+    container.addEventListener('mousemove', handleMouseMove);
+
+    // 5. Resize handler
+    const handleResize = () => {
+      if (!container || !renderer || !camera) return;
+      width = container.clientWidth;
+      height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // 6. Animation Loop
+    let time = 0;
+    let animationFrameId: number;
+
+    const animate = () => {
+      time += 0.02;
+      material.uniforms.uTime.value = time;
+
+      // Smooth mouse interpolation
+      mouse.x += (targetMouse.x - mouse.x) * 0.05;
+      mouse.y += (targetMouse.y - mouse.y) * 0.05;
+      material.uniforms.uMouse.value.copy(mouse);
+
+      // Rotate particles slightly for dynamic flow
+      particles.rotation.z = time * 0.02;
+      particles.rotation.x = Math.sin(time * 0.05) * 0.08;
+
+      // Animate background orbs
+      orb1.position.x = -5 + Math.sin(time * 0.2) * 2;
+      orb1.position.y = 3 + Math.cos(time * 0.3) * 1.5;
+
+      orb2.position.x = 5 + Math.cos(time * 0.15) * 2;
+      orb2.position.y = -4 + Math.sin(time * 0.25) * 1.5;
+
+      renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // 7. Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+      container.removeEventListener('mousemove', handleMouseMove);
+      
+      // Memory cleanup
+      geometry.dispose();
+      material.dispose();
+      backgroundGeo1.dispose();
+      backgroundMat1.dispose();
+      backgroundGeo2.dispose();
+      backgroundMat2.dispose();
+      renderer.dispose();
+    };
+  }, []);
 
   return (
     <div
       ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative hidden md:flex md:w-1/2 bg-gray-950 overflow-hidden flex-col justify-between p-12 text-white select-none group"
+      className="relative hidden md:flex md:w-1/2 bg-gray-950 overflow-hidden flex-col justify-between p-12 text-white select-none group animate-fade-in"
     >
-      {/* Background canvas fluid animation */}
+      {/* Background canvas fluid WebGL/Three.js animation */}
       <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full pointer-events-none" />
 
       {/* Glossy mesh lighting layer */}
