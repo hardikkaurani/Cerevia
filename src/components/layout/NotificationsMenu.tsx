@@ -160,32 +160,3 @@ export function NotificationsMenu() {
   );
 }
 
-// style: adjust notifications visual polish step 4
-
-// style: adjust notifications visual polish step 5
-
-// style: adjust notifications visual polish step 6
-
-// style: adjust notifications visual polish step 7
-
-// style: adjust notifications visual polish step 8
-
-// style: adjust notifications visual polish step 9
-
-// style: adjust notifications visual polish step 10
-
-// style: adjust notifications visual polish step 11
-
-// style: adjust notifications visual polish step 12
-
-// style: adjust notifications visual polish step 13
-
-// style: adjust notifications visual polish step 14
-
-// style: adjust notifications visual polish step 15
-
-// style: adjust notifications visual polish step 16
-
-// style: adjust notifications visual polish step 17
-
-// style: adjust notifications visual polish step 18
