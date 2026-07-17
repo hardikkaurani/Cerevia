@@ -15,13 +15,11 @@ permissions:
   contents: read
 
 env:
-  NODE_VERSION: '20.x'
-  # actionlint disable=env-var-hardcoded
-  DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/cerevia?schema=public'
-  # actionlint disable=env-var-hardcoded
-  JWT_SECRET: 'ci-dummy-jwt-secret-for-build'
-  REDIS_URL: 'redis://localhost:6379'
-  NEXT_PUBLIC_APP_URL: 'http://localhost:3000'
+  NODE_VERSION: "20.x"
+  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/cerevia?schema=public"
+  JWT_SECRET: "ci-dummy-jwt-secret-for-build"
+  REDIS_URL: "redis://localhost:6379"
+  NEXT_PUBLIC_APP_URL: "http://localhost:3000"
 
 jobs:
   validate:
@@ -66,14 +64,10 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Push Database Schema
-        run: npx prisma db push --accept-data-loss
-
-      - name: Seed Database
-        run: npx prisma db seed
+      - name: Generate Prisma Client & Apply Migrations
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
 
       - name: Run ESLint
         run: npm run lint
