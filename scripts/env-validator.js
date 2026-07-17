@@ -1,5 +1,6 @@
 const requiredEnvVars = [
   'DATABASE_URL',
+  'REDIS_URL',
   'JWT_SECRET',
   'NEXT_PUBLIC_APP_URL',
 ];
