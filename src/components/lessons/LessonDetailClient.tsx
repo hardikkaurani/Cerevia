@@ -47,6 +47,7 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
     setError(null);
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await api.post<any>(`/api/lessons/${lesson.id}/complete`);
       if (response.success) {
         setIsCompleted(true);

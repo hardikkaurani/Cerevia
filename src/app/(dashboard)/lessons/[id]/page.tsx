@@ -18,7 +18,7 @@ export default async function LessonDetailPage({ params }: { params: Promise<{ i
   let lesson;
   try {
     lesson = await getLessonById(resolvedParams.id);
-  } catch (error) {
+  } catch {
     return notFound();
   }
 
@@ -31,7 +31,7 @@ export default async function LessonDetailPage({ params }: { params: Promise<{ i
     try {
       const decoded = verifyAccessToken(token);
       userId = decoded.userId;
-    } catch (e) {
+    } catch {
       // Invalid token
     }
   }

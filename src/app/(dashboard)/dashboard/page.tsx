@@ -7,9 +7,19 @@ import { ContentWrapper } from '@/components/layout/ContentWrapper';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/providers/AuthProvider';
-import { Sparkles, Trophy, Flame, Target, ChevronRight, BookOpen, AlertCircle } from 'lucide-react';
+import { Sparkles, Trophy, Flame, Target, ChevronRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/services/api';
+
+interface LessonProgress {
+  totalCompleted: number;
+  remainingLessons: { id: string; title: string; difficulty: string; xpReward: number }[];
+}
+
+interface LeaderboardRank {
+  rank: number;
+  weeklyXP: number;
+}
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -27,8 +37,8 @@ export default function DashboardPage() {
     async function loadDashboardData() {
       try {
         const [progressRes, rankRes] = await Promise.all([
-          api.get<any>('/api/lessons/progress'),
-          api.get<any>('/api/user/leaderboard/rank'),
+          api.get<LessonProgress>('/api/lessons/progress'),
+          api.get<LeaderboardRank>('/api/user/leaderboard/rank'),
         ]);
 
         if (progressRes.success && progressRes.data && rankRes.success && rankRes.data) {
@@ -56,7 +66,6 @@ export default function DashboardPage() {
   // Compute level: Each level is 100 XP
   const currentXP = user?.totalXP || 0;
   const currentLevel = Math.floor(currentXP / 100) + 1;
-  const nextLevelXP = currentLevel * 100;
   const prevLevelXP = (currentLevel - 1) * 100;
   const xpInCurrentLevel = currentXP - prevLevelXP;
   const progressPercent = Math.min(100, Math.max(0, (xpInCurrentLevel / 100) * 100));

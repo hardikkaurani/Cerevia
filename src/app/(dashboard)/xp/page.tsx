@@ -5,7 +5,7 @@ import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ContentWrapper } from '@/components/layout/ContentWrapper';
 import { Section } from '@/components/layout/Section';
-import { Sparkles, Trophy, Calendar, Flame, Loader2 } from 'lucide-react';
+import { Sparkles, Flame, Loader2 } from 'lucide-react';
 import api from '@/services/api';
 
 interface XpHistoryItem {
@@ -15,17 +15,30 @@ interface XpHistoryItem {
   timestamp: string;
 }
 
+interface XpData {
+  totalXP: number;
+  levelInfo?: {
+    level: number;
+    xpInCurrentLevel: number;
+  };
+  history?: XpHistoryItem[];
+}
+
+interface UserProfile {
+  currentStreak: number;
+}
+
 export default function XpPage() {
   const [loading, setLoading] = useState(true);
-  const [xpData, setXpData] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [xpData, setXpData] = useState<XpData | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     async function loadXpData() {
       try {
         const [xpRes, profileRes] = await Promise.all([
-          api.get<any>('/api/user/xp?limit=20'),
-          api.get<any>('/api/user/profile'),
+          api.get<XpData>('/api/user/xp?limit=20'),
+          api.get<UserProfile>('/api/user/profile'),
         ]);
 
         if (xpRes.success && xpRes.data) {

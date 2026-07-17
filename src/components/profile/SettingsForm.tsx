@@ -6,6 +6,13 @@ import { useAuth } from '@/providers/AuthProvider';
 import { Loader2 } from 'lucide-react';
 import api from '@/services/api';
 
+interface ProfileResponse {
+  fullName?: string;
+  avatar?: string;
+  bio?: string;
+  email?: string;
+}
+
 export function SettingsForm() {
   const { refreshUser } = useAuth();
   
@@ -22,7 +29,7 @@ export function SettingsForm() {
   React.useEffect(() => {
     async function fetchProfile() {
       try {
-        const res = await api.get<any>('/api/user/profile');
+        const res = await api.get<ProfileResponse>('/api/user/profile');
         if (res.success && res.data) {
           setFullName(res.data.fullName || '');
           setAvatar(res.data.avatar || '');
@@ -45,13 +52,13 @@ export function SettingsForm() {
     setSuccess(false);
     
     try {
-      const payload: any = {
+      const payload = {
         fullName,
         avatar: avatar || null,
         bio: bio || null,
       };
 
-      const res = await api.put<any>('/api/user/profile', payload);
+      const res = await api.put<ProfileResponse>('/api/user/profile', payload);
       if (res.success) {
         setSuccess(true);
         await refreshUser();
@@ -59,8 +66,8 @@ export function SettingsForm() {
       } else {
         setError(res.error?.message || 'Failed to update profile settings.');
       }
-    } catch (err: any) {
-      setError(err?.message || 'An unexpected error occurred during submission.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred during submission.');
     } finally {
       setIsSaving(false);
     }

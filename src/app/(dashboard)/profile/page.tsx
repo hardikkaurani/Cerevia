@@ -4,11 +4,8 @@ import { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ContentWrapper } from '@/components/layout/ContentWrapper';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
-import { Avatar } from '@/components/ui/Avatar';
-import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/providers/AuthProvider';
 import { Trophy, Flame, Star, BookOpen, Mail, Calendar, User as UserIcon, Loader2, Sparkles, Activity } from 'lucide-react';
 import api from '@/services/api';
 import Link from 'next/link';
@@ -20,21 +17,46 @@ interface ActivityItem {
   timestamp: string;
 }
 
+interface ProfileData {
+  createdAt?: string;
+  totalXP?: number;
+  currentStreak?: number;
+  fullName?: string;
+  avatar?: string;
+  bio?: string;
+  email?: string;
+}
+
+interface XpData {
+  levelInfo?: {
+    level: number;
+  };
+  history?: ActivityItem[];
+}
+
+interface LessonProgressResponse {
+  totalCompleted: number;
+  remainingLessons: { id: string }[];
+}
+
+interface UserStats {
+  completedCount: number;
+  totalCount: number;
+}
+
 export default function ProfilePage() {
-  const { user } = useAuth();
-  
-  const [profile, setProfile] = useState<any>(null);
-  const [xpData, setXpData] = useState<any>(null);
-  const [stats, setStats] = useState<any>(null);
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [xpData, setXpData] = useState<XpData | null>(null);
+  const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadProfileData() {
       try {
         const [profileRes, xpRes, progressRes] = await Promise.all([
-          api.get<any>('/api/user/profile'),
-          api.get<any>('/api/user/xp?limit=5'),
-          api.get<any>('/api/lessons/progress'),
+          api.get<ProfileData>('/api/user/profile'),
+          api.get<XpData>('/api/user/xp?limit=5'),
+          api.get<LessonProgressResponse>('/api/lessons/progress'),
         ]);
 
         if (profileRes.success && profileRes.data) {
@@ -96,6 +118,7 @@ export default function ProfilePage() {
               <div className="flex justify-between items-end -mt-12 mb-4">
                 <div className="h-24 w-24 rounded-2xl border-4 border-gray-950 bg-gray-900 flex items-center justify-center overflow-hidden relative shadow-md">
                   {profile?.avatar ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img src={profile.avatar} alt={profile.fullName || 'User'} className="h-full w-full object-cover" />
                   ) : (
                     <UserIcon className="h-10 w-10 text-gray-500" />

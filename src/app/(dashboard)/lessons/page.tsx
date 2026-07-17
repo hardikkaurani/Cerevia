@@ -7,7 +7,7 @@ import { ContentWrapper } from '@/components/layout/ContentWrapper';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { BookOpen, Sparkles, Trophy, Search, Loader2 } from 'lucide-react';
+import { BookOpen, Sparkles, Trophy, Search } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/services/api';
 
@@ -21,97 +21,97 @@ interface LessonItem {
   completed?: boolean;
 }
 
-interface ProgressResponse {
-  completedLessons: LessonItem[];
-  totalCompleted: number;
-  remainingLessons: LessonItem[];
-}
-
 export default function LessonsPage() {
   const [lessons, setLessons] = useState<LessonItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<string>('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [difficultyFilter, setDifficultyFilter] = useState('ALL');
 
   useEffect(() => {
-    async function loadProgress() {
+    async function loadLessons() {
       try {
-        const response = await api.get<ProgressResponse>('/api/lessons/progress');
-        if (response.success && response.data) {
-          const completed = response.data.completedLessons.map(l => ({ ...l, completed: true }));
-          const remaining = response.data.remainingLessons.map(l => ({ ...l, completed: false }));
-          setLessons([...completed, ...remaining]);
+        const [lessonsRes, progressRes] = await Promise.all([
+          api.get<LessonItem[]>('/api/lessons'),
+          api.get<any>('/api/lessons/progress'),
+        ]);
+
+        if (lessonsRes.success && lessonsRes.data) {
+          const rawLessons = lessonsRes.data;
+          const completedIds = new Set<string>();
+
+          if (progressRes.success && progressRes.data && progressRes.data.completed) {
+            progressRes.data.completed.forEach((p: any) => completedIds.add(p.lessonId));
+          }
+
+          const mapped = rawLessons.map((l) => ({
+            ...l,
+            completed: completedIds.has(l.id),
+          }));
+
+          setLessons(mapped);
         }
-      } catch (error) {
-        console.error('Failed to load lessons progress:', error);
+      } catch (err) {
+        console.error('Failed to load lessons list:', err);
       } finally {
         setLoading(false);
       }
     }
-    loadProgress();
+    loadLessons();
   }, []);
 
-  const filteredLessons = lessons.filter(lesson => {
-    const matchesSearch = lesson.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      (lesson.description || '').toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDifficulty = difficultyFilter === 'ALL' || lesson.difficulty.toUpperCase() === difficultyFilter;
-    return matchesSearch && matchesDifficulty;
+  const filteredLessons = lessons.filter((lesson) => {
+    const matchesSearch = lesson.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (lesson.description || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesDiff = difficultyFilter === 'ALL' || lesson.difficulty === difficultyFilter;
+    return matchesSearch && matchesDiff;
   });
 
   return (
     <PageContainer>
-      <PageHeader
-        title="Lessons & Syllabus"
-        description="Expand your backend engineering knowledge and maintain your learning streak."
-        actions={
-          <div className="flex items-center gap-2 text-xs font-semibold text-cyan-400 bg-cyan-950/30 border border-cyan-500/20 px-3 py-1.5 rounded-full select-none">
-            <Trophy className="h-4 w-4 text-cyan-400" />
-            <span>Leaderboard Multipliers Active</span>
-          </div>
-        }
+      <PageHeader 
+        title="Curriculum Modules"
+        description="Choose a structured lesson to practice backend engineering concepts, complete assignments, and earn XP."
       />
 
-      <ContentWrapper className="space-y-6">
-        {/* Filters and Search Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-gray-950/50 p-4 rounded-2xl border border-gray-900 backdrop-blur-sm">
-          <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search syllabus modules..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-800/80 rounded-xl py-2 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 transition-colors"
+      <ContentWrapper className="space-y-8">
+        {/* Search and filter bar */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-950/45 p-4 rounded-2xl border border-gray-900/60 backdrop-blur-sm">
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <input 
+              type="text" 
+              placeholder="Search lessons..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-[#090d16] border border-gray-800 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 transition-all font-medium"
             />
           </div>
 
-          <div className="flex gap-2 w-full sm:w-auto">
-            {['ALL', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED'].map((level) => (
-              <button
-                key={level}
-                onClick={() => setDifficultyFilter(level)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                  difficultyFilter === level
-                    ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
-                    : 'bg-transparent border-gray-800/60 text-gray-400 hover:text-white hover:border-gray-700'
+          <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+            {['ALL', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED'].map((diff) => (
+              <button 
+                key={diff}
+                onClick={() => setDifficultyFilter(diff)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border shrink-0 ${
+                  difficultyFilter === diff 
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white border-transparent shadow-lg shadow-cyan-500/10' 
+                    : 'bg-transparent text-gray-400 border-gray-850 hover:text-white hover:bg-gray-900/40'
                 }`}
               >
-                {level.charAt(0) + level.slice(1).toLowerCase()}
+                {diff}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Lessons Grid or Loading Skeleton */}
         {loading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((idx) => (
-              <div key={idx} className="rounded-2xl border border-gray-900 bg-gray-950/40 p-6 flex flex-col gap-4 animate-pulse">
-                <div className="flex justify-between">
-                  <div className="h-5 w-16 bg-gray-800 rounded-full" />
-                  <div className="h-4 w-12 bg-gray-800 rounded" />
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="animate-pulse bg-gray-950/20 border border-gray-900/60 rounded-2xl p-6 h-48 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-800 rounded w-1/3" />
+                  <div className="h-5 bg-gray-800 rounded w-3/4" />
                 </div>
-                <div className="h-6 w-3/4 bg-gray-800 rounded mt-2" />
                 <div className="space-y-2 mt-2">
                   <div className="h-3 w-full bg-gray-800 rounded" />
                   <div className="h-3 w-5/6 bg-gray-800 rounded" />
@@ -125,7 +125,7 @@ export default function LessonsPage() {
             <BookOpen className="h-10 w-10 text-gray-600 mb-4 animate-bounce" />
             <h4 className="text-sm font-semibold text-white mb-1">No Modules Found</h4>
             <p className="text-xs text-gray-400 max-w-sm leading-relaxed">
-              We couldn't find any lessons matching your filters. Try a different query.
+              We could not find any lessons matching your filters. Try a different query.
             </p>
           </div>
         ) : (

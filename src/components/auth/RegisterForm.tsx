@@ -11,6 +11,7 @@ import Link from 'next/link';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     google?: any;
   }
 }
@@ -46,6 +47,7 @@ export function RegisterForm() {
       if (window.google) {
         window.google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '102983748293-dummyclientid.apps.googleusercontent.com',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           callback: async (response: any) => {
             setIsLoading(true);
             setSubmitError(null);
