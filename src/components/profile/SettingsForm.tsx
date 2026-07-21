@@ -84,71 +84,71 @@ export function SettingsForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
       <div className="space-y-4">
-        <h3 className="text-base font-serif font-light text-white tracking-wide">Public Profile Details</h3>
-        <p className="text-xs text-muted-foreground/60 font-sans font-light leading-relaxed">
+        <h3 className="text-base font-sans font-semibold text-foreground">Public Profile Details</h3>
+        <p className="text-xs text-muted-foreground font-sans leading-relaxed">
           Configure how your credentials and public information look on the Cerevia platform.
         </p>
         
         {error && (
-          <div className="bg-red-950/20 border border-red-500/30 text-red-400 p-4 rounded-none text-xs font-sans font-medium uppercase tracking-wide">
+          <div className="bg-destructive/10 border border-destructive/20 text-destructive p-4 rounded-md text-sm font-sans font-medium">
             {error}
           </div>
         )}
 
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <label htmlFor="fullName" className="text-[10px] font-sans uppercase tracking-[0.15em] text-muted-foreground/50">Full Name</label>
+            <label htmlFor="fullName" className="text-xs font-sans font-semibold text-muted-foreground">Full Name</label>
             <input 
               id="fullName" 
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="e.g. Hardi Kaurani"
-              className="flex h-10 w-full rounded-none border border-border/10 bg-black px-4 py-2 text-sm text-white placeholder-muted-foreground/30 focus:outline-none focus:border-primary/45 transition-colors font-sans font-light"
+              className="flex h-10 w-full rounded-md border border-border bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all font-sans"
               required
             />
           </div>
           
           <div className="grid gap-2">
-            <label htmlFor="email" className="text-[10px] font-sans uppercase tracking-[0.15em] text-muted-foreground/50">Account Email (Read-Only)</label>
+            <label htmlFor="email" className="text-xs font-sans font-semibold text-muted-foreground">Account Email (Read-Only)</label>
             <input 
               id="email" 
               type="email"
               value={email}
               disabled
-              className="flex h-10 w-full rounded-none border border-border/10 bg-black/40 px-4 py-2 text-sm text-muted-foreground/45 cursor-not-allowed font-sans font-light"
+              className="flex h-10 w-full rounded-md border border-border bg-muted/65 px-4 py-2 text-sm text-muted-foreground cursor-not-allowed font-sans"
             />
           </div>
 
           <div className="grid gap-2">
-            <label htmlFor="avatar" className="text-[10px] font-sans uppercase tracking-[0.15em] text-muted-foreground/50">Avatar Image URL</label>
+            <label htmlFor="avatar" className="text-xs font-sans font-semibold text-muted-foreground">Avatar Image URL</label>
             <input 
               id="avatar" 
               type="text"
               value={avatar}
               onChange={(e) => setAvatar(e.target.value)}
               placeholder="e.g. https://example.com/avatar.png"
-              className="flex h-10 w-full rounded-none border border-border/10 bg-black px-4 py-2 text-sm text-white placeholder-muted-foreground/30 focus:outline-none focus:border-primary/45 transition-colors font-sans font-light"
+              className="flex h-10 w-full rounded-md border border-border bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all font-sans"
             />
           </div>
 
           <div className="grid gap-2">
-            <label htmlFor="bio" className="text-[10px] font-sans uppercase tracking-[0.15em] text-muted-foreground/50">Short Biography</label>
+            <label htmlFor="bio" className="text-xs font-sans font-semibold text-muted-foreground">Short Biography</label>
             <textarea 
               id="bio" 
               rows={4}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Tell other engineers about yourself..."
-              className="flex w-full rounded-none border border-border/10 bg-black px-4 py-3 text-sm text-white placeholder-muted-foreground/30 focus:outline-none focus:border-primary/45 transition-colors resize-none font-sans font-light"
+              className="flex w-full rounded-md border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all resize-none font-sans"
             />
           </div>
         </div>
       </div>
 
-      <div className="border-t border-border/10 pt-6 flex items-center justify-end gap-4">
-        {success && <span className="text-xs font-sans uppercase tracking-wider font-medium text-primary">Profile configuration updated!</span>}
-        <Button type="submit" disabled={isSaving} className="rounded-none bg-primary text-black hover:bg-primary/95 text-xs font-sans uppercase tracking-[0.18em] py-2 px-6">
+      <div className="border-t border-border pt-6 flex items-center justify-end gap-4">
+        {success && <span className="text-sm font-sans font-medium text-primary">Profile configuration updated!</span>}
+        <Button type="submit" disabled={isSaving} className="px-6">
           {isSaving ? 'Updating...' : 'Save Configuration'}
         </Button>
       </div>

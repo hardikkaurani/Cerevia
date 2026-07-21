@@ -32,11 +32,11 @@ export function SidebarItem({
       aria-current={isActive ? 'page' : undefined}
       title={isCollapsed ? label : undefined}
       className={cn(
-        'group flex items-center gap-3 rounded-none p-2 text-[10px] font-sans uppercase tracking-[0.15em] font-light transition-all border-l-2 duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45',
-        isCollapsed ? 'justify-center border-l-0' : 'px-4 py-3',
+        'group flex items-center gap-3 rounded-md p-2.5 text-sm font-sans font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        isCollapsed ? 'justify-center mx-2' : 'mx-3 px-4 py-2.5',
         isActive
-          ? 'border-primary bg-primary/5 text-primary'
-          : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-[#121212]/50',
+          ? 'bg-primary/10 text-primary'
+          : 'text-muted-foreground hover:text-foreground hover:bg-secondary',
         className
       )}
     >

@@ -20,7 +20,7 @@ export function Logo({ className = '', showText = true, size = 'md' }: LogoProps
       aria-label="Cerevia Home"
     >
       <div className={`flex items-center justify-center shrink-0 ${dimensions[size]}`}>
-        {/* Luxury Cerevia Serif C Brand Mark */}
+        {/* Modern Cerevia Blue Gradient Star Brand Mark */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 100 100"
@@ -28,55 +28,38 @@ export function Logo({ className = '', showText = true, size = 'md' }: LogoProps
           className="h-full w-full"
         >
           <defs>
-            <linearGradient id="cereviaGoldGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#9C7A3C" />
-              <stop offset="35%" stopColor="#DFBA73" />
-              <stop offset="70%" stopColor="#E5D9C4" />
-              <stop offset="100%" stopColor="#C5A880" />
+            <linearGradient id="cereviaBlueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#6366F1" />   {/* Indigo */}
+              <stop offset="50%" stopColor="#3B82F6" />  {/* Blue */}
+              <stop offset="100%" stopColor="#06B6D4" /> {/* Cyan */}
             </linearGradient>
-            <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
           </defs>
 
-          {/* Handcrafted outer thin gold arc */}
+          {/* Concentric Modern C Paths */}
           <path
-            d="M 64.5 13.5 A 39 39 0 1 0 64.5 86.5"
-            stroke="url(#cereviaGoldGradient)"
-            strokeWidth="2.5"
+            d="M 72 32 A 28 28 0 1 0 72 68 M 62 40 A 18 18 0 1 0 62 60"
+            stroke="url(#cereviaBlueGradient)"
+            strokeWidth="7.5"
             strokeLinecap="round"
             fill="none"
           />
 
-          {/* Elegant serif letter C */}
-          <text
-            x="48"
-            y="65"
-            fontFamily="var(--font-serif), Georgia, serif"
-            fontSize="52"
-            fontWeight="300"
-            textAnchor="middle"
-            fill="url(#cereviaGoldGradient)"
-            letterSpacing="-0.05em"
-          >
-            C
-          </text>
-
-          {/* Accent Gold dot */}
-          <circle
-            cx="75"
-            cy="58"
-            r="4.5"
-            fill="url(#cereviaGoldGradient)"
-            filter="url(#goldGlow)"
+          {/* Center Star (4-point sparkle) */}
+          <path
+            d="M 38 50 Q 46 50 46 42 Q 46 50 54 50 Q 46 50 46 58 Q 46 50 38 50"
+            fill="#22D3EE"
           />
         </svg>
       </div>
       {showText && (
-        <span className="font-serif text-[17px] font-medium tracking-[0.2em] text-foreground uppercase pt-0.5">
-          Cerevia
-        </span>
+        <div className="flex flex-col justify-center">
+          <span className="font-sans text-[17px] font-extrabold tracking-[0.18em] text-foreground uppercase leading-none">
+            Cerevia
+          </span>
+          <span className="font-sans text-[6.5px] font-extrabold tracking-[0.25em] text-muted-foreground uppercase mt-1.5 leading-none">
+            Learn. Level Up. Lead.
+          </span>
+        </div>
       )}
     </Link>
   );

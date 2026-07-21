@@ -10,11 +10,11 @@ export function CTA() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[600px] bg-primary/10 blur-[100px] rounded-full pointer-events-none -z-10" />
 
       <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 text-center flex flex-col items-center gap-6">
-        <div className="h-12 w-12 rounded-none bg-primary/10 border border-primary/20 text-primary flex items-center justify-center animate-bounce duration-1000">
+        <div className="h-12 w-12 rounded-lg bg-primary/10 border border-primary/20 text-primary flex items-center justify-center">
           <Flame className="h-6 w-6 fill-primary/20" />
         </div>
 
-        <h2 className="text-3xl font-serif font-light tracking-wide sm:text-4xl text-foreground max-w-2xl">
+        <h2 className="text-3xl font-sans font-bold tracking-tight sm:text-4xl text-foreground max-w-2xl">
           Ready to build your learning streak?
         </h2>
 
@@ -25,7 +25,7 @@ export function CTA() {
         <div className="mt-4 w-full sm:w-auto">
           <Link
             href="/dashboard"
-            className="group inline-flex h-11 w-full sm:w-auto items-center justify-center gap-2.5 rounded-none bg-primary px-8 text-[11px] font-medium uppercase tracking-[0.2em] text-primary-foreground shadow transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/45"
+            className="group inline-flex h-11 w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <span>Start Learning Now</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
