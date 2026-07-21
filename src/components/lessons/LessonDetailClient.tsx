@@ -134,12 +134,12 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
   return (
     <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full pb-10 px-4 md:px-0 animate-fade-in">
       <div className="flex items-center justify-between">
-        <Link href="/lessons" className="inline-flex items-center text-[10px] font-sans font-medium uppercase tracking-[0.15em] text-muted-foreground/60 hover:text-primary transition-colors duration-300">
+        <Link href="/lessons" className="inline-flex items-center text-xs font-sans font-semibold text-muted-foreground hover:text-primary transition-colors duration-200">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Lessons
         </Link>
         <div className="flex items-center gap-2 text-sm font-semibold">
-          <span className="flex items-center text-[10px] font-sans uppercase tracking-[0.15em] text-primary bg-primary/10 px-3.5 py-1.5 rounded-none border border-primary/20">
+          <span className="flex items-center text-xs font-sans font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
             <Trophy className="mr-1.5 h-3.5 w-3.5 text-primary" />
             +{lesson.xpReward} XP Reward
           </span>
@@ -149,7 +149,7 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left main content columns */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-none overflow-hidden border border-border/10 shadow-none bg-black relative group">
+          <div className="rounded-lg overflow-hidden border border-border shadow-sm bg-black relative group">
             <VideoPlayer 
               url={currentDetails.videoUrl} 
               title={lesson.title} 
@@ -157,29 +157,29 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
             />
           </div>
           
-          <div className="space-y-4 bg-[#090909] p-8 rounded-none border border-border/10">
+          <div className="space-y-4 bg-card p-8 rounded-lg border border-border shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="text-[9px] font-medium tracking-[0.15em] text-primary uppercase bg-primary/10 px-2 py-0.5 rounded-none border border-primary/20">
+              <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
                 {lesson.difficulty}
               </span>
-              <span className="text-[10px] text-muted-foreground/40 font-sans tracking-wider uppercase">
+              <span className="text-xs text-muted-foreground/50 font-mono">
                 ID: {lesson.id.substring(0, 8)}...
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-medium tracking-wide text-white leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight text-foreground leading-tight">
               {lesson.title}
             </h1>
-            <p className="text-muted-foreground/80 text-sm leading-relaxed font-sans font-light">
+            <p className="text-muted-foreground text-sm leading-relaxed font-sans">
               {currentDetails.body}
             </p>
           </div>
 
-          <div className="border-t border-border/10 pt-6">
+          <div className="border-t border-border pt-6">
             <LessonContent content={`## Core Module Outline\n- Review course prerequisites and learning objectives.\n- Implement design tokens and visual indicators for backend features.\n- Learn best practices in scaling relational database architectures.\n- Complete quiz questionnaire below to test your topic knowledge.`} />
           </div>
 
           {!isCompleted && (
-            <div className="border-t border-border/10 pt-6 mt-8">
+            <div className="border-t border-border pt-6 mt-8">
               <QuizComponent 
                 question={currentDetails.quiz.question}
                 options={quizOptions}
@@ -192,19 +192,19 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
 
         {/* Right side progress status */}
         <div className="space-y-6">
-          <div className="rounded-none border border-border/10 bg-[#090909] p-8 shadow-none sticky top-24">
-            <h3 className="font-serif font-medium text-base text-white mb-6 tracking-wide">Lesson Milestone Progress</h3>
+          <div className="rounded-lg border border-border bg-card p-8 shadow-sm sticky top-24">
+            <h3 className="font-sans font-semibold text-base text-foreground mb-6">Lesson Milestone Progress</h3>
             
             <div className="space-y-5 mb-6">
               <div className="flex items-start gap-3">
                 {videoWatched || isCompleted ? (
                   <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 ) : (
-                  <div className="h-5 w-5 rounded-none border border-border/30 shrink-0 mt-0.5 transition-all" />
+                  <div className="h-5 w-5 rounded-md border border-border shrink-0 mt-0.5 transition-all" />
                 )}
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-wider font-medium text-white">Watch Course Video</p>
-                  <p className="text-[11px] font-sans font-light text-muted-foreground/60">Play the short tutorial video to completion.</p>
+                  <p className="text-xs font-sans font-semibold text-foreground">Watch Course Video</p>
+                  <p className="text-xs font-sans text-muted-foreground">Play the short tutorial video to completion.</p>
                 </div>
               </div>
 
@@ -212,29 +212,29 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
                 {quizCompleted && quizCorrect || isCompleted ? (
                   <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 ) : (
-                  <div className="h-5 w-5 rounded-none border border-border/30 shrink-0 mt-0.5 transition-all" />
+                  <div className="h-5 w-5 rounded-md border border-border shrink-0 mt-0.5 transition-all" />
                 )}
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-wider font-medium text-white">Pass Concept Quiz</p>
-                  <p className="text-[11px] font-sans font-light text-muted-foreground/60">Select the correct answer to master the topic.</p>
+                  <p className="text-xs font-sans font-semibold text-foreground">Pass Concept Quiz</p>
+                  <p className="text-xs font-sans text-muted-foreground">Select the correct answer to master the topic.</p>
                 </div>
               </div>
             </div>
 
             {error && (
-              <div className="p-3 bg-red-950/50 border border-red-500/20 text-red-400 text-xs rounded-none mb-4 font-medium">
+              <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-md mb-4 font-medium">
                 {error}
               </div>
             )}
 
             {isCompleted ? (
               <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-center gap-2 p-3.5 bg-primary/10 border border-primary/20 rounded-none text-primary text-[10px] font-sans uppercase tracking-[0.15em] select-none">
+                <div className="flex items-center justify-center gap-2 p-3 bg-primary/10 border border-primary/20 rounded-md text-primary text-xs font-sans font-semibold select-none">
                   <CheckCircle2 className="h-4 w-4 text-primary animate-pulse" />
                   <span>Module Completed & Saved</span>
                 </div>
                 <Link href="/lessons" className="w-full">
-                  <Button variant="outline" className="w-full text-[10px] font-sans uppercase tracking-[0.18em] border-border/10 text-white hover:bg-primary/[0.02] py-3.5 duration-300 rounded-none">
+                  <Button variant="outline" className="w-full py-3">
                     Back to Lessons
                   </Button>
                 </Link>
@@ -243,16 +243,12 @@ export function LessonDetailClient({ lesson, initialCompleted }: LessonDetailCli
               <Button 
                 onClick={handleCompleteLesson} 
                 disabled={!canComplete || isSubmitting}
-                className={`w-full font-sans uppercase tracking-[0.18em] text-[10px] py-3.5 select-none flex items-center justify-center gap-2 border-none rounded-none ${
-                  canComplete 
-                    ? 'bg-primary text-black hover:bg-primary/95 duration-300' 
-                    : 'bg-border/5 text-muted-foreground/30 cursor-not-allowed shadow-none'
-                }`}
+                className="w-full py-3 flex items-center justify-center gap-2"
                 size="lg"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin text-black" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     <span>Saving progress...</span>
                   </>
                 ) : (

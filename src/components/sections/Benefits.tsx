@@ -26,16 +26,16 @@ export function Benefits() {
   ];
 
   return (
-    <section id="benefits" className="py-20 md:py-28 bg-muted/5 border-b border-border/10">
+    <section id="benefits" className="py-20 md:py-28 bg-muted/5 border-b border-border">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Side title column */}
           <div className="lg:col-span-5 flex flex-col gap-5 text-center lg:text-left items-center lg:items-start">
-            <span className="text-[10px] font-sans font-medium uppercase tracking-[0.2em] text-primary">
+            <span className="text-xs font-semibold text-primary">
               Why Cerevia
             </span>
-            <h2 className="text-3xl font-serif font-light tracking-wide text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-sans font-bold tracking-tight text-foreground sm:text-4xl">
               Engineered for learning retention and high performance
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-light tracking-wide">
@@ -50,16 +50,16 @@ export function Benefits() {
               return (
                 <div
                   key={index}
-                  className="p-6 bg-[#090909] border border-border/10 rounded-none flex gap-4 shadow-none hover:border-primary/20 transition-colors"
+                  className="p-6 bg-card border border-border rounded-lg flex gap-4 shadow-sm hover:border-primary/40 hover:shadow-md transition-all duration-200"
                 >
-                  <div className="h-9 w-9 rounded-none bg-primary/5 text-primary flex items-center justify-center border border-primary/10 shrink-0">
+                  <div className="h-9 w-9 rounded-md bg-primary/10 text-primary flex items-center justify-center border border-primary/20 shrink-0">
                     <Icon className="h-4.5 w-4.5" />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <h3 className="text-xs font-medium tracking-wide uppercase font-sans text-foreground">
+                    <h3 className="text-sm font-semibold text-foreground font-sans">
                       {benefit.title}
                     </h3>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed font-light">
+                    <p className="text-xs text-muted-foreground leading-relaxed font-light">
                       {benefit.description}
                     </p>
                   </div>

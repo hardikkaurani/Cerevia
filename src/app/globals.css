@@ -24,79 +24,79 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
   --font-sans: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
+  --font-serif: var(--font-sans);
   --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 :root {
-  /* Luxury Champagne & Warm Stone Light Theme */
-  --background: 30 18% 97%; /* #FAF9F6 */
-  --foreground: 0 0% 9%; /* #161616 - Deep Charcoal */
-  --card: 30 15% 99%;
-  --card-foreground: 0 0% 9%;
-  --popover: 30 15% 99%;
-  --popover-foreground: 0 0% 9%;
-  --primary: 38 45% 55%; /* Champagne Gold #C5A880 */
-  --primary-foreground: 0 0% 5%; /* Luxury Black */
-  --secondary: 30 10% 90%;
-  --secondary-foreground: 0 0% 12%;
-  --muted: 30 10% 95%;
-  --muted-foreground: 30 6% 45%;
-  --accent: 38 45% 65%; /* Soft Gold #DFBA73 */
-  --accent-foreground: 0 0% 5%;
-  --destructive: 0 80% 50%;
-  --destructive-foreground: 30 18% 97%;
-  --border: 30 10% 86%;
-  --input: 30 10% 86%;
-  --ring: 38 45% 55%;
-  --radius: 0px; /* Precise, sharp corners */
+  /* Clean Light Theme */
+  --background: 210 20% 98%; /* Soft cool grey */
+  --foreground: 224 71.4% 4.1%; /* Deep navy black */
+  --card: 0 0% 100%;
+  --card-foreground: 224 71.4% 4.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71.4% 4.1%;
+  --primary: 221.2 83.2% 53.3%; /* Royal Blue */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --radius: 8px; /* Clean, modern rounded corners */
 }
 
-/* Luxury Black & Deep Charcoal Dark Theme */
+/* Clean Dark Theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: 0 0% 4%; /* Luxury Black #0A0A0A */
-    --foreground: 30 15% 93%; /* Ivory White #EAE6DF */
-    --card: 0 0% 7%; /* Deep Charcoal #121212 */
-    --card-foreground: 30 15% 93%;
-    --popover: 0 0% 6%;
-    --popover-foreground: 30 15% 93%;
-    --primary: 38 45% 55%; /* Champagne Gold #C5A880 */
-    --primary-foreground: 0 0% 4%; /* Luxury Black */
-    --secondary: 0 0% 12%; /* #1F1F1F */
-    --secondary-foreground: 30 15% 93%;
-    --muted: 0 0% 9%; /* #161616 */
-    --muted-foreground: 30 6% 55%;
-    --accent: 38 45% 65%; /* Soft Gold #DFBA73 */
-    --accent-foreground: 0 0% 4%;
-    --destructive: 0 80% 50%;
-    --destructive-foreground: 30 15% 93%;
-    --border: 0 0% 12%; /* #1F1F1F */
-    --input: 0 0% 12%;
-    --ring: 38 45% 55%;
+    --background: 222.2 84% 4.9%; /* Sleek dark slate */
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 6%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%; /* Vibrant Blue */
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 12%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 12%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 12%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
   }
 }
 
 .dark {
-  --background: 0 0% 4%;
-  --foreground: 30 15% 93%;
-  --card: 0 0% 7%;
-  --card-foreground: 30 15% 93%;
-  --popover: 0 0% 6%;
-  --popover-foreground: 30 15% 93%;
-  --primary: 38 45% 55%;
-  --primary-foreground: 0 0% 4%;
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 30 15% 93%;
-  --muted: 0 0% 9%;
-  --muted-foreground: 30 6% 55%;
-  --accent: 38 45% 65%;
-  --accent-foreground: 0 0% 4%;
-  --destructive: 0 80% 50%;
-  --destructive-foreground: 30 15% 93%;
-  --border: 0 0% 12%;
-  --input: 0 0% 12%;
-  --ring: 38 45% 55%;
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 6%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 6%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 12%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 12%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 12%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 224.3 76.3% 48%;
 }
 
 * {
@@ -112,30 +112,30 @@ body {
 
 /* Glassmorphism utility classes */
 .glass-panel {
-  background: rgba(10, 15, 30, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
 }
 
 .glass-card:hover {
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
 /* Glow effects */
 .glow-primary {
-  box-shadow: 0 0 20px 0px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 16px 0px rgba(59, 130, 246, 0.08);
 }
 
 .glow-cyan {

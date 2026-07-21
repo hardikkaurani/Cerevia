@@ -111,12 +111,12 @@ export default function ProfilePage() {
       <ContentWrapper className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Side: Avatar & Details */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="rounded-none border border-border/10 bg-[#090909] overflow-hidden shadow-none">
-            <div className="h-24 bg-gradient-to-r from-[#111] to-[#181818] relative border-b border-border/10" />
+          <Card className="overflow-hidden">
+            <div className="h-24 bg-gradient-to-r from-secondary to-muted relative border-b border-border" />
             
             <div className="px-6 pb-6 relative">
               <div className="flex justify-between items-end -mt-12 mb-4">
-                <div className="h-24 w-24 rounded-none border border-primary/20 bg-black flex items-center justify-center overflow-hidden relative">
+                <div className="h-24 w-24 rounded-full border-4 border-card bg-background flex items-center justify-center overflow-hidden relative">
                   {profile?.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={profile.avatar} alt={profile.fullName || 'User'} className="h-full w-full object-cover" />
@@ -125,7 +125,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <Link href="/settings">
-                  <Button variant="outline" size="sm" className="mb-2 rounded-none border-border/10 text-muted-foreground hover:text-white hover:border-primary/25 bg-transparent font-sans uppercase tracking-[0.15em] text-[10px] duration-300">
+                  <Button variant="outline" size="sm" className="mb-2">
                     Edit Profile
                   </Button>
                 </Link>
@@ -133,20 +133,20 @@ export default function ProfilePage() {
               
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-lg font-serif font-light text-white tracking-wide">{profile?.fullName || 'Anonymous Student'}</h2>
-                  <p className="text-[11px] font-sans text-muted-foreground/60 flex items-center mt-1.5 font-light">
-                    <Mail className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
+                  <h2 className="text-xl font-sans font-bold text-foreground">{profile?.fullName || 'Anonymous Student'}</h2>
+                  <p className="text-xs font-sans text-muted-foreground flex items-center mt-1.5">
+                    <Mail className="h-3.5 w-3.5 mr-1.5 text-primary" />
                     {profile?.email}
                   </p>
                 </div>
                 
-                <p className="text-xs text-muted-foreground/80 leading-relaxed font-sans font-light bg-black/40 border border-[#090909] rounded-none p-4 border-border/10">
+                <p className="text-sm text-muted-foreground leading-relaxed font-sans bg-secondary/35 border border-border rounded-md p-4">
                   {profile?.bio || "No professional bio set. Go to settings to edit your public profile."}
                 </p>
                 
-                <div className="flex items-center gap-4 pt-4 border-t border-border/10 text-[10px] font-sans uppercase tracking-wider text-muted-foreground/45 font-light">
+                <div className="flex items-center gap-4 pt-4 border-t border-border text-xs font-sans text-muted-foreground">
                   <div className="flex items-center">
-                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
+                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-primary" />
                     Joined {joinedDate}
                   </div>
                 </div>
@@ -158,21 +158,21 @@ export default function ProfilePage() {
         {/* Right Side: Stats & Activity */}
         <div className="lg:col-span-2 space-y-8">
           {/* Stats Grid */}
-          <Card className="rounded-none border border-border/10 bg-[#090909] p-8 shadow-none">
-            <h3 className="font-serif font-medium text-base text-white tracking-wide mb-6 flex items-center gap-2">
+          <Card className="p-8">
+            <h3 className="font-sans font-semibold text-base text-foreground mb-6 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
               <span>Learning Credentials</span>
             </h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {statItems.map((stat, i) => (
-                <div key={i} className="rounded-none border border-border/10 bg-black/30 p-5 flex items-center gap-4 transition-all duration-300">
-                  <div className={`h-12 w-12 rounded-none flex items-center justify-center shrink-0 ${stat.bg}`}>
+                <div key={i} className="rounded-lg border border-border bg-muted/20 p-5 flex items-center gap-4 transition-all duration-200">
+                  <div className={`h-12 w-12 rounded-md flex items-center justify-center shrink-0 ${stat.bg}`}>
                     <stat.icon className={`h-5 w-5 ${stat.color}`} />
                   </div>
                   <div>
-                    <p className="text-[9px] font-light text-muted-foreground/50 uppercase tracking-widest font-sans">{stat.label}</p>
-                    <p className="text-base font-medium text-white font-sans uppercase tracking-wider mt-0.5">{stat.value}</p>
+                    <p className="text-xs font-semibold text-muted-foreground">{stat.label}</p>
+                    <p className="text-base font-bold text-foreground mt-0.5">{stat.value}</p>
                   </div>
                 </div>
               ))}
@@ -180,8 +180,8 @@ export default function ProfilePage() {
           </Card>
           
           {/* XP History logs */}
-          <Card className="rounded-none border border-border/10 bg-[#090909] p-8 shadow-none">
-            <h3 className="font-serif font-medium text-base text-white tracking-wide mb-6 flex items-center gap-2">
+          <Card className="p-8">
+            <h3 className="font-sans font-semibold text-base text-foreground mb-6 flex items-center gap-2">
               <Activity className="h-4 w-4 text-primary" />
               <span>Recent Experience Log</span>
             </h3>
@@ -189,18 +189,18 @@ export default function ProfilePage() {
             <div className="space-y-4">
               {xpData?.history && xpData.history.length > 0 ? (
                 xpData.history.map((item: ActivityItem) => (
-                  <div key={item.id} className="flex justify-between items-center py-3.5 border-b border-border/10 last:border-0">
+                  <div key={item.id} className="flex justify-between items-center py-3.5 border-b border-border last:border-0">
                     <div>
-                      <p className="text-xs font-sans uppercase tracking-wider font-medium text-white">{item.reason}</p>
-                      <p className="text-[9px] font-sans tracking-wide text-muted-foreground/45 uppercase mt-0.5">
+                      <p className="text-sm font-sans font-semibold text-foreground">{item.reason}</p>
+                      <p className="text-xs font-sans text-muted-foreground mt-0.5">
                         {new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
-                    <span className="text-xs font-sans font-medium text-primary tracking-wide">+{item.xpEarned} XP</span>
+                    <span className="text-sm font-sans font-bold text-primary">+{item.xpEarned} XP</span>
                   </div>
                 ))
               ) : (
-                <div className="text-center py-6 text-[10px] font-sans uppercase tracking-wider font-light text-muted-foreground/40">
+                <div className="text-center py-6 text-sm font-sans font-medium text-muted-foreground">
                   No experience activities recorded yet. Complete a lesson to view history logs here.
                 </div>
               )}

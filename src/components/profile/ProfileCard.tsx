@@ -16,9 +16,9 @@ interface ProfileCardProps {
 
 export function ProfileCard({ user }: ProfileCardProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+    <div className="rounded-lg border border-border bg-card overflow-hidden shadow-sm">
       <div className="h-32 bg-gradient-to-r from-primary/40 to-purple-500/40 relative">
-        <Button size="sm" variant="secondary" className="absolute top-4 right-4 rounded-full h-8 w-8 bg-black/20 hover:bg-black/40 text-white border-0 backdrop-blur-sm p-0">
+        <Button size="sm" variant="secondary" className="absolute top-4 right-4 rounded-full h-8 w-8 bg-black/20 hover:bg-black/40 text-white border-0 p-0">
           <Edit className="h-4 w-4" />
         </Button>
       </div>

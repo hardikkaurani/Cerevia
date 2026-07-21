@@ -29,19 +29,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center gap-2 rounded-lg font-sans font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer active:scale-[0.98]';
+      'inline-flex items-center justify-center gap-2 rounded-md font-sans text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer';
 
     const variants = {
       primary:
-        'bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm border border-transparent',
+        'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
       secondary:
-        'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm border border-border/40',
+        'bg-secondary text-secondary-foreground hover:bg-secondary/80',
       outline:
-        'border border-border/80 bg-background text-foreground hover:bg-secondary hover:text-foreground shadow-sm',
+        'border border-border bg-background text-foreground hover:bg-secondary hover:text-foreground',
       ghost: 'text-foreground hover:bg-secondary hover:text-foreground',
       destructive:
-        'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm border border-transparent',
-      link: 'text-primary underline-offset-4 hover:underline p-0 h-auto rounded-none active:scale-100',
+        'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
+      link: 'text-primary underline-offset-4 hover:underline p-0 h-auto rounded-none',
     };
 
     const sizes = {
@@ -70,4 +70,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export { Button };
-
