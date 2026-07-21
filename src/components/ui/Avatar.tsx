@@ -26,17 +26,26 @@ export function Avatar({
     lg: 'h-12 w-12 text-base',
   };
 
-  const initials = fallback
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+  const initials = React.useMemo(() => {
+    if (!fallback) return '?';
+    return fallback
+      .trim()
+      .split(/\s+/)
+      .map((n) => n[0])
+      .filter(Boolean)
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || '?';
+  }, [fallback]);
 
   return (
     <div
       className={cn(
+<<<<<<< HEAD
         'relative flex shrink-0 overflow-hidden rounded-full border border-border bg-secondary select-none font-sans font-medium text-foreground items-center justify-center',
+=======
+        'relative flex shrink-0 overflow-hidden rounded-full border border-border bg-muted select-none font-sans font-medium text-muted-foreground items-center justify-center',
+>>>>>>> origin/main
         sizes[size],
         className
       )}
@@ -56,3 +65,4 @@ export function Avatar({
     </div>
   );
 }
+
