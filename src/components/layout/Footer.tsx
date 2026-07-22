@@ -1,92 +1,157 @@
+'use client';
+
 import Link from 'next/link';
 import { Logo } from './Logo';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const sections = [
-    {
-      title: 'Product',
-      links: [
-        { href: '#features', label: 'Features' },
-        { href: '#how-it-works', label: 'How It Works' },
-        { href: '#benefits', label: 'Benefits' },
-      ],
-    },
-    {
-      title: 'Resources',
-      links: [
-        { href: 'https://nextjs.org', label: 'Documentation' },
-        { href: 'https://vercel.com', label: 'Hosting Platform' },
-        { href: 'https://tailwindcss.com', label: 'Tailwind CSS' },
-      ],
-    },
-    {
-      title: 'Legal',
-      links: [
-        { href: '#', label: 'Privacy Policy' },
-        { href: '#', label: 'Terms of Service' },
-        { href: '#', label: 'Cookie Settings' },
-      ],
-    },
-  ];
+  const navigation = {
+    platform: [
+      { label: 'Home', href: '#home' },
+      { label: 'Courses', href: '#courses' },
+      { label: 'Learning Paths', href: '#learning-paths' },
+      { label: 'Leaderboard', href: '#leaderboard' },
+      { label: 'Why Cerevia', href: '#why-cerevia' },
+    ],
+    courses: [
+      { label: 'Python for AI', href: '#courses' },
+      { label: 'Java Enterprise', href: '#courses' },
+      { label: 'React 19 & Next.js', href: '#courses' },
+      { label: 'Node.js Microservices', href: '#courses' },
+      { label: 'Cloud & Kubernetes', href: '#courses' },
+      { label: 'System Design', href: '#courses' },
+    ],
+    resources: [
+      { label: 'Documentation', href: '/docs' },
+      { label: 'API Reference', href: '/api' },
+      { label: 'Community Forum', href: '#contact' },
+      { label: 'Student Perks', href: '#impact' },
+    ],
+    company: [
+      { label: 'About Us', href: '#about' },
+      { label: 'Contact', href: '#contact' },
+      { label: 'Privacy Policy', href: '#' },
+      { label: 'Terms of Service', href: '#' },
+      { label: 'Security Audit', href: '#' },
+    ],
+  };
 
   return (
-    <footer className="border-t border-border/10 bg-[#060606]">
-      <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 lg:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 pb-12 border-b border-border/10">
-          {/* Logo & Description */}
-          <div className="flex flex-col gap-4">
+    <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        
+        {/* Top Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-12 border-b border-zinc-200 dark:border-zinc-800">
+          
+          {/* Brand Info */}
+          <div className="md:col-span-4 space-y-4">
             <Logo />
-            <p className="text-xs text-muted-foreground leading-relaxed font-light">
-              A high-concurrency gamification system powering daily learning streaks and weekly competitive leaderboards at scale.
+            <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              Learn Smarter. Practice Better. Build Your Future.
             </p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-sm">
+              Cerevia is an AI-powered education platform designed to empower engineers with hands-on coding sandboxes, interactive paths, and gamified streak systems.
+            </p>
+
+            {/* Platform Status Indicator */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>All Systems Operational</span>
+            </div>
           </div>
 
-          {/* Links columns */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 md:col-span-3">
-            {sections.map((section) => (
-              <div key={section.title} className="flex flex-col gap-4">
-                <span className="text-[10px] font-sans font-medium tracking-[0.15em] uppercase text-foreground">
-                  {section.title}
-                </span>
-                <ul className="flex flex-col gap-2.5" aria-label={`${section.title} links`}>
-                  {section.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-[10px] font-sans uppercase tracking-wider font-light text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Nav Columns */}
+          <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            
+            {/* Platform Column */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Platform</h4>
+              <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+                {navigation.platform.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} className="hover:text-blue-600 dark:hover:text-white transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Courses Column */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Courses</h4>
+              <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+                {navigation.courses.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} className="hover:text-blue-600 dark:hover:text-white transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Resources Column */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Resources</h4>
+              <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+                {navigation.resources.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} className="hover:text-blue-600 dark:hover:text-white transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company Column */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Company</h4>
+              <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+                {navigation.company.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} className="hover:text-blue-600 dark:hover:text-white transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
           </div>
+
         </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between pt-8 gap-4">
-          <p className="text-[9px] font-sans uppercase tracking-[0.15em] font-light text-muted-foreground/60">
-            &copy; {currentYear} Cerevia. All rights reserved.
-          </p>
-          <div className="flex items-center gap-5">
+        {/* Bottom Social & Copyright Ribbon */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+          <p>&copy; {currentYear} Cerevia Inc. All rights reserved.</p>
+
+          <div className="flex items-center gap-6">
             <a
               href="https://github.com/kalviumcommunity/S116-0726-StackForge-FullStack-Nextjs-PostgreSQL-Prisma-Cerevia"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="GitHub Repository"
+              className="hover:text-zinc-950 dark:hover:text-white transition-colors font-medium"
             >
-              {/* GitHub SVG */}
-              <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-              </svg>
+              GitHub
+            </a>
+            <a href="#" className="hover:text-zinc-950 dark:hover:text-white transition-colors font-medium">
+              Twitter / X
+            </a>
+            <a href="#" className="hover:text-zinc-950 dark:hover:text-white transition-colors font-medium">
+              LinkedIn
+            </a>
+            <a href="#" className="hover:text-zinc-950 dark:hover:text-white transition-colors font-medium">
+              Discord
+            </a>
+            <a href="#" className="hover:text-zinc-950 dark:hover:text-white transition-colors font-medium">
+              YouTube
             </a>
           </div>
         </div>
+
       </div>
     </footer>
   );
