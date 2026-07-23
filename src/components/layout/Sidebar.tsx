@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Bot,
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { SidebarItem } from './SidebarItem';
@@ -29,6 +30,7 @@ interface SidebarProps {
 const navigationItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/lessons', icon: BookOpen, label: 'Lessons' },
+  { href: '/ai-mentor', icon: Bot, label: 'AI Mentor' },
   { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/xp', icon: Sparkles, label: 'XP Tracker' },
   { href: '/profile', icon: User, label: 'Profile' },
