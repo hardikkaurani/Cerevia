@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PageContainer } from '@/components/layout/PageContainer';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { ContentWrapper } from '@/components/layout/ContentWrapper';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/providers/AuthProvider';
-import { Sparkles, Trophy, Flame, Target, ChevronRight, AlertCircle } from 'lucide-react';
-import Link from 'next/link';
+import { WelcomeBanner } from '@/components/dashboard/WelcomeBanner';
+import { QuickActionsBar } from '@/components/dashboard/QuickActionsBar';
+import { ContinueLearningCard } from '@/components/dashboard/ContinueLearningCard';
+import { DailyGoals } from '@/components/dashboard/DailyGoals';
+import { ProgressOverview } from '@/components/dashboard/ProgressOverview';
+import { FeaturedCoursesGrid } from '@/components/dashboard/FeaturedCoursesGrid';
+import { AssignmentsTimeline } from '@/components/dashboard/AssignmentsTimeline';
+import { AchievementsShowcase } from '@/components/dashboard/AchievementsShowcase';
+import { LeaderboardPreviewWidget } from '@/components/dashboard/LeaderboardPreviewWidget';
+import { AIMentorCard } from '@/components/dashboard/AIMentorCard';
+import { CalendarWidget } from '@/components/dashboard/CalendarWidget';
 import api from '@/services/api';
 
 interface LessonProgress {
@@ -22,8 +25,6 @@ interface LeaderboardRank {
 }
 
 export default function DashboardPage() {
-  const { user } = useAuth();
-  
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<{
     completedCount: number;
@@ -45,7 +46,7 @@ export default function DashboardPage() {
           const completedCount = progressRes.data.totalCompleted;
           const totalCount = completedCount + progressRes.data.remainingLessons.length;
           const nextLesson = progressRes.data.remainingLessons[0] || null;
-          
+
           setStats({
             completedCount,
             totalCount,
@@ -63,184 +64,66 @@ export default function DashboardPage() {
     loadDashboardData();
   }, []);
 
-  // Compute level: Each level is 100 XP
-  const currentXP = user?.totalXP || 0;
-  const currentLevel = Math.floor(currentXP / 100) + 1;
-  const prevLevelXP = (currentLevel - 1) * 100;
-  const xpInCurrentLevel = currentXP - prevLevelXP;
-  const progressPercent = Math.min(100, Math.max(0, (xpInCurrentLevel / 100) * 100));
-
   return (
-    <PageContainer>
-      <PageHeader
-        title="Dashboard Overview"
-        description={`Welcome back, ${user?.fullName || 'Student'}! Monitor your learning momentum and competitive standing.`}
-        actions={
-          <div className="flex items-center gap-2 text-xs font-sans font-semibold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full select-none">
-            <Flame className="h-3.5 w-3.5 text-primary fill-primary animate-pulse" />
-            <span>Streak Active</span>
-          </div>
-        }
-      />
+    <div className="space-y-8 pb-12 max-w-7xl mx-auto">
+      
+      {/* Welcome Banner */}
+      <WelcomeBanner />
 
-      <ContentWrapper className="space-y-6">
-        {/* Core Stats Overview */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Card 1: Streak Engine */}
-          <Card className="p-8 flex flex-col justify-between hover:border-primary/40 hover:shadow-md transition-all duration-200">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-xs font-sans font-semibold text-muted-foreground">Daily Streak</p>
-                <h3 className="text-3xl font-sans font-bold tracking-tight text-foreground">{user?.currentStreak || 0} Days</h3>
-              </div>
-              <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                <Flame className="h-4.5 w-4.5 fill-primary" />
-              </div>
-            </div>
-            <div className="mt-6 pt-6 border-t border-border flex items-center justify-between text-xs font-sans text-muted-foreground">
-              <span>All-Time Record:</span>
-              <span className="font-semibold text-primary">{user?.maxStreak || 0} days</span>
-            </div>
-          </Card>
+      {/* Quick Action Shortcuts */}
+      <QuickActionsBar />
 
-          {/* Card 2: XP / Gamification Level */}
-          <Card className="p-8 flex flex-col justify-between hover:border-primary/40 hover:shadow-md transition-all duration-200">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-xs font-sans font-semibold text-muted-foreground">Level {currentLevel}</p>
-                <h3 className="text-3xl font-sans font-bold tracking-tight text-foreground">{currentXP} XP</h3>
-              </div>
-              <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                <Target className="h-4.5 w-4.5" />
-              </div>
-            </div>
-            <div className="mt-6 space-y-3">
-              <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                <div 
-                  className="bg-primary h-full transition-all duration-550"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between text-xs font-sans text-muted-foreground mt-1">
-                <span>{xpInCurrentLevel}/100 XP to Level {currentLevel + 1}</span>
-              </div>
-            </div>
-          </Card>
-
-          {/* Card 3: Leaderboard Position */}
-          <Card className="p-8 flex flex-col justify-between hover:border-primary/40 hover:shadow-md transition-all duration-200">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <p className="text-xs font-sans font-semibold text-muted-foreground">Weekly Rank</p>
-                <h3 className="text-3xl font-sans font-bold tracking-tight text-foreground">
-                  {loading ? '...' : stats?.rank ? `#${stats.rank}` : 'Unranked'}
-                </h3>
-              </div>
-              <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                <Trophy className="h-4.5 w-4.5" />
-              </div>
-            </div>
-            <div className="mt-6 pt-6 border-t border-border flex items-center justify-between text-xs font-sans text-muted-foreground">
-              <span>Weekly Accumulated Score:</span>
-              <span className="font-semibold text-primary">{loading ? '...' : `${stats?.weeklyXP || 0} XP`}</span>
-            </div>
-          </Card>
+      {/* Continue Learning Card & Daily Goals */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <ContinueLearningCard
+            loading={loading}
+            nextLesson={stats?.nextLesson || null}
+            completedCount={stats?.completedCount || 0}
+            totalCount={stats?.totalCount || 0}
+          />
         </div>
-
-        {/* Dynamic Action Section & Upcoming Lessons */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Main Action Banner */}
-          <div className="md:col-span-2 rounded-lg border border-border bg-card p-8 flex flex-col justify-between min-h-[220px] shadow-sm">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-xs font-semibold text-primary">Next Objective</span>
-              </div>
-              
-              {loading ? (
-                <div className="animate-pulse space-y-2 mt-4">
-                  <div className="h-6 w-1/2 bg-secondary rounded" />
-                  <div className="h-4 w-5/6 bg-secondary rounded" />
-                </div>
-              ) : stats?.nextLesson ? (
-                <div className="space-y-2 mt-2">
-                  <h4 className="text-xl font-sans font-bold text-foreground">{stats.nextLesson.title}</h4>
-                  <p className="text-xs text-muted-foreground font-light leading-relaxed">
-                    Advance your credentials and gain <span className="text-primary font-medium">+{stats.nextLesson.xpReward} XP</span>.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-2 mt-2">
-                  <h4 className="text-xl font-sans font-bold text-foreground">Syllabus Completed!</h4>
-                  <p className="text-xs text-muted-foreground font-light leading-relaxed">
-                    Awesome job! You have completed all available course modules. Keep competing in the weekly leaderboards.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-6">
-              {loading ? (
-                <div className="h-10 w-32 bg-secondary rounded animate-pulse" />
-              ) : stats?.nextLesson ? (
-                <Link href={`/lessons/${stats.nextLesson.id}`}>
-                  <Button variant="primary" className="group font-sans px-5 py-2.5">
-                    <span>Resume Syllabus</span>
-                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </Button>
-                </Link>
-              ) : (
-                <Link href="/lessons">
-                  <Button variant="outline" className="font-sans px-5 py-2.5">
-                    Browse All Lessons
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-
-          {/* Quick Syllabus Status */}
-          <Card className="p-8 flex flex-col justify-between hover:border-primary/40 hover:shadow-md transition-all duration-200">
-            <div className="space-y-4">
-              <h4 className="text-xs font-sans font-semibold text-muted-foreground">Syllabus Progress</h4>
-              
-              {loading ? (
-                <div className="animate-pulse space-y-3">
-                  <div className="h-8 bg-secondary rounded" />
-                  <div className="h-12 bg-secondary rounded" />
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs font-sans text-muted-foreground">
-                    <span>Modules Mastered:</span>
-                    <span className="font-semibold text-foreground">{stats?.completedCount} / {stats?.totalCount}</span>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                    <div 
-                      className="bg-primary h-full transition-all duration-500"
-                      style={{ width: `${stats ? (stats.completedCount / stats.totalCount) * 100 : 0}%` }}
-                    />
-                  </div>
-
-                  <div className="pt-2 flex items-start gap-2 text-[10px] text-muted-foreground/50 font-light leading-relaxed">
-                    <AlertCircle className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0 mt-0.5" />
-                    <span>Complete lessons regularly to keep your learning momentum active.</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-border">
-              <Link href="/lessons" className="text-xs font-sans font-semibold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1">
-                <span>Go to Syllabus</span>
-                <ChevronRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </Card>
+        <div className="lg:col-span-1">
+          <DailyGoals />
         </div>
-      </ContentWrapper>
-    </PageContainer>
+      </div>
+
+      {/* Analytics Overview & Leaderboard Standing */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <ProgressOverview />
+        </div>
+        <div className="lg:col-span-1">
+          <LeaderboardPreviewWidget
+            userRank={stats?.rank}
+            userWeeklyXP={stats?.weeklyXP}
+          />
+        </div>
+      </div>
+
+      {/* Featured Enrolled Course Syllabus Tracks */}
+      <FeaturedCoursesGrid />
+
+      {/* Assignments Timeline */}
+      <div id="assignments">
+        <AssignmentsTimeline />
+      </div>
+
+      {/* Achievements Showcase */}
+      <div id="achievements">
+        <AchievementsShowcase />
+      </div>
+
+      {/* AI Mentor Assistant & Mini Calendar */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2" id="ai-mentor">
+          <AIMentorCard />
+        </div>
+        <div className="lg:col-span-1" id="calendar">
+          <CalendarWidget />
+        </div>
+      </div>
+
+    </div>
   );
 }
