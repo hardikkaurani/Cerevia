@@ -64,7 +64,7 @@ export function RegisterForm() {
     script.onload = () => {
       if (window.google) {
         window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '102983748293-dummyclientid.apps.googleusercontent.com',
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '403095732782-t7oglqfa1742ablcjmtn31sl8i2d2f0f.apps.googleusercontent.com',
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           callback: async (response: any) => {
             setIsLoading(true);
