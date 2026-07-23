@@ -1,11 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PageContainer } from '@/components/layout/PageContainer';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { ContentWrapper } from '@/components/layout/ContentWrapper';
-import { Section } from '@/components/layout/Section';
-import { Sparkles, Flame, Loader2 } from 'lucide-react';
+import { XPTrackerHero } from '@/components/gamification/XPTrackerHero';
+import { LevelSystemVisualizer } from '@/components/gamification/LevelSystemVisualizer';
+import { StreakEngineCard } from '@/components/gamification/StreakEngineCard';
+import { DailyChallengesChecklist } from '@/components/gamification/DailyChallengesChecklist';
+import { WeeklyMissionsCard } from '@/components/gamification/WeeklyMissionsCard';
+import { AchievementGallery } from '@/components/gamification/AchievementGallery';
+import { BadgeCollection } from '@/components/gamification/BadgeCollection';
+import { LearningHeatmap } from '@/components/gamification/LearningHeatmap';
+import { Sparkles, Loader2, Activity, History } from 'lucide-react';
 import api from '@/services/api';
 
 interface XpHistoryItem {
@@ -59,11 +63,8 @@ export default function XpPage() {
   const totalXP = xpData?.totalXP || 0;
   const currentLevel = xpData?.levelInfo?.level || 1;
   const xpInCurrentLevel = xpData?.levelInfo?.xpInCurrentLevel || 0;
-  const xpForNextLevel = 100; // Each level takes 100 XP
-  const progressPercent = Math.min(100, Math.max(0, (xpInCurrentLevel / xpForNextLevel) * 100));
-  
-  // Streak booster multiplier calculation
   const streak = profile?.currentStreak || 0;
+
   let streakMultiplier = 1.0;
   if (streak >= 14) streakMultiplier = 1.5;
   else if (streak >= 7) streakMultiplier = 1.25;
@@ -71,93 +72,99 @@ export default function XpPage() {
 
   if (loading) {
     return (
-      <PageContainer>
-        <div className="flex h-[400px] items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-primary" />
-        </div>
-      </PageContainer>
+      <div className="flex h-[500px] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <PageHeader
-        title="XP Tracker & History"
-        description="Track your experience points, streak multipliers, and history of completed milestones."
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto w-full pb-16 px-4 md:px-0">
+      
+      {/* XP Hero Card */}
+      <XPTrackerHero
+        totalXP={totalXP}
+        level={currentLevel}
+        xpInCurrentLevel={xpInCurrentLevel}
+        xpForNextLevel={100}
+        streak={streak}
+        streakMultiplier={streakMultiplier}
       />
 
-      <ContentWrapper className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* XP Balance Widget */}
-          <Section title="XP Balance" description="Your total earned experience points.">
-            <div className="flex flex-col items-center justify-center p-6 text-center bg-card border border-border rounded-lg shadow-sm min-h-[160px]">
-              <div className="h-16 w-16 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-4">
-                <Sparkles className="h-7 w-7" />
-              </div>
-              <span className="text-3xl font-sans font-bold text-primary">{totalXP} XP</span>
-              <span className="text-xs font-sans text-muted-foreground mt-1.5 font-medium">Level {currentLevel} Backend Scholar</span>
-            </div>
-          </Section>
+      {/* Level System Visualizer */}
+      <LevelSystemVisualizer currentLevel={currentLevel} />
 
-          {/* XP Multipliers Widget */}
-          <Section title="Active Multipliers" description="XP bonuses active on your account.">
-            <div className="space-y-4 bg-card border border-border rounded-lg shadow-sm p-6 min-h-[160px] flex flex-col justify-center">
-              <div className="flex justify-between items-center py-2 border-b border-border">
-                <span className="text-xs text-muted-foreground font-sans font-medium flex items-center gap-1.5">
-                  <Flame className="h-3.5 w-3.5 text-primary fill-primary shrink-0 animate-pulse" />
-                  Streak Multiplier ({streak} Days)
-                </span>
-                <span className="text-xs font-sans font-bold text-primary">{streakMultiplier.toFixed(2)}x</span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span className="text-xs text-muted-foreground font-sans font-medium">Effective XP Multiplier</span>
-                <span className="text-xs font-sans font-semibold text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">{streakMultiplier.toFixed(2)}x</span>
-              </div>
-            </div>
-          </Section>
+      {/* Streak Engine */}
+      <StreakEngineCard currentStreak={streak} />
 
-          {/* Milestones Target Widget */}
-          <Section title="Next Milestone" description="Progress towards your next reward tier.">
-            <div className="space-y-4 bg-card border border-border rounded-lg shadow-sm p-6 min-h-[160px] flex flex-col justify-center">
-              <div className="space-y-2.5">
-                <div className="flex justify-between text-xs font-medium">
-                  <span className="text-xs text-muted-foreground font-sans font-medium">Progress to Level {currentLevel + 1}</span>
-                  <span className="font-sans font-semibold text-foreground">{xpInCurrentLevel} / {xpForNextLevel} XP</span>
-                </div>
-                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full transition-all duration-550" style={{ width: `${progressPercent}%` }} />
-                </div>
-              </div>
-              <p className="text-xs font-sans text-muted-foreground leading-relaxed">
-                Earn {xpForNextLevel - xpInCurrentLevel} more XP to reach Level {currentLevel + 1} and advance your backend scholar status.
-              </p>
+      {/* Daily Challenges & Weekly Missions Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <DailyChallengesChecklist />
+        <WeeklyMissionsCard />
+      </div>
+
+      {/* Achievement Gallery */}
+      <AchievementGallery />
+
+      {/* Badge Showcase */}
+      <BadgeCollection />
+
+      {/* Consistency Heatmap */}
+      <LearningHeatmap />
+
+      {/* Recent XP Audit Trail Log */}
+      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-xl">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
+              <History className="h-4 w-4" />
             </div>
-          </Section>
+            <div>
+              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">
+                Audit Trail Log
+              </span>
+              <p className="text-xs font-bold text-white">Experience Point Activity History</p>
+            </div>
+          </div>
+
+          <span className="text-xs font-mono text-zinc-400">
+            {xpData?.history?.length || 0} Recent Events
+          </span>
         </div>
 
-        {/* XP Log */}
-        <Section title="XP History Log" description="A record of recent XP events.">
-          <div className="divide-y divide-border bg-card border border-border rounded-lg p-8 shadow-sm">
-            {xpData?.history && xpData.history.length > 0 ? (
-              xpData.history.map((item: XpHistoryItem) => (
-                <div key={item.id} className="flex items-center justify-between py-3.5 border-b border-border first:pt-0 last:border-0 last:pb-0">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-sm font-sans font-semibold text-foreground leading-tight">{item.reason}</span>
-                    <span className="text-xs font-sans text-muted-foreground mt-0.5">
-                      {new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-                  <span className="text-sm font-sans font-bold text-primary">+{item.xpEarned} XP</span>
+        <div className="divide-y divide-border rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-4">
+          {xpData?.history && xpData.history.length > 0 ? (
+            xpData.history.map((item: XpHistoryItem) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between py-3 border-b border-zinc-800/60 first:pt-0 last:border-0 last:pb-0"
+              >
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs sm:text-sm font-semibold text-white">
+                    {item.reason}
+                  </span>
+                  <span className="text-[10px] text-zinc-500 font-mono">
+                    {new Date(item.timestamp).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-6 text-sm font-sans font-medium text-muted-foreground">
-                No experience point events have been logged yet. Complete a lesson to begin.
+                <span className="text-xs sm:text-sm font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
+                  +{item.xpEarned} XP
+                </span>
               </div>
-            )}
-          </div>
-        </Section>
-      </ContentWrapper>
-    </PageContainer>
+            ))
+          ) : (
+            <div className="text-center py-8 text-xs font-medium text-zinc-500">
+              No experience point events recorded yet. Complete a lesson or quiz to view activity logs.
+            </div>
+          )}
+        </div>
+      </div>
+
+    </div>
   );
 }
