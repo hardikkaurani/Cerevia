@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { getValidUrl } from '@/lib/utils';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://cerevia.vercel.app';
+  const baseUrl = getValidUrl(process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL);
   const lastModified = new Date();
 
   return [

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { Cormorant_Garamond, Montserrat } from 'next/font/google';
+import { getValidUrl } from '@/lib/utils';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -17,7 +18,7 @@ const montserrat = Montserrat({
   weight: ['300', '400', '500', '600', '700', '800'],
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://cerevia.vercel.app';
+const baseUrl = getValidUrl(process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL);
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
