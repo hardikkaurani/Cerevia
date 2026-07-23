@@ -1,14 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PageContainer } from '@/components/layout/PageContainer';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { ContentWrapper } from '@/components/layout/ContentWrapper';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Trophy, Flame, Star, BookOpen, Mail, Calendar, User as UserIcon, Loader2, Sparkles, Activity } from 'lucide-react';
-import api from '@/services/api';
+import Image from 'next/image';
 import Link from 'next/link';
+import { AchievementGallery } from '@/components/gamification/AchievementGallery';
+import { BadgeCollection } from '@/components/gamification/BadgeCollection';
+import { LearningHeatmap } from '@/components/gamification/LearningHeatmap';
+import {
+  Trophy,
+  Flame,
+  Star,
+  BookOpen,
+  Mail,
+  Calendar,
+  User as UserIcon,
+  Loader2,
+  Sparkles,
+  Activity,
+  Award,
+  ShieldCheck,
+  ExternalLink,
+} from 'lucide-react';
+import api from '@/services/api';
 
 interface ActivityItem {
   id: string;
@@ -68,7 +81,8 @@ export default function ProfilePage() {
         if (progressRes.success && progressRes.data) {
           setStats({
             completedCount: progressRes.data.totalCompleted,
-            totalCount: progressRes.data.totalCompleted + progressRes.data.remainingLessons.length,
+            totalCount:
+              progressRes.data.totalCompleted + progressRes.data.remainingLessons.length,
           });
         }
       } catch (err) {
@@ -80,134 +94,191 @@ export default function ProfilePage() {
     loadProfileData();
   }, []);
 
-  const joinedDate = profile?.createdAt 
-    ? new Date(profile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-    : 'Unknown';
+  const joinedDate = profile?.createdAt
+    ? new Date(profile.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+      })
+    : 'Jul 2026';
 
-  const statItems = [
-    { label: 'Total Experience', value: `${profile?.totalXP || 0} XP`, icon: Star, color: 'text-primary', bg: 'bg-primary/10 border border-primary/20' },
-    { label: 'Current Streak', value: `${profile?.currentStreak || 0} Days`, icon: Flame, color: 'text-primary', bg: 'bg-primary/10 border border-primary/20' },
-    { label: 'Completed Modules', value: stats ? `${stats.completedCount} / ${stats.totalCount}` : '...', icon: BookOpen, color: 'text-primary', bg: 'bg-primary/10 border border-primary/20' },
-    { label: 'Syllabus Level', value: `Level ${xpData?.levelInfo?.level || 1}`, icon: Trophy, color: 'text-primary', bg: 'bg-primary/10 border border-primary/20' },
-  ];
+  const currentLevel = xpData?.levelInfo?.level || 1;
+
+  const getLevelTitle = (lvl: number) => {
+    if (lvl <= 1) return 'Explorer Scholar';
+    if (lvl <= 2) return 'Learner Scholar';
+    if (lvl <= 3) return 'Builder Engineer';
+    if (lvl <= 4) return 'Creator Architect';
+    return 'Master Engineer';
+  };
+
+  const levelTitle = getLevelTitle(currentLevel);
 
   if (loading) {
     return (
-      <PageContainer>
-        <div className="flex h-[400px] items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-primary" />
-        </div>
-      </PageContainer>
+      <div className="flex h-[500px] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
     );
   }
 
   return (
-    <PageContainer>
-      <PageHeader
-        title="Student Profile"
-        description="Review your backend credentials, level stats, and syllabus progress."
-      />
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto w-full pb-16 px-4 md:px-0">
+      
+      {/* Profile Header Hero Card */}
+      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
+        <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-blue-600/15 blur-[100px]" />
 
-      <ContentWrapper className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Side: Avatar & Details */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="overflow-hidden">
-            <div className="h-24 bg-gradient-to-r from-secondary to-muted relative border-b border-border" />
-            
-            <div className="px-6 pb-6 relative">
-              <div className="flex justify-between items-end -mt-12 mb-4">
-                <div className="h-24 w-24 rounded-full border-4 border-card bg-background flex items-center justify-center overflow-hidden relative">
-                  {profile?.avatar ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={profile.avatar} alt={profile.fullName || 'User'} className="h-full w-full object-cover" />
-                  ) : (
-                    <UserIcon className="h-10 w-10 text-primary/70" />
-                  )}
-                </div>
-                <Link href="/settings">
-                  <Button variant="outline" size="sm" className="mb-2">
-                    Edit Profile
-                  </Button>
-                </Link>
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
+          
+          {/* Avatar with WebP Level Frame */}
+          <div className="relative h-28 w-28 rounded-full border-4 border-blue-500/50 bg-zinc-900 flex items-center justify-center overflow-hidden shrink-0 shadow-2xl">
+            {profile?.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.avatar}
+                alt={profile.fullName || 'User'}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <UserIcon className="h-12 w-12 text-zinc-400" />
+            )}
+            <div className="absolute bottom-0 inset-x-0 bg-blue-600/90 text-[9px] font-black text-white text-center py-0.5 uppercase tracking-widest">
+              LVL {currentLevel}
+            </div>
+          </div>
+
+          {/* Identity & Bio */}
+          <div className="space-y-3 text-center md:text-left flex-1">
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  {profile?.fullName || 'Anonymous Student'}
+                </h1>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold text-blue-400 uppercase tracking-wider">
+                  <ShieldCheck className="h-3 w-3 text-blue-400" />
+                  <span>{levelTitle}</span>
+                </span>
               </div>
-              
-              <div className="space-y-4">
+              <p className="text-xs text-zinc-400 font-mono flex items-center justify-center md:justify-start gap-1.5">
+                <Mail className="h-3.5 w-3.5 text-blue-400" />
+                {profile?.email}
+              </p>
+            </div>
+
+            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-2xl bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl">
+              {profile?.bio ||
+                'Full-Stack & Distributed Systems Scholar at Cerevia. Building software applications.'}
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs font-mono text-zinc-400 pt-1">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-blue-400" /> Joined {joinedDate}
+              </span>
+              <span className="flex items-center gap-1.5 text-amber-400">
+                <Flame className="h-3.5 w-3.5 fill-amber-400" /> {profile?.currentStreak || 0} Day Streak
+              </span>
+            </div>
+          </div>
+
+          <Link href="/settings" className="shrink-0">
+            <button className="px-4 py-2 rounded-xl border border-zinc-800 bg-zinc-900 text-xs font-bold text-zinc-200 hover:bg-zinc-800 hover:text-white transition-all">
+              Edit Settings
+            </button>
+          </Link>
+
+        </div>
+
+        {/* Quick Stat Tiles Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-zinc-800/80">
+          <div className="p-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 space-y-1">
+            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
+              <Star className="h-3.5 w-3.5 text-blue-400" /> Experience
+            </span>
+            <p className="text-xl font-black text-white">{profile?.totalXP || 0} XP</p>
+          </div>
+
+          <div className="p-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 space-y-1">
+            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
+              <Flame className="h-3.5 w-3.5 text-amber-400 fill-amber-400" /> Daily Streak
+            </span>
+            <p className="text-xl font-black text-white">{profile?.currentStreak || 0} Days</p>
+          </div>
+
+          <div className="p-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 space-y-1">
+            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
+              <BookOpen className="h-3.5 w-3.5 text-indigo-400" /> Completed
+            </span>
+            <p className="text-xl font-black text-white">
+              {stats ? stats.completedCount : 0} Modules
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/60 space-y-1">
+            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
+              <Trophy className="h-3.5 w-3.5 text-amber-400" /> Scholar Tier
+            </span>
+            <p className="text-xl font-black text-white">Level {currentLevel}</p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Badge Showcase */}
+      <BadgeCollection />
+
+      {/* Achievement Gallery */}
+      <AchievementGallery />
+
+      {/* Learning Heatmap */}
+      <LearningHeatmap />
+
+      {/* Activity Log */}
+      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 space-y-6 shadow-xl">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
+              <Activity className="h-4 w-4" />
+            </div>
+            <div>
+              <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">
+                Activity Stream
+              </span>
+              <p className="text-xs font-bold text-white">Recent Experience Log</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="divide-y divide-border rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-4">
+          {xpData?.history && xpData.history.length > 0 ? (
+            xpData.history.map((item: ActivityItem) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between py-3 border-b border-zinc-800/60 first:pt-0 last:border-0 last:pb-0"
+              >
                 <div>
-                  <h2 className="text-xl font-sans font-bold text-foreground">{profile?.fullName || 'Anonymous Student'}</h2>
-                  <p className="text-xs font-sans text-muted-foreground flex items-center mt-1.5">
-                    <Mail className="h-3.5 w-3.5 mr-1.5 text-primary" />
-                    {profile?.email}
+                  <p className="text-xs sm:text-sm font-semibold text-white">{item.reason}</p>
+                  <p className="text-[10px] font-mono text-zinc-500 mt-0.5">
+                    {new Date(item.timestamp).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </p>
                 </div>
-                
-                <p className="text-sm text-muted-foreground leading-relaxed font-sans bg-secondary/35 border border-border rounded-md p-4">
-                  {profile?.bio || "No professional bio set. Go to settings to edit your public profile."}
-                </p>
-                
-                <div className="flex items-center gap-4 pt-4 border-t border-border text-xs font-sans text-muted-foreground">
-                  <div className="flex items-center">
-                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-primary" />
-                    Joined {joinedDate}
-                  </div>
-                </div>
+                <span className="text-xs sm:text-sm font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
+                  +{item.xpEarned} XP
+                </span>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-6 text-xs font-medium text-zinc-500">
+              No recent experience events recorded.
             </div>
-          </Card>
+          )}
         </div>
+      </div>
 
-        {/* Right Side: Stats & Activity */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* Stats Grid */}
-          <Card className="p-8">
-            <h3 className="font-sans font-semibold text-base text-foreground mb-6 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span>Learning Credentials</span>
-            </h3>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {statItems.map((stat, i) => (
-                <div key={i} className="rounded-lg border border-border bg-muted/20 p-5 flex items-center gap-4 transition-all duration-200">
-                  <div className={`h-12 w-12 rounded-md flex items-center justify-center shrink-0 ${stat.bg}`}>
-                    <stat.icon className={`h-5 w-5 ${stat.color}`} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-muted-foreground">{stat.label}</p>
-                    <p className="text-base font-bold text-foreground mt-0.5">{stat.value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-          
-          {/* XP History logs */}
-          <Card className="p-8">
-            <h3 className="font-sans font-semibold text-base text-foreground mb-6 flex items-center gap-2">
-              <Activity className="h-4 w-4 text-primary" />
-              <span>Recent Experience Log</span>
-            </h3>
-            
-            <div className="space-y-4">
-              {xpData?.history && xpData.history.length > 0 ? (
-                xpData.history.map((item: ActivityItem) => (
-                  <div key={item.id} className="flex justify-between items-center py-3.5 border-b border-border last:border-0">
-                    <div>
-                      <p className="text-sm font-sans font-semibold text-foreground">{item.reason}</p>
-                      <p className="text-xs font-sans text-muted-foreground mt-0.5">
-                        {new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    </div>
-                    <span className="text-sm font-sans font-bold text-primary">+{item.xpEarned} XP</span>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-6 text-sm font-sans font-medium text-muted-foreground">
-                  No experience activities recorded yet. Complete a lesson to view history logs here.
-                </div>
-              )}
-            </div>
-          </Card>
-        </div>
-      </ContentWrapper>
-    </PageContainer>
+    </div>
   );
 }
