@@ -23,6 +23,13 @@ export const POST = withApiHandler(async (request: Request) => {
   // 3. Verify password
   const isPasswordValid = await bcryptjs.compare(password, user.password);
   if (!isPasswordValid) {
+    // Check if this user was created via Google OAuth (has avatar from Google)
+    // and provide a helpful error message
+    if (user.avatar && user.avatar.includes('googleusercontent.com')) {
+      throw new AuthenticationError(
+        'This account was created with Google Sign-In. Please use the "Sign in with Google" button below.'
+      );
+    }
     throw new AuthenticationError('Invalid email or password');
   }
 
