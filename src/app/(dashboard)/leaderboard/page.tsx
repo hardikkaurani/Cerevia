@@ -134,7 +134,7 @@ export default function LeaderboardPage() {
 
   if (loading) {
     return (
-      <PageContainer className="bg-slate-50/60 min-h-screen">
+      <PageContainer className="bg-slate-50/40 dark:bg-transparent min-h-screen">
         <div className="flex h-[400px] items-center justify-center">
           <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
         </div>
@@ -143,7 +143,7 @@ export default function LeaderboardPage() {
   }
 
   return (
-    <PageContainer className="bg-slate-50/60 min-h-screen">
+    <PageContainer className="bg-slate-50/40 dark:bg-transparent min-h-screen">
       <div className="flex flex-col gap-8 max-w-7xl mx-auto w-full pb-16">
         {/* Leaderboard Hero */}
         <LeaderboardHero

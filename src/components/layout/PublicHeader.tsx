@@ -7,6 +7,7 @@ import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
 import { Logo } from './Logo';
 import { useAuth } from '@/providers/AuthProvider';
 import { Button } from '@/components/ui/Button';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 const NAV_LINKS = [
   { href: '#home', label: 'Home', id: 'home' },
@@ -93,6 +94,7 @@ export function PublicHeader() {
 
         {/* Action Controls */}
         <div className="hidden items-center gap-3 lg:flex">
+          <ThemeToggle />
           {isAuthenticated ? (
             <>
               <Link
@@ -176,6 +178,10 @@ export function PublicHeader() {
           </nav>
 
           <div className="mt-4 flex flex-col gap-2 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between px-4 py-1.5">
+              <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Appearance</span>
+              <ThemeToggle />
+            </div>
             {isAuthenticated ? (
               <>
                 <Link

@@ -70,7 +70,7 @@ export default function XpPage() {
 
   if (loading) {
     return (
-      <PageContainer className="bg-slate-50/60 min-h-screen">
+      <PageContainer className="bg-slate-50/40 dark:bg-transparent min-h-screen">
         <div className="flex h-[400px] items-center justify-center">
           <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
         </div>
@@ -79,7 +79,7 @@ export default function XpPage() {
   }
 
   return (
-    <PageContainer className="bg-slate-50/60 min-h-screen">
+    <PageContainer className="bg-slate-50/40 dark:bg-transparent min-h-screen">
       <PageHeader
         title="XP Tracker & History"
         description="Track your experience points, streak multipliers, and history of completed milestones."
@@ -90,31 +90,31 @@ export default function XpPage() {
           
           {/* XP Balance Widget */}
           <Section title="XP Balance" description="Your total earned experience points.">
-            <div className="flex flex-col items-center justify-center p-6 text-center bg-white border border-slate-200 rounded-2xl shadow-xs min-h-[160px]">
-              <div className="h-14 w-14 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-3">
+            <div className="flex flex-col items-center justify-center p-6 text-center bg-white dark:bg-zinc-950/40 border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl shadow-xs min-h-[160px]">
+              <div className="h-14 w-14 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3">
                 <Sparkles className="h-7 w-7" />
               </div>
-              <span className="text-3xl font-black text-blue-700">{totalXP} XP</span>
-              <span className="text-xs font-bold text-slate-500 mt-1">Level {currentLevel} Scholar</span>
+              <span className="text-3xl font-black text-blue-700 dark:text-blue-400">{totalXP} XP</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-zinc-400 mt-1">Level {currentLevel} Scholar</span>
             </div>
           </Section>
 
           {/* Level Progress Widget */}
           <Section title="Level Progress" description="Progress towards the next tier.">
-            <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-xs flex flex-col justify-between min-h-[160px]">
+            <div className="p-6 bg-white dark:bg-zinc-950/40 border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl shadow-xs flex flex-col justify-between min-h-[160px]">
               <div>
-                <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-zinc-400 mb-2">
                   <span>Level {currentLevel}</span>
-                  <span className="text-blue-700">Level {currentLevel + 1}</span>
+                  <span className="text-blue-700 dark:text-blue-450">Level {currentLevel + 1}</span>
                 </div>
-                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-100 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden">
                   <div
                     className="bg-blue-600 h-full transition-all duration-500 rounded-full"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
               </div>
-              <p className="text-xs font-medium text-slate-500 text-center mt-4">
+              <p className="text-xs font-medium text-slate-500 dark:text-zinc-400 text-center mt-4">
                 {xpInCurrentLevel} / {xpForNextLevel} XP ({progressPercent.toFixed(0)}%)
               </p>
             </div>
@@ -122,12 +122,12 @@ export default function XpPage() {
 
           {/* Streak Booster Widget */}
           <Section title="Streak Booster" description="Active multiplier rate.">
-            <div className="flex flex-col items-center justify-center p-6 text-center bg-white border border-slate-200 rounded-2xl shadow-xs min-h-[160px]">
-              <div className="h-14 w-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-3">
+            <div className="flex flex-col items-center justify-center p-6 text-center bg-white dark:bg-zinc-950/40 border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl shadow-xs min-h-[160px]">
+              <div className="h-14 w-14 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-3">
                 <Flame className="h-7 w-7 fill-amber-500" />
               </div>
-              <span className="text-3xl font-black text-amber-700">{streakMultiplier}x</span>
-              <span className="text-xs font-bold text-slate-500 mt-1">{streak} Day Active Streak</span>
+              <span className="text-3xl font-black text-amber-700 dark:text-amber-400">{streakMultiplier}x</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-zinc-400 mt-1">{streak} Day Active Streak</span>
             </div>
           </Section>
 
@@ -135,28 +135,28 @@ export default function XpPage() {
 
         {/* History Table */}
         <Section title="XP History Log" description="Recent milestones and experience awards.">
-          <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950/40 overflow-hidden shadow-xs">
             {xpData?.history && xpData.history.length > 0 ? (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-zinc-800/40">
                 {xpData.history.map((item) => (
                   <div key={item.id} className="flex items-center justify-between p-4 text-xs">
                     <div className="flex items-center gap-3">
-                      <Award className="h-4 w-4 text-blue-600" />
+                      <Award className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                       <div>
-                        <p className="font-bold text-slate-900">{item.reason}</p>
-                        <p className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
+                        <p className="font-bold text-slate-900 dark:text-white">{item.reason}</p>
+                        <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-mono flex items-center gap-1">
                           <Clock className="h-3 w-3" /> {new Date(item.timestamp).toLocaleString()}
                         </p>
                       </div>
                     </div>
-                    <span className="font-mono font-black text-blue-700 text-sm">
+                    <span className="font-mono font-black text-blue-700 dark:text-blue-400 text-sm">
                       +{item.xpEarned} XP
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center text-xs font-mono text-slate-400">
+              <div className="p-8 text-center text-xs font-mono text-slate-400 dark:text-zinc-500">
                 No XP history logs recorded yet.
               </div>
             )}

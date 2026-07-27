@@ -144,10 +144,10 @@ export function RegisterForm() {
           <Sparkles className="h-3.5 w-3.5 fill-amber-400" />
           <span>Join Cerevia Community</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
           Create Account
         </h1>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           Unlock interactive coding sandboxes, AI mentoring, and career roadmaps.
         </p>
       </div>
@@ -168,7 +168,7 @@ export function RegisterForm() {
         
         {/* Full Name field */}
         <div className="space-y-1">
-          <label htmlFor="fullName" className="text-xs font-semibold text-zinc-200">
+          <label htmlFor="fullName" className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
             Full Name
           </label>
           <div className="relative">
@@ -181,8 +181,8 @@ export function RegisterForm() {
               aria-invalid={errors.fullName ? 'true' : 'false'}
               aria-describedby={errors.fullName ? 'fullName-error' : undefined}
               className={cn(
-                'flex h-10 w-full rounded-xl border bg-zinc-900/90 pl-10 pr-4 py-2 text-xs text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
-                errors.fullName ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-800 focus:border-zinc-700'
+                'flex h-10 w-full rounded-xl border bg-zinc-50 dark:bg-zinc-900/90 pl-10 pr-4 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
+                errors.fullName ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-200 dark:border-zinc-800 focus:border-zinc-300 dark:focus:border-zinc-700'
               )}
               {...register('fullName')}
             />
@@ -196,7 +196,7 @@ export function RegisterForm() {
 
         {/* Email Address field */}
         <div className="space-y-1">
-          <label htmlFor="email" className="text-xs font-semibold text-zinc-200">
+          <label htmlFor="email" className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
             Email Address
           </label>
           <div className="relative">
@@ -210,8 +210,8 @@ export function RegisterForm() {
               aria-invalid={errors.email ? 'true' : 'false'}
               aria-describedby={errors.email ? 'email-error' : undefined}
               className={cn(
-                'flex h-10 w-full rounded-xl border bg-zinc-900/90 pl-10 pr-4 py-2 text-xs text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
-                errors.email ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-800 focus:border-zinc-700'
+                'flex h-10 w-full rounded-xl border bg-zinc-50 dark:bg-zinc-900/90 pl-10 pr-4 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
+                errors.email ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-200 dark:border-zinc-800 focus:border-zinc-300 dark:focus:border-zinc-700'
               )}
               {...register('email')}
             />
@@ -225,7 +225,7 @@ export function RegisterForm() {
 
         {/* Password field */}
         <div className="space-y-1">
-          <label htmlFor="password" className="text-xs font-semibold text-zinc-200">
+          <label htmlFor="password" className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
             Password
           </label>
           <div className="relative">
@@ -238,8 +238,8 @@ export function RegisterForm() {
               aria-invalid={errors.password ? 'true' : 'false'}
               aria-describedby={errors.password ? 'password-error' : undefined}
               className={cn(
-                'flex h-10 w-full rounded-xl border bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
-                errors.password ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-800 focus:border-zinc-700'
+                'flex h-10 w-full rounded-xl border bg-zinc-50 dark:bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
+                errors.password ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-200 dark:border-zinc-800 focus:border-zinc-300 dark:focus:border-zinc-700'
               )}
               {...register('password')}
             />
@@ -257,15 +257,15 @@ export function RegisterForm() {
           {/* Password Strength Meter */}
           {currentPassword && (
             <div className="space-y-1 pt-1">
-              <div className="flex items-center justify-between text-[10px] font-semibold text-zinc-400">
+              <div className="flex items-center justify-between text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
                 <span>Password Strength:</span>
                 <span className={cn(
-                  strength.label === 'Weak' ? 'text-rose-400' : strength.label === 'Medium' ? 'text-amber-400' : 'text-emerald-400'
+                  strength.label === 'Weak' ? 'text-rose-500 dark:text-rose-400' : strength.label === 'Medium' ? 'text-amber-500 dark:text-amber-400' : 'text-emerald-500 dark:text-emerald-400'
                 )}>
                   {strength.label}
                 </span>
               </div>
-              <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+              <div className="h-1 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                 <div
                   className={cn('h-full transition-all duration-300', strength.color)}
                   style={{ width: `${strength.score}%` }}
@@ -283,7 +283,7 @@ export function RegisterForm() {
 
         {/* Confirm Password field */}
         <div className="space-y-1">
-          <label htmlFor="confirmPassword" className="text-xs font-semibold text-zinc-200">
+          <label htmlFor="confirmPassword" className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
             Confirm Password
           </label>
           <div className="relative">
@@ -296,8 +296,8 @@ export function RegisterForm() {
               aria-invalid={errors.confirmPassword ? 'true' : 'false'}
               aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
               className={cn(
-                'flex h-10 w-full rounded-xl border bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
-                errors.confirmPassword ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-800 focus:border-zinc-700'
+                'flex h-10 w-full rounded-xl border bg-zinc-50 dark:bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-200 disabled:opacity-50',
+                errors.confirmPassword ? 'border-rose-500/80 focus-visible:ring-rose-500' : 'border-zinc-200 dark:border-zinc-800 focus:border-zinc-300 dark:focus:border-zinc-700'
               )}
               {...register('confirmPassword')}
             />
@@ -325,13 +325,13 @@ export function RegisterForm() {
               id="terms"
               type="checkbox"
               disabled={isLoading}
-              className="mt-0.5 h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 transition-colors cursor-pointer accent-blue-600 shrink-0"
+              className="mt-0.5 h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 transition-colors cursor-pointer accent-blue-600 shrink-0"
               {...register('terms')}
             />
-            <label htmlFor="terms" className="text-[11px] text-zinc-400 leading-tight cursor-pointer">
+            <label htmlFor="terms" className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-tight cursor-pointer">
               I agree to Cerevia&apos;s{' '}
-              <a href="#" className="text-white underline underline-offset-2 hover:text-blue-400">Terms of Service</a> and{' '}
-              <a href="#" className="text-white underline underline-offset-2 hover:text-blue-400">Privacy Policy</a>.
+              <a href="#" className="text-zinc-900 dark:text-white underline underline-offset-2 hover:text-blue-500">Terms of Service</a> and{' '}
+              <a href="#" className="text-zinc-900 dark:text-white underline underline-offset-2 hover:text-blue-500">Privacy Policy</a>.
             </label>
           </div>
           {errors.terms && (
@@ -345,7 +345,7 @@ export function RegisterForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="group relative flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white text-xs font-bold text-zinc-950 shadow-lg hover:bg-zinc-100 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 transform hover:-translate-y-0.5 mt-2"
+          className="group relative flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 text-white dark:bg-white text-xs font-bold dark:text-zinc-950 shadow-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 transform hover:-translate-y-0.5 mt-2"
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin text-zinc-950" />
@@ -360,11 +360,11 @@ export function RegisterForm() {
 
       {/* Divider */}
       <div className="relative flex py-1 items-center">
-        <div className="flex-grow border-t border-zinc-800" />
+        <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800" />
         <span className="flex-shrink mx-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest font-mono">
           or sign up with
         </span>
-        <div className="flex-grow border-t border-zinc-800" />
+        <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800" />
       </div>
 
       {/* Google Sign Up Button */}
@@ -373,11 +373,11 @@ export function RegisterForm() {
       </div>
 
       {/* Redirect back to Login */}
-      <p className="text-center text-xs text-zinc-400">
+      <p className="text-center text-xs text-zinc-500 dark:text-zinc-400">
         Already have an account?{' '}
         <Link
           href="/login"
-          className="font-bold text-white hover:text-blue-400 transition-colors underline underline-offset-4"
+          className="font-bold text-zinc-900 dark:text-white hover:text-blue-400 transition-colors underline underline-offset-4"
         >
           Sign in
         </Link>

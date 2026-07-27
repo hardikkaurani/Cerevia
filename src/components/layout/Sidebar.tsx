@@ -62,7 +62,7 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
     <>
       <aside
         className={cn(
-          'hidden md:flex md:flex-col md:fixed md:inset-y-0 bg-white border-r border-slate-200 z-20 transition-all duration-200 shadow-xs',
+          'hidden md:flex md:flex-col md:fixed md:inset-y-0 bg-card border-r border-border z-20 transition-all duration-200 shadow-xs',
           isCollapsed ? 'md:w-20' : 'md:w-64'
         )}
       >

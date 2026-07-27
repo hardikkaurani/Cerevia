@@ -115,15 +115,15 @@ export function BadgesAchievementsGallery() {
             <div
               key={badge.id}
               onClick={() => setSelectedBadge(badge)}
-              className={`p-4 rounded-2xl border bg-white space-y-3 shadow-2xs hover:shadow-md transition-all duration-300 text-center cursor-pointer group relative overflow-hidden ${
-                isUnlocked ? 'border-slate-200 hover:-translate-y-1' : 'border-slate-200/80 bg-slate-50/60 opacity-75'
+              className={`p-4 rounded-2xl border bg-white dark:bg-zinc-900/40 space-y-3 shadow-2xs hover:shadow-md transition-all duration-300 text-center cursor-pointer group relative overflow-hidden ${
+                isUnlocked ? 'border-slate-200 dark:border-zinc-800/80 hover:-translate-y-1' : 'border-slate-200/80 dark:border-zinc-800/40 bg-slate-50/60 dark:bg-zinc-950/20 opacity-75'
               }`}
             >
               {/* Badge Icon Image */}
-              <div className="relative h-16 w-16 mx-auto rounded-full bg-slate-50 border border-slate-200 p-2 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+              <div className="relative h-16 w-16 mx-auto rounded-full bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-850 p-2 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                 <Image src={badge.iconImage} alt={badge.name} fill className="object-contain p-1" />
                 {!isUnlocked && (
-                  <div className="absolute inset-0 bg-slate-900/60 rounded-full flex items-center justify-center backdrop-blur-2xs">
+                  <div className="absolute inset-0 bg-slate-900/60 dark:bg-black/60 rounded-full flex items-center justify-center backdrop-blur-2xs">
                     <Lock className="h-5 w-5 text-white" />
                   </div>
                 )}
@@ -133,22 +133,22 @@ export function BadgesAchievementsGallery() {
                 <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md border ${getRarityBadge(badge.rarity)}`}>
                   {badge.rarity}
                 </span>
-                <h3 className="text-xs font-extrabold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xs font-extrabold text-slate-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {badge.name}
                 </h3>
               </div>
 
               {/* Progress bar or Unlocked Tag */}
               {isUnlocked ? (
-                <span className="text-[10px] font-bold text-emerald-700 flex items-center justify-center gap-1">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600" /> Unlocked
+                <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-450 flex items-center justify-center gap-1">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> Unlocked
                 </span>
               ) : (
                 <div className="space-y-1">
-                  <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
                     <div className="h-full bg-amber-500 rounded-full" style={{ width: `${badge.progress}%` }} />
                   </div>
-                  <span className="text-[9px] font-bold text-slate-500">{badge.progress}% Progress</span>
+                  <span className="text-[9px] font-bold text-slate-500 dark:text-zinc-400">{badge.progress}% Progress</span>
                 </div>
               )}
             </div>
@@ -158,9 +158,9 @@ export function BadgesAchievementsGallery() {
 
       {/* Badge Detail Modal */}
       {selectedBadge && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 md:p-8 max-w-sm w-full space-y-5 text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-            <div className="relative h-24 w-24 mx-auto p-3 rounded-full bg-blue-50 border-2 border-blue-200 shadow-inner">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-zinc-850 p-6 md:p-8 max-w-sm w-full space-y-5 text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="relative h-24 w-24 mx-auto p-3 rounded-full bg-blue-50 dark:bg-blue-950/40 border-2 border-blue-200 dark:border-blue-800/30 shadow-inner">
               <Image src={selectedBadge.iconImage} alt={selectedBadge.name} fill className="object-contain p-2" />
             </div>
 
@@ -168,28 +168,28 @@ export function BadgesAchievementsGallery() {
               <span className={`text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-md border ${getRarityBadge(selectedBadge.rarity)}`}>
                 {selectedBadge.rarity} Achievement
               </span>
-              <h3 className="text-lg font-black text-slate-900">{selectedBadge.name}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{selectedBadge.description}</p>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">{selectedBadge.name}</h3>
+              <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">{selectedBadge.description}</p>
             </div>
 
-            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 flex items-center justify-between">
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-850 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center justify-between">
               <span>Reward Bonus:</span>
-              <span className="font-extrabold text-blue-700">+{selectedBadge.xpReward} XP</span>
+              <span className="font-extrabold text-blue-700 dark:text-blue-400">+{selectedBadge.xpReward} XP</span>
             </div>
 
             {selectedBadge.status === 'unlocked' ? (
-              <p className="text-xs font-bold text-emerald-700">
+              <p className="text-xs font-bold text-emerald-700 dark:text-emerald-450">
                 ✓ Earned on {selectedBadge.unlockedDate}
               </p>
             ) : (
-              <p className="text-xs font-bold text-amber-700">
+              <p className="text-xs font-bold text-amber-700 dark:text-amber-450">
                 🔒 In Progress — {selectedBadge.progress}% Complete
               </p>
             )}
 
             <button
               onClick={() => setSelectedBadge(null)}
-              className="w-full py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm"
+              className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-zinc-800 text-white dark:text-zinc-200 text-xs font-bold hover:bg-slate-800 dark:hover:bg-zinc-750 transition-colors shadow-sm cursor-pointer"
             >
               Close Badge Details
             </button>

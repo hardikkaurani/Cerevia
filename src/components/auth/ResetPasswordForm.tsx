@@ -85,13 +85,13 @@ export function ResetPasswordForm() {
           <AlertCircle className="h-8 w-8 text-rose-400" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-extrabold text-white">Invalid Reset Link</h3>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <h3 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Invalid Reset Link</h3>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
             This password reset link is invalid or has expired. Please request a new recovery link.
           </p>
         </div>
         <Link href="/forgot-password" className="block w-full">
-          <button className="w-full h-11 rounded-xl bg-white text-xs font-bold text-zinc-950 hover:bg-zinc-100 transition-colors">
+          <button className="w-full h-11 rounded-xl bg-zinc-950 text-white dark:bg-white text-xs font-bold dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all duration-200">
             Request New Reset Link
           </button>
         </Link>
@@ -107,13 +107,13 @@ export function ResetPasswordForm() {
           <CheckCircle2 className="h-8 w-8 text-emerald-400" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-extrabold text-white">Password Reset Complete</h3>
-          <p className="text-xs text-zinc-400">
+          <h3 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Password Reset Complete</h3>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Your password has been successfully updated. Redirecting to sign in...
           </p>
         </div>
         <div className="flex justify-center pt-2">
-          <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
+          <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
         </div>
       </div>
     );
@@ -124,14 +124,14 @@ export function ResetPasswordForm() {
       
       {/* Header */}
       <div className="space-y-1.5 text-left">
-        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 uppercase tracking-widest">
+        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-widest">
           <ShieldCheck className="h-3.5 w-3.5" />
           <span>Account Hardening</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
           Reset Password
         </h1>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           Create a new, strong password to secure your Cerevia account.
         </p>
       </div>
@@ -149,7 +149,7 @@ export function ResetPasswordForm() {
         
         {/* New Password */}
         <div className="space-y-1">
-          <label htmlFor="password" className="text-xs font-semibold text-zinc-200">
+          <label htmlFor="password" className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
             New Password
           </label>
           <div className="relative">
@@ -162,7 +162,7 @@ export function ResetPasswordForm() {
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
               required
-              className="flex h-11 w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all"
+              className="flex h-11 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus:border-zinc-300 dark:focus:border-zinc-700 transition-all duration-200"
             />
             <button
               type="button"
@@ -178,15 +178,15 @@ export function ResetPasswordForm() {
           {/* Strength Meter */}
           {password && (
             <div className="space-y-1 pt-1">
-              <div className="flex items-center justify-between text-[10px] font-semibold text-zinc-400">
+              <div className="flex items-center justify-between text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
                 <span>Strength:</span>
                 <span className={cn(
-                  strength.label === 'Weak' ? 'text-rose-400' : strength.label === 'Medium' ? 'text-amber-400' : 'text-emerald-400'
+                  strength.label === 'Weak' ? 'text-rose-500 dark:text-rose-400' : strength.label === 'Medium' ? 'text-amber-500 dark:text-amber-400' : 'text-emerald-500 dark:text-emerald-400'
                 )}>
                   {strength.label}
                 </span>
               </div>
-              <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+              <div className="h-1 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                 <div
                   className={cn('h-full transition-all duration-300', strength.color)}
                   style={{ width: `${strength.score}%` }}
@@ -198,7 +198,7 @@ export function ResetPasswordForm() {
 
         {/* Confirm Password */}
         <div className="space-y-1">
-          <label htmlFor="confirmPassword" className="text-xs font-semibold text-zinc-200">
+          <label htmlFor="confirmPassword" className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
             Confirm New Password
           </label>
           <div className="relative">
@@ -211,7 +211,7 @@ export function ResetPasswordForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={isLoading}
               required
-              className="flex h-11 w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all"
+              className="flex h-11 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/90 pl-10 pr-11 py-2 text-xs text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus:border-zinc-300 dark:focus:border-zinc-700 transition-all duration-200"
             />
             <button
               type="button"
@@ -229,11 +229,11 @@ export function ResetPasswordForm() {
         <button
           type="submit"
           disabled={isLoading || !password || !confirmPassword}
-          className="group relative flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white text-xs font-bold text-zinc-950 shadow-lg hover:bg-zinc-100 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 transform hover:-translate-y-0.5 mt-2"
+          className="group relative flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 text-white dark:bg-white text-xs font-bold dark:text-zinc-950 shadow-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-50 transform hover:-translate-y-0.5 mt-2"
         >
           {isLoading ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin text-zinc-950" />
+              <Loader2 className="h-4 w-4 animate-spin text-zinc-950 dark:text-white" />
               <span>Resetting Password...</span>
             </>
           ) : (

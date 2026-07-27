@@ -35,10 +35,10 @@ export function GlobalLeaderboardTable({
   });
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+    <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 overflow-hidden shadow-xs">
       
       {/* Table Header Row */}
-      <div className="grid grid-cols-12 gap-4 px-6 py-3.5 border-b border-slate-200 bg-slate-50/80 text-xs font-mono text-slate-500 font-bold uppercase tracking-wider select-none">
+      <div className="grid grid-cols-12 gap-4 px-6 py-3.5 border-b border-slate-200 dark:border-zinc-800/60 bg-slate-50/80 dark:bg-zinc-950/60 text-xs font-mono text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider select-none">
         <div className="col-span-2 sm:col-span-1">Rank</div>
         <div className="col-span-6 sm:col-span-6">Engineer</div>
         <div className="col-span-4 sm:col-span-3 text-right">Weekly XP</div>
@@ -46,7 +46,7 @@ export function GlobalLeaderboardTable({
       </div>
 
       {/* Entries List */}
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-slate-100 dark:divide-zinc-800/40">
         {filteredEntries.length === 0 ? (
           <div className="p-12 text-center text-xs font-mono text-slate-400">
             No matching students found on the leaderboard.
@@ -63,8 +63,8 @@ export function GlobalLeaderboardTable({
                 className={cn(
                   'grid grid-cols-12 gap-4 px-6 py-4 items-center transition-all duration-200 cursor-pointer select-none',
                   isSelf
-                    ? 'bg-blue-50/60 border-y border-blue-200/80'
-                    : 'hover:bg-slate-50/80'
+                    ? 'bg-blue-50/60 dark:bg-blue-950/20 border-y border-blue-200/80 dark:border-blue-800/40'
+                    : 'hover:bg-slate-50/80 dark:hover:bg-zinc-900/60'
                 )}
               >
                 {/* Rank # */}
@@ -77,7 +77,7 @@ export function GlobalLeaderboardTable({
                         ? 'text-slate-400'
                         : entry.rank === 3
                         ? 'text-amber-700'
-                        : 'text-slate-500'
+                        : 'text-slate-500 dark:text-zinc-400'
                     )}
                   >
                     #{entry.rank}
@@ -86,7 +86,7 @@ export function GlobalLeaderboardTable({
 
                 {/* Avatar & Name */}
                 <div className="col-span-6 sm:col-span-6 flex items-center gap-3 min-w-0">
-                  <div className="relative h-10 w-10 rounded-full border border-slate-200 bg-slate-100 overflow-hidden shrink-0">
+                  <div className="relative h-10 w-10 rounded-full border border-slate-200 dark:border-zinc-700 bg-slate-100 dark:bg-zinc-800 overflow-hidden shrink-0">
                     {entry.avatar ? (
                       <Image
                         src={entry.avatar}
@@ -96,12 +96,12 @@ export function GlobalLeaderboardTable({
                         className="object-cover"
                       />
                     ) : (
-                      <User className="h-5 w-5 text-slate-400 m-auto" />
+                      <User className="h-5 w-5 text-slate-400 dark:text-zinc-500 m-auto" />
                     )}
                   </div>
 
                   <div className="flex flex-col min-w-0">
-                    <span className="text-xs sm:text-sm font-bold text-slate-900 truncate flex items-center gap-2">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate flex items-center gap-2">
                       {entry.fullName || 'Anonymous Engineer'}
                       {isSelf && (
                         <span className="bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
@@ -109,8 +109,8 @@ export function GlobalLeaderboardTable({
                         </span>
                       )}
                     </span>
-                    <span className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
-                      <ShieldCheck className="h-3 w-3 text-blue-600" />
+                    <span className="text-[10px] text-slate-500 dark:text-zinc-400 font-mono flex items-center gap-1">
+                      <ShieldCheck className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                       Level {level} Scholar • {entry.batch || 'Batch 2026'}
                     </span>
                   </div>
@@ -118,14 +118,14 @@ export function GlobalLeaderboardTable({
 
                 {/* Weekly XP */}
                 <div className="col-span-4 sm:col-span-3 text-right">
-                  <span className="text-xs sm:text-sm font-black text-blue-700 font-mono">
+                  <span className="text-xs sm:text-sm font-black text-blue-700 dark:text-blue-400 font-mono">
                     {entry.weeklyXP} XP
                   </span>
                 </div>
 
                 {/* Daily Streak */}
-                <div className="hidden sm:flex sm:col-span-2 justify-end items-center gap-1 text-xs font-bold text-blue-600">
-                  <Flame className="h-3.5 w-3.5 fill-blue-600 text-blue-600" />
+                <div className="hidden sm:flex sm:col-span-2 justify-end items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400">
+                  <Flame className="h-3.5 w-3.5 fill-blue-600 dark:fill-blue-400 text-blue-600 dark:text-blue-400" />
                   <span>{entry.streak || 3}d</span>
                 </div>
               </div>

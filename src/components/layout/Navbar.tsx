@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { NotificationsMenu } from './NotificationsMenu';
 import { SearchCommandModal } from './SearchCommandModal';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -44,13 +45,13 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   const currentLevel = Math.floor(currentXP / 100) + 1;
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-zinc-800/80 bg-zinc-950/85 backdrop-blur-xl px-4 sm:px-6">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800/80 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl px-4 sm:px-6">
       
       {/* Left section: Mobile menu & Logo / Desktop Breadcrumbs */}
       <div className="flex items-center gap-3 sm:gap-4">
         <button
           type="button"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:bg-zinc-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:hidden transition-colors"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/80 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:hidden transition-colors"
           onClick={onMenuClick}
           aria-label="Open navigation sidebar"
         >
@@ -67,7 +68,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       </div>
 
       {/* Center title on mobile view */}
-      <h1 className="text-xs font-bold tracking-wide text-white md:hidden absolute left-1/2 -translate-x-1/2">
+      <h1 className="text-xs font-bold tracking-wide text-zinc-900 dark:text-white md:hidden absolute left-1/2 -translate-x-1/2">
         {getPageTitle(pathname)}
       </h1>
 
@@ -77,18 +78,18 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         {/* Command+K Search Bar */}
         <button
           onClick={() => setIsSearchOpen(true)}
-          className="hidden sm:flex items-center gap-2.5 rounded-xl border border-zinc-800/80 bg-zinc-900/80 px-3.5 py-1.5 text-xs text-zinc-400 transition-all hover:border-zinc-700 hover:bg-zinc-800/60 hover:text-white"
+          className="hidden sm:flex items-center gap-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/80 px-3.5 py-1.5 text-xs text-zinc-500 dark:text-zinc-400 transition-all hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/60 hover:text-zinc-900 dark:hover:text-white"
         >
-          <Search className="h-3.5 w-3.5 text-zinc-500" />
+          <Search className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
           <span className="font-medium">Search dashboard...</span>
-          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded-md border border-zinc-800 bg-zinc-950 px-1.5 font-mono text-[9px] font-semibold text-zinc-500">
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950 px-1.5 font-mono text-[9px] font-semibold text-zinc-450 dark:text-zinc-500">
             <span>⌘</span>K
           </kbd>
         </button>
 
         <button
           onClick={() => setIsSearchOpen(true)}
-          className="sm:hidden relative rounded-xl border border-zinc-800 p-2 text-zinc-400 hover:bg-zinc-900 hover:text-white transition-colors"
+          className="sm:hidden relative rounded-xl border border-zinc-200 dark:border-zinc-800 p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-white transition-colors"
           aria-label="Search dashboard"
         >
           <Search className="h-4 w-4" />
@@ -110,6 +111,9 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           <ChevronRight className="h-3 w-3 opacity-60 group-hover:translate-x-0.5 transition-transform" />
         </Link>
 
+        {/* Theme Toggle */}
+        <ThemeToggle />
+
         {/* Notifications Dropdown Trigger */}
         <NotificationsMenu />
 
@@ -122,7 +126,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
               width={32}
               height={32}
               unoptimized
-              className="h-8 w-8 rounded-full object-cover border border-zinc-800 group-hover:border-blue-500 transition-colors shrink-0"
+              className="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 group-hover:border-blue-500 transition-colors shrink-0"
             />
           ) : (
             <div className="h-8 w-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0 group-hover:border-blue-500 transition-colors select-none">

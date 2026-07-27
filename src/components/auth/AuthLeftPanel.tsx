@@ -62,20 +62,20 @@ export function AuthLeftPanel() {
   const { title, subtitle, image, badgeText, statNumber, statLabel } = getPanelContent();
 
   return (
-    <div className="relative hidden md:flex md:w-1/2 bg-zinc-950 overflow-hidden flex-col justify-between p-10 lg:p-14 text-white select-none border-r border-zinc-800/80">
+    <div className="relative hidden md:flex md:w-1/2 bg-zinc-50 dark:bg-zinc-950 overflow-hidden flex-col justify-between p-10 lg:p-14 text-zinc-900 dark:text-white select-none border-r border-zinc-200 dark:border-zinc-800/80 transition-colors duration-300">
       
       {/* Background Matrix Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
       
       {/* Ambient Gradient Glow Filters */}
-      <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-amber-500/20 blur-[100px] pointer-events-none" />
+      <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-blue-600/5 dark:bg-blue-600/20 blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-amber-500/5 dark:bg-amber-500/20 blur-[100px] pointer-events-none" />
 
       {/* Top Brand Header */}
       <div className="relative z-10 flex items-center justify-between">
         <Logo showText={true} />
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[10px] font-bold text-amber-400">
-          <Sparkles className="h-3 w-3 fill-amber-400" />
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[10px] font-bold text-amber-500 dark:text-amber-400">
+          <Sparkles className="h-3 w-3 fill-amber-500 dark:fill-amber-400" />
           <span>{badgeText}</span>
         </div>
       </div>
@@ -84,34 +84,34 @@ export function AuthLeftPanel() {
       <div className="relative z-10 my-auto flex flex-col items-center justify-center py-6">
         
         {/* Main WebP Illustration Container */}
-        <div className="relative h-60 w-full max-w-sm rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900/80 p-3 shadow-2xl backdrop-blur-xl group">
+        <div className="relative h-60 w-full max-w-sm rounded-3xl overflow-hidden border border-zinc-200 bg-zinc-100/85 dark:border-zinc-800 dark:bg-zinc-900/80 p-3 shadow-2xl backdrop-blur-xl group transition-colors duration-300">
           <Image
             src={image}
             alt="Cerevia Auth Visual"
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-50 dark:from-zinc-950 via-transparent to-transparent opacity-80" />
 
           {/* Floating Card Badge Top Right */}
-          <div className="absolute top-4 right-4 flex items-center gap-2 rounded-2xl bg-zinc-950/90 border border-zinc-800 p-2.5 shadow-xl backdrop-blur-md">
-            <div className="h-7 w-7 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center">
+          <div className="absolute top-4 right-4 flex items-center gap-2 rounded-2xl bg-white/95 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 p-2.5 shadow-xl backdrop-blur-md transition-colors duration-300">
+            <div className="h-7 w-7 rounded-lg bg-blue-600/20 text-blue-500 dark:text-blue-400 flex items-center justify-center">
               <Bot className="h-4 w-4" />
             </div>
             <div className="text-[10px]">
-              <div className="font-bold text-white">AI Mentor</div>
-              <div className="text-zinc-400">Live Code Assistant</div>
+              <div className="font-bold text-zinc-900 dark:text-white">AI Mentor</div>
+              <div className="text-zinc-500 dark:text-zinc-400">Live Code Assistant</div>
             </div>
           </div>
 
           {/* Floating Card Badge Bottom Left */}
-          <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-2xl bg-zinc-950/90 border border-zinc-800 p-2.5 shadow-xl backdrop-blur-md">
-            <div className="h-7 w-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+          <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-2xl bg-white/95 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 p-2.5 shadow-xl backdrop-blur-md transition-colors duration-300">
+            <div className="h-7 w-7 rounded-lg bg-amber-500/20 text-amber-500 dark:text-amber-400 flex items-center justify-center">
               <Trophy className="h-4 w-4" />
             </div>
             <div className="text-[10px]">
-              <div className="font-bold text-white">{statNumber}</div>
-              <div className="text-zinc-400">{statLabel}</div>
+              <div className="font-bold text-zinc-900 dark:text-white">{statNumber}</div>
+              <div className="text-zinc-500 dark:text-zinc-400">{statLabel}</div>
             </div>
           </div>
         </div>
@@ -120,23 +120,23 @@ export function AuthLeftPanel() {
 
       {/* Bottom Editorial Storytelling Typography */}
       <div className="relative z-10 space-y-2 mt-auto">
-        <h2 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-snug">
+        <h2 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-snug">
           {title}
         </h2>
-        <p className="text-xs text-zinc-400 leading-relaxed max-w-md font-normal">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-md font-normal">
           {subtitle}
         </p>
 
         {/* Feature bullets */}
-        <div className="flex items-center gap-4 pt-3 text-[11px] text-zinc-400 font-medium">
+        <div className="flex items-center gap-4 pt-3 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
           <span className="flex items-center gap-1">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> Real-time Evaluation
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400" /> Real-time Evaluation
           </span>
           <span className="flex items-center gap-1">
-            <ShieldCheck className="h-3.5 w-3.5 text-blue-400" /> Secure Sessions
+            <ShieldCheck className="h-3.5 w-3.5 text-blue-500 dark:text-blue-400" /> Secure Sessions
           </span>
           <span className="flex items-center gap-1">
-            <Code2 className="h-3.5 w-3.5 text-amber-400" /> In-Browser Sandbox
+            <Code2 className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400" /> In-Browser Sandbox
           </span>
         </div>
       </div>

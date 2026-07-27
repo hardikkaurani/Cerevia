@@ -35,15 +35,15 @@ export function SidebarItem({
         'group flex items-center gap-3 rounded-xl p-2.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
         isCollapsed ? 'justify-center mx-2' : 'mx-2 px-3.5 py-2.5',
         isActive
-          ? 'bg-blue-50 text-blue-700 border border-blue-200/80 shadow-xs'
-          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80',
+          ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200/80 dark:border-blue-500/30 shadow-xs'
+          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-900/60',
         className
       )}
     >
       <Icon
         className={cn(
           'h-4 w-4 shrink-0 transition-colors',
-          isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-700'
+          isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 group-hover:text-slate-700 dark:group-hover:text-zinc-200'
         )}
         aria-hidden="true"
       />

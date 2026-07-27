@@ -96,7 +96,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <PageContainer className="bg-slate-50/60 min-h-screen pb-16">
+    <PageContainer className="bg-slate-50/40 dark:bg-transparent min-h-screen pb-16">
       <PageHeader
         title="Student Learning Identity & Verified Credentials"
         description="Your comprehensive academic portfolio, verified specialization certificates, verified skill competencies, and learning journey."
