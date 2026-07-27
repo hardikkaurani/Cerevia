@@ -48,23 +48,23 @@ export function ActivityHeatmapTracker({ history = [] }: ActivityHeatmapTrackerP
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Coding Activity & Contribution Heatmap</h2>
-          <p className="text-xs text-slate-500 font-medium">Daily learning cadence and verified platform submissions.</p>
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Coding Activity & Contribution Heatmap</h2>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Daily learning cadence and verified platform submissions.</p>
         </div>
       </div>
 
-      <div className="p-6 rounded-3xl border border-slate-200 bg-white space-y-6 shadow-2xs">
+      <div className="p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 space-y-6 shadow-2xs">
         {/* Heatmap Grid */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-600">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-zinc-400">
             <span>284 Submissions in 2026</span>
             <div className="flex items-center gap-1.5 text-[11px]">
-              <span className="text-slate-400">Less</span>
-              <div className="h-3 w-3 rounded-xs bg-slate-100 border border-slate-200" />
-              <div className="h-3 w-3 rounded-xs bg-blue-200 border border-blue-300" />
-              <div className="h-3 w-3 rounded-xs bg-blue-400 border border-blue-500" />
+              <span className="text-slate-400 dark:text-zinc-550">Less</span>
+              <div className="h-3 w-3 rounded-xs bg-slate-100 dark:bg-zinc-850 border border-slate-200 dark:border-zinc-800" />
+              <div className="h-3 w-3 rounded-xs bg-blue-200 dark:bg-blue-900/40 border border-blue-300 dark:border-blue-800/40" />
+              <div className="h-3 w-3 rounded-xs bg-blue-400 dark:bg-blue-600/40 border border-blue-500 dark:border-blue-700/45" />
               <div className="h-3 w-3 rounded-xs bg-blue-600 border border-blue-700" />
-              <span className="text-slate-400">More</span>
+              <span className="text-slate-400 dark:text-zinc-550">More</span>
             </div>
           </div>
 
@@ -80,9 +80,9 @@ export function ActivityHeatmapTracker({ history = [] }: ActivityHeatmapTrackerP
         </div>
 
         {/* Recent Activity Log Feed */}
-        <div className="space-y-3 pt-4 border-t border-slate-100">
-          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
-            <Activity className="h-4 w-4 text-blue-600" />
+        <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-zinc-800/60">
+          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+            <Activity className="h-4 w-4 text-blue-600 dark:text-blue-450" />
             <span>Recent Activity Stream</span>
           </h3>
 
@@ -90,18 +90,18 @@ export function ActivityHeatmapTracker({ history = [] }: ActivityHeatmapTrackerP
             {sampleActivities.map((act) => (
               <div
                 key={act.id}
-                className="p-3.5 rounded-2xl border border-slate-100 bg-slate-50/60 flex items-center justify-between gap-4 text-xs hover:bg-slate-100/80 transition-colors"
+                className="p-3.5 rounded-2xl border border-slate-100 dark:border-zinc-850 bg-slate-50/60 dark:bg-zinc-950/40 flex items-center justify-between gap-4 text-xs hover:bg-slate-100/80 dark:hover:bg-zinc-900 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-xl bg-blue-600 text-white shrink-0">
                     <Zap className="h-3.5 w-3.5" />
                   </div>
                   <div>
-                    <p className="font-extrabold text-slate-900">{act.reason}</p>
-                    <p className="text-[11px] text-slate-500 font-medium">{act.timestamp}</p>
+                    <p className="font-extrabold text-slate-900 dark:text-white">{act.reason}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-zinc-400 font-medium">{act.timestamp}</p>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-extrabold text-xs shrink-0 border border-emerald-200">
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 font-extrabold text-xs shrink-0 border border-emerald-200 dark:border-emerald-800/40">
                   +{act.xpEarned} XP
                 </span>
               </div>

@@ -22,8 +22,8 @@ export function ProfileOverviewStats({
       value: `${totalXP.toLocaleString()} XP`,
       change: '+450 XP this week',
       icon: Star,
-      color: 'text-amber-600',
-      bg: 'bg-amber-50 border-amber-200',
+      color: 'text-amber-600 dark:text-amber-400',
+      bg: 'bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/30',
     },
     {
       id: 'courses',
@@ -31,8 +31,8 @@ export function ProfileOverviewStats({
       value: `${completedModules} / ${totalModules}`,
       change: '66% Completion Rate',
       icon: BookOpen,
-      color: 'text-blue-600',
-      bg: 'bg-blue-50 border-blue-200',
+      color: 'text-blue-600 dark:text-blue-400',
+      bg: 'bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30',
     },
     {
       id: 'certificates',
@@ -40,8 +40,8 @@ export function ProfileOverviewStats({
       value: '3 Certificates',
       change: '1 Specialization Honors',
       icon: Award,
-      color: 'text-indigo-600',
-      bg: 'bg-indigo-50 border-indigo-200',
+      color: 'text-indigo-600 dark:text-indigo-400',
+      bg: 'bg-indigo-50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800/30',
     },
     {
       id: 'assignments',
@@ -49,8 +49,8 @@ export function ProfileOverviewStats({
       value: '28 Submitted',
       change: '100% Pass Rate',
       icon: CheckSquare,
-      color: 'text-emerald-600',
-      bg: 'bg-emerald-50 border-emerald-200',
+      color: 'text-emerald-600 dark:text-emerald-400',
+      bg: 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30',
     },
     {
       id: 'accuracy',
@@ -58,8 +58,8 @@ export function ProfileOverviewStats({
       value: '94.8%',
       change: '+2.4% vs Avg Scholar',
       icon: Target,
-      color: 'text-rose-600',
-      bg: 'bg-rose-50 border-rose-200',
+      color: 'text-rose-600 dark:text-rose-400',
+      bg: 'bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800/30',
     },
     {
       id: 'hours',
@@ -67,8 +67,8 @@ export function ProfileOverviewStats({
       value: '64.5 Hours',
       change: 'Avg 1.5 hrs/day',
       icon: Clock,
-      color: 'text-sky-600',
-      bg: 'bg-sky-50 border-sky-200',
+      color: 'text-sky-600 dark:text-sky-400',
+      bg: 'bg-sky-50 dark:bg-sky-950/20 border-sky-200 dark:border-sky-800/30',
     },
     {
       id: 'rank',
@@ -76,8 +76,8 @@ export function ProfileOverviewStats({
       value: 'Top 2%',
       change: '#14 Global Leaderboard',
       icon: Trophy,
-      color: 'text-purple-600',
-      bg: 'bg-purple-50 border-purple-200',
+      color: 'text-purple-600 dark:text-purple-400',
+      bg: 'bg-purple-50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800/30',
     },
     {
       id: 'streak',
@@ -85,8 +85,8 @@ export function ProfileOverviewStats({
       value: '21 Days',
       change: `Current: ${currentStreak} Days`,
       icon: Flame,
-      color: 'text-orange-600',
-      bg: 'bg-orange-50 border-orange-200',
+      color: 'text-orange-600 dark:text-orange-400',
+      bg: 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800/30',
     },
   ];
 
@@ -94,8 +94,8 @@ export function ProfileOverviewStats({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Learning Overview & Performance</h2>
-          <p className="text-xs text-slate-500 font-medium">Real-time metrics calculated from your verified Cerevia activity.</p>
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Learning Overview & Performance</h2>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Real-time metrics calculated from your verified Cerevia activity.</p>
         </div>
       </div>
 
@@ -105,10 +105,10 @@ export function ProfileOverviewStats({
           return (
             <div
               key={st.id}
-              className="p-4 rounded-2xl border border-slate-200 bg-white space-y-2.5 shadow-2xs hover:shadow-md transition-all duration-300 group"
+              className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 space-y-2.5 shadow-2xs hover:shadow-md transition-all duration-300 group"
             >
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 group-hover:text-slate-600 transition-colors">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-zinc-500 group-hover:text-slate-600 dark:group-hover:text-zinc-300 transition-colors">
                   {st.label}
                 </span>
                 <div className={`p-2 rounded-xl border ${st.bg} shrink-0 transition-transform group-hover:scale-110`}>
@@ -117,9 +117,9 @@ export function ProfileOverviewStats({
               </div>
 
               <div>
-                <p className="text-xl font-black text-slate-900 tracking-tight">{st.value}</p>
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-500 pt-0.5">
-                  <TrendingUp className="h-3 w-3 text-emerald-600 shrink-0" />
+                <p className="text-xl font-black text-slate-900 dark:text-white tracking-tight">{st.value}</p>
+                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-500 dark:text-zinc-400 pt-0.5">
+                  <TrendingUp className="h-3 w-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span className="truncate">{st.change}</span>
                 </div>
               </div>

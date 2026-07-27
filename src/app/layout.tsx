@@ -82,8 +82,8 @@ export default function RootLayout({
       className={`${cormorant.variable} ${montserrat.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-        <ThemeProvider defaultTheme="light">
+      <body className="flex min-h-full flex-col bg-background text-foreground transition-colors duration-300 selection:bg-blue-100 selection:text-blue-900">
+        <ThemeProvider defaultTheme="system">
           <AuthProvider>
             {children}
           </AuthProvider>

@@ -96,32 +96,32 @@ export function LearningJourneyTimeline() {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Learning Journey Timeline</h2>
-          <p className="text-xs text-slate-500 font-medium">Chronological record of your achievements, certificates, and milestones.</p>
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Learning Journey Timeline</h2>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Chronological record of your achievements, certificates, and milestones.</p>
         </div>
 
         {/* Category Buttons */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold shrink-0">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-xs font-bold shrink-0">
           <button
             onClick={() => setFilterCategory('all')}
-            className={`px-3 py-1.5 rounded-xl transition-all ${
-              filterCategory === 'all' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+              filterCategory === 'all' ? 'bg-white dark:bg-zinc-950 text-blue-700 dark:text-blue-400 shadow-2xs' : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             All Milestones
           </button>
           <button
             onClick={() => setFilterCategory('certificate')}
-            className={`px-3 py-1.5 rounded-xl transition-all ${
-              filterCategory === 'certificate' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+              filterCategory === 'certificate' ? 'bg-white dark:bg-zinc-950 text-blue-700 dark:text-blue-400 shadow-2xs' : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             Certificates
           </button>
           <button
             onClick={() => setFilterCategory('challenge')}
-            className={`px-3 py-1.5 rounded-xl transition-all ${
-              filterCategory === 'challenge' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+              filterCategory === 'challenge' ? 'bg-white dark:bg-zinc-950 text-blue-700 dark:text-blue-400 shadow-2xs' : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             League Wins
@@ -130,34 +130,34 @@ export function LearningJourneyTimeline() {
       </div>
 
       {/* Timeline Layout */}
-      <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+      <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200 dark:before:bg-zinc-800">
         {filteredEvents.map((event) => {
           const Icon = event.icon;
           return (
             <div key={event.id} className="relative group">
               {/* Timeline Dot Icon */}
               <div
-                className={`absolute -left-6 sm:-left-8 top-0 h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 ${event.bg} bg-white flex items-center justify-center shadow-2xs transition-transform group-hover:scale-110 z-10`}
+                className={`absolute -left-6 sm:-left-8 top-0 h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 ${event.bg} bg-white dark:bg-zinc-950 flex items-center justify-center shadow-2xs transition-transform group-hover:scale-110 z-10`}
               >
                 <Icon className={`h-4 w-4 ${event.color}`} />
               </div>
 
               {/* Event Card */}
-              <div className="p-5 rounded-2xl border border-slate-200 bg-white space-y-2 shadow-2xs hover:shadow-md transition-all duration-300">
+              <div className="p-5 rounded-2xl border border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 space-y-2 shadow-2xs hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                    <Calendar className="h-3.5 w-3.5 text-blue-600" />
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-zinc-400">
+                    <Calendar className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                     <span>{event.date}</span>
                   </div>
-                  <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/30">
                     +{event.xpEarned} XP
                   </span>
                 </div>
 
-                <h3 className="text-base font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {event.title}
                 </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{event.description}</p>
+                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">{event.description}</p>
               </div>
             </div>
           );
