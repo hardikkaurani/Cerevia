@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { usePathname } from 'next/navigation';
-import { Menu, Search, Flame, Sparkles, ChevronRight } from 'lucide-react';
+import { Menu, Search, Flame, Zap, ChevronRight } from 'lucide-react';
 import { Logo } from './Logo';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useAuth } from '@/providers/AuthProvider';
@@ -106,7 +106,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           href="/xp"
           className="hidden sm:flex items-center gap-1.5 rounded-xl bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-400 hover:bg-blue-500/20 transition-all select-none group"
         >
-          <Sparkles className="h-3.5 w-3.5 text-blue-400 fill-blue-400" />
+          <Zap className="h-3.5 w-3.5 text-blue-400 fill-blue-400" />
           <span>Lvl {currentLevel} • {currentXP} XP</span>
           <ChevronRight className="h-3 w-3 opacity-60 group-hover:translate-x-0.5 transition-transform" />
         </Link>

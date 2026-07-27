@@ -1,0 +1,50 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+  fill="none"
+>
+  <defs>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#FF007F" />
+      <stop offset="35%" stopColor="#7C3AED" />
+      <stop offset="70%" stopColor="#2563EB" />
+      <stop offset="100%" stopColor="#00F2FE" />
+    </linearGradient>
+    <filter id="neonBloom" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <polygon
+    points="50,11 85,31 85,71 50,91 15,71 15,31"
+    stroke="url(#faviconGradient)"
+    strokeWidth="8"
+    strokeLinejoin="round"
+    fill="none"
+  />
+  <polygon
+    points="50,24 74,38 74,64 50,78 26,64 26,38"
+    stroke="url(#faviconGradient)"
+    strokeWidth="2.5"
+    strokeLinejoin="round"
+    fill="none"
+    opacity="0.65"
+  />
+  <line x1="50" y1="11" x2="50" y2="50" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+  <line x1="85" y1="31" x2="50" y2="50" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+  <line x1="85" y1="71" x2="50" y2="50" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+  <line x1="50" y1="91" x2="50" y2="50" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+  <line x1="15" y1="71" x2="50" y2="50" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+  <line x1="15" y1="31" x2="50" y2="50" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.8" />
+  <circle cx="50" cy="50" r="7.5" fill="url(#faviconGradient)" filter="url(#neonBloom)" />
+  <circle cx="50" cy="50" r="2.5" fill="#FFFFFF" />
+  <circle cx="50" cy="11" r="3.5" fill="#FF007F" filter="url(#neonBloom)" />
+  <circle cx="85" cy="31" r="3.5" fill="#7C3AED" filter="url(#neonBloom)" />
+  <circle cx="85" cy="71" r="3.5" fill="#2563EB" filter="url(#neonBloom)" />
+  <circle cx="50" cy="91" r="3.5" fill="#00F2FE" filter="url(#neonBloom)" />
+  <circle cx="15" cy="71" r="3.5" fill="#7C3AED" filter="url(#neonBloom)" />
+  <circle cx="15" cy="31" r="3.5" fill="#FF007F" filter="url(#neonBloom)" />
+</svg>

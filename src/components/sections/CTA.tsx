@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Compass, CheckCircle } from 'lucide-react';
+import { ArrowRight, Compass, CheckCircle } from 'lucide-react';
 
 export function CTA() {
   return (
@@ -14,7 +14,6 @@ export function CTA() {
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-8 px-4 text-center sm:px-6 lg:px-8">
         {/* Top Tagline Pill */}
         <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 backdrop-blur-md">
-          <Sparkles className="h-3.5 w-3.5 fill-amber-400" />
           <span>Accelerate Your Engineering Career</span>
         </div>
 

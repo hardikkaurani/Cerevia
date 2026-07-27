@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Eye, EyeOff, Loader2, Mail, Lock, User as UserIcon, ArrowRight, AlertCircle, Sparkles, Check } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock, User as UserIcon, ArrowRight, AlertCircle, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';
@@ -141,7 +141,6 @@ export function RegisterForm() {
       {/* Header */}
       <div className="space-y-1.5 text-left">
         <div className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 uppercase tracking-widest">
-          <Sparkles className="h-3.5 w-3.5 fill-amber-400" />
           <span>Join Cerevia Community</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
