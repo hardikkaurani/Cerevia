@@ -6,7 +6,7 @@ import {
   Trophy,
   BookOpen,
   User,
-  Sparkles,
+  Zap,
   Settings,
   LogOut,
   ChevronLeft,
@@ -30,7 +30,7 @@ const navigationItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/lessons', icon: BookOpen, label: 'Lessons' },
   { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
-  { href: '/xp', icon: Sparkles, label: 'XP Tracker' },
+  { href: '/xp', icon: Zap, label: 'XP Tracker' },
   { href: '/profile', icon: User, label: 'Profile' },
 ];
 

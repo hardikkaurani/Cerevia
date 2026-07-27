@@ -129,7 +129,7 @@ export function PublicHeader() {
                 className="flex items-center gap-1.5 rounded-full bg-zinc-950 px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-zinc-950/10 transition-all hover:scale-[1.02] hover:bg-zinc-800"
               >
                 <span>Start Learning</span>
-                <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                <ArrowRight className="h-3.5 w-3.5 text-white" />
               </Button>
             </>
           )}

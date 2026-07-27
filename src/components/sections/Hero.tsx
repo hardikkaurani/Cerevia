@@ -39,7 +39,7 @@ export function Hero() {
               </span>
               <span className="text-zinc-300 dark:text-zinc-700">|</span>
               <span className="flex items-center gap-1 font-bold text-amber-600 dark:text-amber-400">
-                <Sparkles className="h-3.5 w-3.5 fill-amber-400" /> Cerevia v2.0
+                Cerevia v2.0
               </span>
             </div>
 

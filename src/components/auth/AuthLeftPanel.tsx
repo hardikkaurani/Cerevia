@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/layout/Logo';
-import { Sparkles, Code2, Bot, Trophy, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Flame, Code2, Bot, Trophy, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 export function AuthLeftPanel() {
   const pathname = usePathname();
@@ -75,7 +75,7 @@ export function AuthLeftPanel() {
       <div className="relative z-10 flex items-center justify-between">
         <Logo showText={true} />
         <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[10px] font-bold text-amber-500 dark:text-amber-400">
-          <Sparkles className="h-3 w-3 fill-amber-500 dark:fill-amber-400" />
+          <Flame className="h-3 w-3 text-amber-500 dark:text-amber-400 fill-amber-500 dark:fill-amber-400 animate-pulse" />
           <span>{badgeText}</span>
         </div>
       </div>
