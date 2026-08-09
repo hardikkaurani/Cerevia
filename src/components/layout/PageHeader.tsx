@@ -21,7 +21,7 @@ export function PageHeader({
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 md:pb-6 border-b border-slate-200 min-w-0',
+        'flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 md:pb-6 border-b border-slate-200 dark:border-zinc-800/80 min-w-0',
         className
       )}
     >
@@ -31,11 +31,11 @@ export function PageHeader({
             {breadcrumbs}
           </div>
         )}
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 truncate">
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white truncate">
           {title}
         </h1>
         {description && (
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed font-normal">
             {description}
           </p>
         )}
