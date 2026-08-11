@@ -183,7 +183,7 @@ export function Hero() {
               </div>
 
               {/* Floating Badge 2 - Live Code Execution */}
-              <div className="animate-float-delayed absolute -bottom-6 -left-6 hidden items-center gap-2.5 rounded-2xl border border-zinc-200 bg-white p-3 shadow-xl sm:flex dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="animate-float-delayed absolute -bottom-6 -left-6 z-10 hidden items-center gap-2.5 rounded-2xl border border-zinc-200 bg-white p-3 shadow-xl sm:flex dark:border-zinc-800 dark:bg-zinc-900">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600">
                   <Code2 className="h-5 w-5" />
                 </div>
