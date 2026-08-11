@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import {
   Star,
   ChevronLeft,
@@ -73,6 +72,10 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
+function getInitial(name: string) {
+  return name.trim().charAt(0).toUpperCase();
+}
+
 export function StudentTestimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -117,13 +120,10 @@ export function StudentTestimonials() {
 
             <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row md:items-start">
               {/* Student Avatar Visual */}
-              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white shadow-xl sm:h-28 sm:w-28 dark:border-zinc-800">
-                <Image
-                  src={activeTestimonial.avatar}
-                  alt={activeTestimonial.name}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-zinc-900 shadow-xl sm:h-28 sm:w-28 dark:border-zinc-800 dark:bg-zinc-900">
+                <span className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-purple-400 sm:text-5xl">
+                  {getInitial(activeTestimonial.name)}
+                </span>
               </div>
 
               {/* Content Column */}

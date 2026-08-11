@@ -155,7 +155,7 @@ export function LearningImpact() {
                 </div>
 
                 {/* Animated Count */}
-                <div className="mb-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
+                <div className="mb-2 flex items-baseline justify-center text-4xl font-black tracking-tight text-white sm:text-5xl">
                   <span>{valueDisplay}</span>
                   <span className="font-bold text-amber-400">
                     {stat.suffix}
