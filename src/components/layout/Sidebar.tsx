@@ -137,16 +137,18 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
                 className="h-8 w-8 rounded-full object-cover border border-border shrink-0"
               />
             ) : (
-              <div className="h-8 w-8 rounded-full bg-secondary/50 flex items-center justify-center text-xs font-sans font-medium text-foreground border border-border select-none shrink-0">
+              <div className="h-8 w-8 rounded-full bg-secondary/50 flex items-center justify-center text-xs font-sans font-semibold text-foreground border border-border select-none shrink-0">
                 {(user?.fullName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
               </div>
             )}
             {!isCollapsed && (
               <div className="flex min-w-0 flex-col">
-                <span className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
-                  {user?.fullName || 'Student Account'}
+                <span className="truncate text-xs font-bold text-foreground">
+                  {user?.fullName?.trim() || user?.email?.split('@')[0] || 'Student'}
                 </span>
-                <span className="truncate text-[9px] text-muted-foreground/70">{user?.email || 'student@byjus.com'}</span>
+                <span className="truncate text-[11px] text-muted-foreground/80 font-medium">
+                  {user?.email || 'student@cerevia.edu'}
+                </span>
               </div>
             )}
           </div>
@@ -220,15 +222,17 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
                 className="h-8 w-8 rounded-full object-cover border border-border shrink-0"
               />
             ) : (
-              <div className="h-8 w-8 rounded-full bg-secondary/50 flex items-center justify-center text-xs font-sans font-medium text-foreground border border-border select-none shrink-0">
+              <div className="h-8 w-8 rounded-full bg-secondary/50 flex items-center justify-center text-xs font-sans font-semibold text-foreground border border-border select-none shrink-0">
                 {(user?.fullName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
               </div>
             )}
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
-                {user?.fullName || 'Student Account'}
+              <span className="truncate text-xs font-bold text-foreground">
+                {user?.fullName?.trim() || user?.email?.split('@')[0] || 'Student'}
               </span>
-              <span className="truncate text-[9px] text-muted-foreground/70">{user?.email || 'student@byjus.com'}</span>
+              <span className="truncate text-[11px] text-muted-foreground/80 font-medium">
+                {user?.email || 'student@cerevia.edu'}
+              </span>
             </div>
           </div>
         </div>
