@@ -87,11 +87,12 @@ export function AuthLeftPanel() {
         <div className="relative h-60 w-full max-w-sm rounded-3xl overflow-hidden border border-zinc-200 bg-zinc-100/85 dark:border-zinc-800 dark:bg-zinc-900/80 p-3 shadow-2xl backdrop-blur-xl group transition-colors duration-300">
           <Image
             src={image}
-            alt="Cerevia Auth Visual"
+            alt="AI-powered learning and technology workspace"
             fill
+            sizes="(max-width: 768px) 100vw, 384px"
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-50 dark:from-zinc-950 via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 via-transparent to-transparent pointer-events-none" />
 
           {/* Floating Card Badge Top Right */}
           <div className="absolute top-4 right-4 flex items-center gap-2 rounded-2xl bg-white/95 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 p-2.5 shadow-xl backdrop-blur-md transition-colors duration-300">
