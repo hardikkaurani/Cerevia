@@ -3,7 +3,12 @@
 import { useState } from 'react';
 import { ExternalLink, Download, Code, FileText, GitBranch } from 'lucide-react';
 
-export function PublicPortfolioShowcase() {
+interface PublicPortfolioShowcaseProps {
+  fullName?: string;
+  email?: string;
+}
+
+export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfolioShowcaseProps) {
   const [showReportModal, setShowReportModal] = useState(false);
 
   const projectsList = [
@@ -115,7 +120,7 @@ export function PublicPortfolioShowcase() {
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-850 space-y-1 font-mono text-[11px] text-slate-700 dark:text-zinc-300">
                 <div className="flex justify-between">
                   <span>Student Name:</span>
-                  <span className="font-bold text-slate-900 dark:text-white">Hardik Kaurani</span>
+                  <span className="font-bold text-slate-900 dark:text-white">{fullName}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Verified Credentials:</span>

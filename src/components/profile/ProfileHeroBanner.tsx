@@ -17,8 +17,8 @@ interface ProfileHeroBannerProps {
 }
 
 export function ProfileHeroBanner({
-  fullName = 'Hardik Kaurani',
-  email = 'hardik@cerevia.edu',
+  fullName = 'Student',
+  email = '',
   avatar = '/images/profile/avatars/student-avatar.webp',
   joinedDate = 'January 2026',
   level = 12,
