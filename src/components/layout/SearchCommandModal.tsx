@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { Search, Monitor, BookOpen, Trophy, Settings, User, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -27,6 +28,23 @@ export function SearchCommandModal({ isOpen, onClose }: SearchCommandModalProps)
   const router = useRouter();
   const [query, setQuery] = React.useState('');
   const [activeIndex, setActiveIndex] = React.useState(0);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Lock body scroll while open
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   const searchItems: SearchItem[] = React.useMemo(
     () => [
@@ -83,30 +101,30 @@ export function SearchCommandModal({ isOpen, onClose }: SearchCommandModalProps)
     setActiveIndex(0);
   }, [query]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 p-4 bg-background/80 backdrop-blur-xs animate-in fade-in duration-150">
+  const modalContent = (
+    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-16 sm:pt-24 p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
       {/* Backdrop overlay listener */}
-      <div className="fixed inset-0 z-40" onClick={onClose} aria-hidden="true" />
+      <div className="fixed inset-0 z-[100]" onClick={onClose} aria-hidden="true" />
 
       {/* Modal Dialog Box */}
-      <div className="relative z-50 w-full max-w-lg overflow-hidden rounded-xl border border-border/70 bg-card text-card-foreground shadow-2xl animate-in zoom-in-95 duration-150">
+      <div className="relative z-[101] w-full max-w-lg overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-2xl animate-in zoom-in-95 duration-150">
         {/* Search Input Bar */}
-        <div className="flex items-center border-b border-border/60 px-4 py-3 bg-muted/20">
-          <Search className="mr-3 h-4 w-4 shrink-0 text-muted-foreground" />
+        <div className="flex items-center border-b border-zinc-200 dark:border-zinc-800 px-4 py-3 bg-zinc-50/50 dark:bg-zinc-900/50">
+          <Search className="mr-3 h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
           <input
             autoFocus
             type="text"
             placeholder="Type a command or search..."
-            className="flex h-9 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground text-foreground"
+            className="flex h-9 w-full bg-transparent text-sm outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-500 text-zinc-900 dark:text-white"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           {query ? (
             <button
               onClick={() => setQuery('')}
-              className="mr-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="mr-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
               aria-label="Clear query"
             >
               <X className="h-4 w-4" />
@@ -114,7 +132,7 @@ export function SearchCommandModal({ isOpen, onClose }: SearchCommandModalProps)
           ) : null}
           <button
             onClick={onClose}
-            className="inline-flex h-6 items-center justify-center rounded-md border border-border/60 bg-muted px-2 text-[10px] font-medium text-muted-foreground"
+            className="inline-flex h-6 items-center justify-center rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800 px-2 text-[10px] font-semibold text-zinc-500 dark:text-zinc-400"
           >
             ESC
           </button>
@@ -124,9 +142,9 @@ export function SearchCommandModal({ isOpen, onClose }: SearchCommandModalProps)
         <div className="max-h-[320px] overflow-y-auto p-2">
           {filteredItems.length === 0 ? (
             <div className="py-8 text-center">
-              <Search className="mx-auto h-7 w-7 text-muted-foreground/40 mb-2" />
-              <p className="text-sm font-medium text-foreground">No results found</p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <Search className="mx-auto h-7 w-7 text-zinc-400 dark:text-zinc-600 mb-2" />
+              <p className="text-sm font-medium text-zinc-900 dark:text-white">No results found</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                 No matching pages found for &quot;{query}&quot;.
               </p>
             </div>
@@ -145,17 +163,17 @@ export function SearchCommandModal({ isOpen, onClose }: SearchCommandModalProps)
                     }}
                     onMouseEnter={() => setActiveIndex(index)}
                     className={cn(
-                      'flex items-center justify-between rounded-lg px-3 py-2.5 text-sm w-full text-left transition-colors cursor-pointer',
+                      'flex items-center justify-between rounded-xl px-3 py-2.5 text-sm w-full text-left transition-colors cursor-pointer',
                       isSelected
-                        ? 'bg-primary/10 text-primary font-medium'
-                        : 'text-foreground hover:bg-muted/50'
+                        ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400 font-semibold'
+                        : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
                     )}
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <IconComponent className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <IconComponent className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
                       <span className="truncate">{item.name}</span>
                     </div>
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 shrink-0">
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 shrink-0">
                       {item.category}
                     </span>
                   </button>
@@ -167,5 +185,6 @@ export function SearchCommandModal({ isOpen, onClose }: SearchCommandModalProps)
       </div>
     </div>
   );
-}
 
+  return createPortal(modalContent, document.body);
+}
