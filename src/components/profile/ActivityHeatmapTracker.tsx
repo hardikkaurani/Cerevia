@@ -1,7 +1,4 @@
-'use client';
-
-import { useState } from 'react';
-import { Activity, Flame, CheckCircle2, Clock, Terminal, Zap } from 'lucide-react';
+import { Activity, Zap } from 'lucide-react';
 
 interface ActivityHistoryItem {
   id: string;
@@ -15,7 +12,6 @@ interface ActivityHeatmapTrackerProps {
 }
 
 export function ActivityHeatmapTracker({ history = [] }: ActivityHeatmapTrackerProps) {
-  const [selectedMonth, setSelectedMonth] = useState('All');
 
   // Generate 52 weeks x 7 days mock contribution data grid
   const daysInGrid = Array.from({ length: 140 }).map((_, idx) => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ExternalLink, Download, Code, Layers, Sparkles, CheckCircle2, FileText, GitBranch, Share2 } from 'lucide-react';
+import { ExternalLink, Download, Code, FileText, GitBranch } from 'lucide-react';
 
 export function PublicPortfolioShowcase() {
   const [showReportModal, setShowReportModal] = useState(false);

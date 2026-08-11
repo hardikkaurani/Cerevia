@@ -1,6 +1,6 @@
 'use client';
 
-import { Target, Trophy, Award, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Target } from 'lucide-react';
 
 export function WeeklyMissionsCard() {
   const missions = [

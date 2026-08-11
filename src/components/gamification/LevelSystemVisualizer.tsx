@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Award, Lock, CheckCircle2, Sparkles, Shield, ChevronRight } from 'lucide-react';
+import { Award, Lock, CheckCircle2, Sparkles, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LevelTier {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ShieldCheck, Mail, Calendar, Trophy, Share2, Edit3, Globe, Copy, Check, Sparkles } from 'lucide-react';
+import { ShieldCheck, Mail, Calendar, Trophy, Share2, Edit3, Globe, Check, Sparkles } from 'lucide-react';
 
 interface ProfileHeroBannerProps {
   fullName?: string;
@@ -21,8 +21,6 @@ export function ProfileHeroBanner({
   email = 'hardik@cerevia.edu',
   avatar = '/images/profile/avatars/student-avatar.webp',
   joinedDate = 'January 2026',
-  totalXP = 4850,
-  currentStreak = 14,
   level = 12,
   league = 'Diamond League',
   title = 'Senior Full-Stack & AI Engineer Candidate',

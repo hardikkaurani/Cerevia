@@ -1,8 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Sparkles, Zap, Flame, Award, TrendingUp, Target, ArrowUpRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Sparkles, Zap, Flame, Award, TrendingUp, Target } from 'lucide-react';
 
 interface XPTrackerHeroProps {
   totalXP: number;
@@ -18,7 +17,6 @@ export function XPTrackerHero({
   level,
   xpInCurrentLevel,
   xpForNextLevel = 100,
-  streak,
   streakMultiplier,
 }: XPTrackerHeroProps) {
   const progressPercent = Math.min(100, Math.max(0, (xpInCurrentLevel / xpForNextLevel) * 100));

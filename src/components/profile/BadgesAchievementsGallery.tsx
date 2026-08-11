@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Award, Star, Flame, Trophy, Lock, CheckCircle2, Sparkles, Shield, Info } from 'lucide-react';
+import { Lock, CheckCircle2 } from 'lucide-react';
 
 interface AchievementBadge {
   id: string;

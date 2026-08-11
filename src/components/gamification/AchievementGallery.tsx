@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Trophy, Lock, CheckCircle2, Sparkles, Filter } from 'lucide-react';
+import { Trophy, Lock, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Achievement {

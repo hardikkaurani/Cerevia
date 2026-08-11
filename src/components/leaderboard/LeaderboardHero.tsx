@@ -86,7 +86,7 @@ export function LeaderboardHero({
             return (
               <button
                 key={tab.id}
-                onClick={() => onTabChange(tab.id as any)}
+                onClick={() => onTabChange(tab.id as 'global' | 'friends' | 'leagues' | 'activity')}
                 className={cn(
                   'flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all border shrink-0 cursor-pointer',
                   isActive

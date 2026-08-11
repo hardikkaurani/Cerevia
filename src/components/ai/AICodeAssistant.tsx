@@ -57,7 +57,7 @@ export function AICodeAssistant() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'explain' | 'debug' | 'optimize' | 'generate')}
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-xs shrink-0 cursor-pointer',
                 activeTab === tab.id

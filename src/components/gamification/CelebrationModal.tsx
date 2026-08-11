@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Sparkles, Trophy, CheckCircle2, ArrowRight, Award } from 'lucide-react';
+import { Sparkles, Trophy, ArrowRight } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { Confetti } from './Confetti';
 

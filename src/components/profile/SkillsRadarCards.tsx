@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { useState } from 'react';
 import { Code2, Cpu, Server, Database, Cloud, Layers, Terminal, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 
@@ -10,7 +11,7 @@ interface SkillItem {
   progress: number;
   xp: number;
   level: string;
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
   bg: string;
   topics: string[];

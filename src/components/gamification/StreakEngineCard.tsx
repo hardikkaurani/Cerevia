@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Flame, ShieldCheck, Calendar, Trophy, Zap, AlertCircle } from 'lucide-react';
+import { Flame, ShieldCheck, Trophy, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface StreakEngineCardProps {
