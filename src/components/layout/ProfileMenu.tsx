@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { User as UserIcon, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
-import { cn } from '@/lib/utils';
+import { cn, getCleanDisplayName } from '@/lib/utils';
 
 export function ProfileMenu() {
   const { user, logout } = useAuth();
@@ -42,7 +42,7 @@ export function ProfileMenu() {
     };
   }, [isOpen]);
 
-  const displayName = user?.fullName?.trim() || user?.email?.split('@')[0] || 'Student';
+  const displayName = getCleanDisplayName(user);
   const displayEmail = user?.email || 'student@cerevia.edu';
   const initial = (displayName[0] || 'S').toUpperCase();
 
