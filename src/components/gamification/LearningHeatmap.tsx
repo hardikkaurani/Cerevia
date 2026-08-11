@@ -1,6 +1,6 @@
 'use client';
 
-import { Activity, Calendar, Flame, TrendingUp } from 'lucide-react';
+import { Activity, Calendar, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function LearningHeatmap() {

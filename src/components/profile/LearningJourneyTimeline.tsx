@@ -1,7 +1,8 @@
 'use client';
 
+import * as React from 'react';
 import { useState } from 'react';
-import { Flag, Award, Trophy, Flame, CheckCircle2, Sparkles, Star, Calendar } from 'lucide-react';
+import { Flag, Award, Trophy, Flame, Sparkles, Calendar } from 'lucide-react';
 
 interface TimelineEvent {
   id: string;
@@ -10,7 +11,7 @@ interface TimelineEvent {
   category: 'milestone' | 'certificate' | 'challenge' | 'streak';
   description: string;
   xpEarned: number;
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
   bg: string;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Award, Lock, Sparkles, ShieldCheck } from 'lucide-react';
+import { Award, Lock, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BadgeItem {

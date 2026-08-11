@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 import { Logo } from './Logo';
 import { useAuth } from '@/providers/AuthProvider';
 import { Button } from '@/components/ui/Button';

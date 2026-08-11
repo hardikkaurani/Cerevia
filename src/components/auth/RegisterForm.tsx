@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Eye, EyeOff, Loader2, Mail, Lock, User as UserIcon, ArrowRight, AlertCircle, Check } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, Lock, User as UserIcon, ArrowRight, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
 import Link from 'next/link';

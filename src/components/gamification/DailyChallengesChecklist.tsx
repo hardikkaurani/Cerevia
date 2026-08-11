@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, Circle, Sparkles, Gift, ArrowRight, Check } from 'lucide-react';
+import { CheckCircle2, Circle, Sparkles, Gift, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Challenge {

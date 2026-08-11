@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Award, ShieldCheck, Download, Share2, Eye, Lock, CheckCircle2, Search, Filter } from 'lucide-react';
+import { Eye, Lock, CheckCircle2 } from 'lucide-react';
 import { CertificateViewerModal, CertificateItem } from './CertificateViewerModal';
 
 export function CertificatesGallery() {

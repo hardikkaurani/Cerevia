@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     images: ['/images/coursera/hero-student.webp'],
   },
   icons: {
-    icon: '/icon.svg',
+    icon: '/icon.png',
   },
 };
 

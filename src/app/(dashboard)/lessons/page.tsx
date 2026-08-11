@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ContentWrapper } from '@/components/layout/ContentWrapper';
-import { BookOpen, Sparkles, Search, CheckCircle2, ChevronRight, Loader2 } from 'lucide-react';
+import { Sparkles, Search, CheckCircle2, ChevronRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/services/api';
 import { cn } from '@/lib/utils';
@@ -30,7 +30,7 @@ export default function LessonsPage() {
       try {
         const [lessonsRes, progressRes] = await Promise.all([
           api.get<LessonItem[]>('/api/lessons'),
-          api.get<any>('/api/lessons/progress'),
+          api.get<{ completed?: Array<{ lessonId: string }> }>('/api/lessons/progress'),
         ]);
 
         if (lessonsRes.success && lessonsRes.data) {
@@ -38,7 +38,7 @@ export default function LessonsPage() {
           const completedIds = new Set<string>();
 
           if (progressRes.success && progressRes.data && progressRes.data.completed) {
-            progressRes.data.completed.forEach((p: any) => completedIds.add(p.lessonId));
+            progressRes.data.completed.forEach((p: { lessonId: string }) => completedIds.add(p.lessonId));
           }
 
           const mapped = rawLessons.map((l) => ({

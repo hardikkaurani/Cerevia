@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Target, TrendingUp, Calendar, Compass, CheckCircle2, Plus, Sparkles } from 'lucide-react';
+import { Target, TrendingUp, Calendar, Compass, Plus } from 'lucide-react';
 
 export function LearningGoalsAnalytics() {
   const [activeRange, setActiveRange] = useState<'weekly' | 'monthly'>('weekly');
-  const [weeklyGoal, setWeeklyGoal] = useState(1000);
-  const [weeklyCurrent, setWeeklyCurrent] = useState(780);
+  const [weeklyGoal] = useState(1000);
+  const [weeklyCurrent] = useState(780);
 
   const xpTrendData = [
     { day: 'Mon', xp: 120 },
