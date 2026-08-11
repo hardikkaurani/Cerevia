@@ -5,7 +5,7 @@ import { ArrowRight, Compass, CheckCircle } from 'lucide-react';
 
 export function CTA() {
   return (
-    <section className="relative overflow-hidden bg-[#111111] py-28 text-white">
+    <section id="contact" className="relative overflow-hidden bg-[#111111] py-28 text-white">
       {/* Background Decorative Mesh & Glows */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_48px] opacity-40" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[450px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/20 opacity-60 blur-[140px]" />

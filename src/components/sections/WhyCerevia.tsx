@@ -114,7 +114,7 @@ const FEATURES: Feature[] = [
 
 export function WhyCerevia() {
   return (
-    <section id="why-cerevia" className="bg-[#FAFAFA] py-24 dark:bg-[#111111]">
+    <section id="about" className="bg-[#FAFAFA] py-24 dark:bg-[#111111]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-3xl space-y-4 text-center">

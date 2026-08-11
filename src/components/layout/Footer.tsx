@@ -1,5 +1,4 @@
-'use client';
-
+import Link from 'next/link';
 import { Logo } from './Logo';
 
 export function Footer() {
@@ -7,29 +6,29 @@ export function Footer() {
 
   const navigation = {
     platform: [
-      { label: 'Home', href: '#home' },
-      { label: 'Courses', href: '#courses' },
-      { label: 'Learning Paths', href: '#learning-paths' },
-      { label: 'Leaderboard', href: '#leaderboard' },
-      { label: 'Why Cerevia', href: '#why-cerevia' },
+      { label: 'Home', href: '/#home' },
+      { label: 'Courses', href: '/#courses' },
+      { label: 'Learning Paths', href: '/#learning-paths' },
+      { label: 'Leaderboard', href: '/leaderboard' },
+      { label: 'Why Cerevia', href: '/about' },
     ],
     courses: [
-      { label: 'Python for AI', href: '#courses' },
-      { label: 'Java Enterprise', href: '#courses' },
-      { label: 'React 19 & Next.js', href: '#courses' },
-      { label: 'Node.js Microservices', href: '#courses' },
-      { label: 'Cloud & Kubernetes', href: '#courses' },
-      { label: 'System Design', href: '#courses' },
+      { label: 'Python for AI', href: '/#courses' },
+      { label: 'Java Enterprise', href: '/#courses' },
+      { label: 'React 19 & Next.js', href: '/#courses' },
+      { label: 'Node.js Microservices', href: '/#courses' },
+      { label: 'Cloud & Kubernetes', href: '/#courses' },
+      { label: 'System Design', href: '/#courses' },
     ],
     resources: [
       { label: 'Documentation', href: '/docs' },
-      { label: 'API Reference', href: '/api' },
-      { label: 'Community Forum', href: '#contact' },
-      { label: 'Student Perks', href: '#impact' },
+      { label: 'API Reference', href: '/api/docs' },
+      { label: 'Community Forum', href: '/contact' },
+      { label: 'Student Perks', href: '/#impact' },
     ],
     company: [
-      { label: 'About Us', href: '#about' },
-      { label: 'Contact', href: '#contact' },
+      { label: 'About Us', href: '/about' },
+      { label: 'Contact', href: '/contact' },
       { label: 'Privacy Policy', href: '#' },
       { label: 'Terms of Service', href: '#' },
       { label: 'Security Audit', href: '#' },
@@ -70,12 +69,21 @@ export function Footer() {
               <ul className="space-y-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
                 {navigation.platform.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="transition-colors hover:text-blue-600 dark:hover:text-white"
-                    >
-                      {item.label}
-                    </a>
+                    {item.href.startsWith('/') ? (
+                      <Link
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -89,12 +97,21 @@ export function Footer() {
               <ul className="space-y-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
                 {navigation.courses.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="transition-colors hover:text-blue-600 dark:hover:text-white"
-                    >
-                      {item.label}
-                    </a>
+                    {item.href.startsWith('/') ? (
+                      <Link
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -108,12 +125,21 @@ export function Footer() {
               <ul className="space-y-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
                 {navigation.resources.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="transition-colors hover:text-blue-600 dark:hover:text-white"
-                    >
-                      {item.label}
-                    </a>
+                    {item.href.startsWith('/') ? (
+                      <Link
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -127,12 +153,21 @@ export function Footer() {
               <ul className="space-y-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
                 {navigation.company.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="transition-colors hover:text-blue-600 dark:hover:text-white"
-                    >
-                      {item.label}
-                    </a>
+                    {item.href.startsWith('/') ? (
+                      <Link
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                      >
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
