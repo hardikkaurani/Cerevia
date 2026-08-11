@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { useAuth } from '@/providers/AuthProvider';
 import { Button } from '@/components/ui/Button';
@@ -148,7 +148,6 @@ export function PublicHeader() {
                 className="flex items-center gap-1.5 rounded-full bg-zinc-950 px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-zinc-950/10 transition-all hover:scale-[1.02] hover:bg-zinc-800"
               >
                 <span>Start Learning</span>
-                <ArrowRight className="h-3.5 w-3.5 text-white" />
               </Button>
             </>
           )}
@@ -265,7 +264,6 @@ export function PublicHeader() {
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 py-2.5 text-xs font-semibold text-white"
                 >
                   <span>Start Learning</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
               </>
             )}
