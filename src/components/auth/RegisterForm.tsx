@@ -329,8 +329,8 @@ export function RegisterForm() {
             />
             <label htmlFor="terms" className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-tight cursor-pointer">
               I agree to Cerevia&apos;s{' '}
-              <a href="#" className="text-zinc-900 dark:text-white underline underline-offset-2 hover:text-blue-500">Terms of Service</a> and{' '}
-              <a href="#" className="text-zinc-900 dark:text-white underline underline-offset-2 hover:text-blue-500">Privacy Policy</a>.
+              <Link href="/terms" className="text-zinc-900 dark:text-white underline underline-offset-2 hover:text-blue-500">Terms of Service</Link> and{' '}
+              <Link href="/privacy" className="text-zinc-900 dark:text-white underline underline-offset-2 hover:text-blue-500">Privacy Policy</Link>.
             </label>
           </div>
           {errors.terms && (

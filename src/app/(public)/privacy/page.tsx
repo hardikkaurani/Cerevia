@@ -30,32 +30,55 @@ export default function PrivacyPage() {
               1. Information We Collect
             </h3>
             <p>
-              We collect your email address, full name, and avatar when you create
-              an account. When you complete coding labs in our in-browser IDE, we
-              record submission code, execution outputs, and XP metrics to
-              calculate streak data and leaderboard placement.
+              When you create an account on Cerevia, we collect your email address, full name, and profile avatar. As you complete lessons and code in our in-browser sandboxes, we collect submission code snippets, execution metrics, and streak progress to calculate XP levels and leaderboard rankings.
             </p>
           </section>
 
           <section className="space-y-2">
             <h3 className="text-lg font-bold text-zinc-950 dark:text-white">
-              2. How We Use Data
+              2. How Information Is Used
             </h3>
             <p>
-              Your data is strictly used to deliver interactive learning
-              experiences, provide AI mentoring hints, generate verified
-              completion credentials, and prevent platform abuse.
+              We use collected information strictly to personalize your learning experience, provide real-time AST code mentoring, issue verifiable completion certificates, compute streak statistics, and ensure platform security.
             </p>
           </section>
 
           <section className="space-y-2">
             <h3 className="text-lg font-bold text-zinc-950 dark:text-white">
-              3. Security &amp; Integrity
+              3. Data Security &amp; Encryption
             </h3>
             <p>
-              All HTTP traffic is encrypted via TLS/HTTPS. Passwords are hashed
-              using bcrypt. Authentication cookies use HttpOnly, Secure, and
-              SameSite attributes.
+              All traffic between your client and our services is encrypted using TLS/HTTPS protocols. User passwords are salted and hashed using bcrypt. Access tokens are stored securely in HttpOnly, SameSite cookies and local storage.
+            </p>
+          </section>
+
+          <section className="space-y-2">
+            <h3 className="text-lg font-bold text-zinc-950 dark:text-white">
+              4. Cookies &amp; Local Storage
+            </h3>
+            <p>
+              We use essential session cookies and local storage items to keep you authenticated as you navigate between dashboard tools, sandboxes, and leaderboard metrics. We do not use intrusive third-party tracking cookies.
+            </p>
+          </section>
+
+          <section className="space-y-2">
+            <h3 className="text-lg font-bold text-zinc-950 dark:text-white">
+              5. Data Retention &amp; User Rights
+            </h3>
+            <p>
+              You may request a copy of your personal data or request profile account deletion at any time by contacting support or accessing settings.
+            </p>
+          </section>
+
+          <section className="space-y-2 border-t border-zinc-200 dark:border-zinc-800 pt-6">
+            <h3 className="text-lg font-bold text-zinc-950 dark:text-white">
+              6. Contact Us
+            </h3>
+            <p>
+              If you have questions regarding data privacy or security practices, email us at{' '}
+              <a href="mailto:privacy@cerevia.edu" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                privacy@cerevia.edu
+              </a>.
             </p>
           </section>
         </div>
