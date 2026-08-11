@@ -20,10 +20,11 @@ export interface CertificateItem {
 
 interface CertificateViewerModalProps {
   certificate: CertificateItem;
+  fullName?: string;
   onClose: () => void;
 }
 
-export function CertificateViewerModal({ certificate, onClose }: CertificateViewerModalProps) {
+export function CertificateViewerModal({ certificate, fullName = 'Student', onClose }: CertificateViewerModalProps) {
   const [zoomLevel, setZoomLevel] = useState(100);
   const [copied, setCopied] = useState(false);
 
@@ -155,7 +156,7 @@ export function CertificateViewerModal({ certificate, onClose }: CertificateView
               <div className="text-center space-y-3 my-auto">
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">This official document certifies that</p>
                 <h2 className="text-3xl font-black text-slate-900 tracking-tight underline decoration-amber-400 decoration-2 underline-offset-4">
-                  Hardik Kaurani
+                  {fullName}
                 </h2>
                 <p className="text-xs font-medium text-slate-600 max-w-lg mx-auto">
                   has successfully passed the comprehensive evaluations and practical capstones for the specialization:

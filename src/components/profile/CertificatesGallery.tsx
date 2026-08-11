@@ -5,7 +5,12 @@ import Image from 'next/image';
 import { Eye, Lock, CheckCircle2 } from 'lucide-react';
 import { CertificateViewerModal, CertificateItem } from './CertificateViewerModal';
 
-export function CertificatesGallery() {
+interface CertificatesGalleryProps {
+  fullName?: string;
+  email?: string;
+}
+
+export function CertificatesGallery({ fullName = 'Student' }: CertificatesGalleryProps) {
   const [activeTab, setActiveTab] = useState<'all' | 'unlocked' | 'specialization' | 'locked'>('all');
   const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
 
@@ -211,7 +216,7 @@ export function CertificatesGallery() {
 
       {/* Certificate Viewer Modal */}
       {selectedCert && (
-        <CertificateViewerModal certificate={selectedCert} onClose={() => setSelectedCert(null)} />
+        <CertificateViewerModal certificate={selectedCert} fullName={fullName} onClose={() => setSelectedCert(null)} />
       )}
     </div>
   );
