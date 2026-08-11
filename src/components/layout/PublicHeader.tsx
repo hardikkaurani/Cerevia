@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { Logo } from './Logo';
@@ -13,9 +13,9 @@ const NAV_LINKS = [
   { href: '#home', label: 'Home', id: 'home' },
   { href: '#courses', label: 'Courses', id: 'courses' },
   { href: '#learning-paths', label: 'Learning Paths', id: 'learning-paths' },
-  { href: '#leaderboard', label: 'Leaderboard', id: 'leaderboard' },
-  { href: '#about', label: 'About', id: 'about' },
-  { href: '#contact', label: 'Contact', id: 'contact' },
+  { href: '/leaderboard', label: 'Leaderboard', id: 'leaderboard' },
+  { href: '/about', label: 'About', id: 'about' },
+  { href: '/contact', label: 'Contact', id: 'contact' },
 ];
 
 export function PublicHeader() {
@@ -24,6 +24,7 @@ export function PublicHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,7 +61,7 @@ export function PublicHeader() {
       <div className="flex items-center justify-between px-4 sm:px-6">
         {/* Brand Logo */}
         <Link
-          href="#home"
+          href="/"
           className="flex items-center gap-2 transition-transform hover:scale-[1.02]"
         >
           <Logo />
@@ -73,11 +74,29 @@ export function PublicHeader() {
         >
           <div className="flex items-center gap-1 rounded-full border border-zinc-200/60 bg-zinc-100/80 p-1.5 dark:border-zinc-800/60 dark:bg-zinc-900/80">
             {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.id;
+              const isActive = activeSection === link.id || (link.href.startsWith('/') && pathname === link.href);
+              const isPageRoute = link.href.startsWith('/');
+
+              if (isPageRoute) {
+                return (
+                  <Link
+                    key={link.id}
+                    href={link.href}
+                    className={`relative rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200 ${
+                      isActive
+                        ? 'bg-zinc-900 text-white shadow-md dark:bg-white dark:text-zinc-950'
+                        : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+
               return (
                 <a
                   key={link.id}
-                  href={link.href}
+                  href={pathname === '/' ? link.href : `/${link.href}`}
                   onClick={() => setActiveSection(link.id)}
                   className={`relative rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200 ${
                     isActive
@@ -158,23 +177,45 @@ export function PublicHeader() {
             className="flex flex-col gap-1.5"
             aria-label="Mobile menu navigation"
           >
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={() => {
-                  setActiveSection(link.id);
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`rounded-xl px-4 py-2.5 text-xs font-semibold transition-colors ${
-                  activeSection === link.id
-                    ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950'
-                    : 'text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.id || (link.href.startsWith('/') && pathname === link.href);
+              const isPageRoute = link.href.startsWith('/');
+
+              if (isPageRoute) {
+                return (
+                  <Link
+                    key={link.id}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`rounded-xl px-4 py-2.5 text-xs font-semibold transition-colors ${
+                      isActive
+                        ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950'
+                        : 'text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+
+              return (
+                <a
+                  key={link.id}
+                  href={pathname === '/' ? link.href : `/${link.href}`}
+                  onClick={() => {
+                    setActiveSection(link.id);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`rounded-xl px-4 py-2.5 text-xs font-semibold transition-colors ${
+                    isActive
+                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950'
+                      : 'text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="mt-4 flex flex-col gap-2 border-t border-zinc-200 pt-4 dark:border-zinc-800">
