@@ -6,9 +6,16 @@ import { ExternalLink, Download, Code, FileText, GitBranch } from 'lucide-react'
 interface PublicPortfolioShowcaseProps {
   fullName?: string;
   email?: string;
+  completedModules?: number;
+  totalXP?: number;
 }
 
-export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfolioShowcaseProps) {
+export function PublicPortfolioShowcase({
+  fullName = 'Student',
+  email = '',
+  completedModules = 0,
+  totalXP = 0,
+}: PublicPortfolioShowcaseProps) {
   const [showReportModal, setShowReportModal] = useState(false);
 
   const projectsList = [
@@ -30,17 +37,19 @@ export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfoli
     },
   ];
 
+  const unlockedCerts = completedModules >= 5 ? 3 : completedModules >= 3 ? 2 : completedModules >= 2 ? 1 : 0;
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Student Portfolio & Capstone Projects</h2>
-          <p className="text-xs text-slate-500 font-medium">Showcase of verified repositories, GitHub contributions, and executive learning report.</p>
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Student Portfolio & Capstone Projects</h2>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Showcase of verified repositories, GitHub contributions, and executive learning report.</p>
         </div>
 
         <button
           onClick={() => setShowReportModal(true)}
-          className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors flex items-center gap-1.5 shadow-sm shrink-0"
+          className="px-4 py-2 rounded-xl bg-slate-900 dark:bg-zinc-800 text-white dark:text-zinc-200 text-xs font-bold hover:bg-slate-800 dark:hover:bg-zinc-700 transition-colors flex items-center gap-1.5 shadow-sm shrink-0 cursor-pointer"
         >
           <FileText className="h-3.5 w-3.5 text-blue-400" />
           <span>Download Learning Report</span>
@@ -59,7 +68,7 @@ export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfoli
                   <Code className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-450 transition-colors">
                     {project.name}
                   </h3>
                   <div className="flex items-center gap-2 pt-0.5">
@@ -80,7 +89,7 @@ export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfoli
               </a>
             </div>
 
-            <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">{project.description}</p>
+            <p className="text-xs text-slate-650 dark:text-zinc-400 leading-relaxed">{project.description}</p>
 
             <div className="flex flex-wrap gap-1.5 pt-1 border-t border-slate-100 dark:border-zinc-800/60">
               {project.tech.map((t, idx) => (
@@ -107,13 +116,13 @@ export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfoli
               </div>
               <button
                 onClick={() => setShowReportModal(false)}
-                className="text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-350 text-sm font-bold cursor-pointer"
+                className="text-slate-400 hover:text-slate-600 dark:text-zinc-550 dark:hover:text-zinc-350 text-sm font-bold cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <div className="space-y-3 text-xs text-slate-600 dark:text-zinc-400">
+            <div className="space-y-3 text-xs text-slate-600 dark:text-zinc-405">
               <p>
                 Generates a verified 2-page PDF portfolio including all course completion transcripts, skill evaluations, verified credentials, and GitHub capstone repositories.
               </p>
@@ -122,13 +131,21 @@ export function PublicPortfolioShowcase({ fullName = 'Student' }: PublicPortfoli
                   <span>Student Name:</span>
                   <span className="font-bold text-slate-900 dark:text-white">{fullName}</span>
                 </div>
+                {email && (
+                  <div className="flex justify-between">
+                    <span>Verified Email:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{email}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>Verified Credentials:</span>
-                  <span className="font-bold text-blue-700 dark:text-blue-400">3 Specializations</span>
+                  <span className="font-bold text-blue-700 dark:text-blue-400">
+                    {unlockedCerts} Specialization{unlockedCerts !== 1 ? 's' : ''}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Total XP:</span>
-                  <span className="font-bold text-emerald-700 dark:text-emerald-450">4,850 XP</span>
+                  <span className="font-bold text-emerald-700 dark:text-emerald-450">{totalXP.toLocaleString()} XP</span>
                 </div>
               </div>
             </div>
