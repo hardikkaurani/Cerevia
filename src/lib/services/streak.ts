@@ -126,14 +126,24 @@ export async function getUserStreak(userId: string, now: Date = new Date()) {
     throw new Error('User not found');
   }
 
-  const status = evaluateStreakStatus(
+  let status = evaluateStreakStatus(
     user.currentStreak,
     user.lastActivityAt,
     now,
   );
 
+  let currentStreak = user.currentStreak;
+
+  if (status === 'inactive' && user.currentStreak > 0) {
+    currentStreak = 0;
+    await prisma.user.update({
+      where: { id: userId },
+      data: { currentStreak: 0 },
+    });
+  }
+
   return {
-    currentStreak: user.currentStreak,
+    currentStreak,
     longestStreak: user.maxStreak,
     lastActivityAt: user.lastActivityAt,
     status,

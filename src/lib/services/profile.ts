@@ -36,6 +36,7 @@ export async function getUserProfile(
       maxStreak: true,
       createdAt: true,
       updatedAt: true,
+      lastActivityAt: true,
     },
   });
 
@@ -43,7 +44,23 @@ export async function getUserProfile(
     throw new Error('User not found');
   }
 
-  return user;
+  // Evaluate if streak has expired (> 24 hours of inactivity)
+  const now = new Date();
+  let currentStreak = user.currentStreak;
+  if (user.lastActivityAt && user.currentStreak > 0) {
+    const timeDifferenceMs = now.getTime() - user.lastActivityAt.getTime();
+    if (timeDifferenceMs > 24 * 60 * 60 * 1000) {
+      currentStreak = 0;
+      await prisma.user.update({
+        where: { id: userId },
+        data: { currentStreak: 0 },
+      });
+    }
+  }
+
+  // Exclude lastActivityAt from the returned type matching UserProfileResponse
+  const { lastActivityAt, ...profileData } = { ...user, currentStreak };
+  return profileData;
 }
 
 /**

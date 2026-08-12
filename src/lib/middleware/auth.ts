@@ -59,6 +59,7 @@ export async function authenticateRequest(
       currentXP: true,
       currentStreak: true,
       maxStreak: true,
+      lastActivityAt: true,
     },
   });
 
@@ -66,5 +67,20 @@ export async function authenticateRequest(
     throw new AuthenticationError('User account no longer exists');
   }
 
-  return user;
+  // Evaluate if streak has expired (> 24 hours of inactivity)
+  const now = new Date();
+  let currentStreak = user.currentStreak;
+  if (user.lastActivityAt && user.currentStreak > 0) {
+    const timeDifferenceMs = now.getTime() - user.lastActivityAt.getTime();
+    if (timeDifferenceMs > 24 * 60 * 60 * 1000) {
+      currentStreak = 0;
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { currentStreak: 0 },
+      });
+    }
+  }
+
+  const { lastActivityAt, ...userData } = { ...user, currentStreak };
+  return userData;
 }

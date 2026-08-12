@@ -69,8 +69,9 @@ export async function completeLesson(
   }
 
   // 4. Update both progress and user streak inside a transaction
-  const result = await prisma.$transaction(async (tx) => {
-    const dbUser = await tx.user.findUnique({
+  const result = await prisma.$transaction(
+    async (tx) => {
+      const dbUser = await tx.user.findUnique({
       where: { id: userId },
       select: {
         currentStreak: true,
@@ -141,7 +142,7 @@ export async function completeLesson(
     }
 
     return progress;
-  });
+  }, { maxWait: 10000, timeout: 15000 });
 
   return result;
 }
