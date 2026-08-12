@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ShieldCheck, Mail, Calendar, Trophy, Share2, Edit3, Globe, Check, Sparkles } from 'lucide-react';
+import { getAvatarInitial } from '@/utils/avatar';
 
 interface ProfileHeroBannerProps {
   fullName?: string;
@@ -29,6 +30,7 @@ export function ProfileHeroBanner({
   const [copied, setCopied] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [bioText, setBioText] = useState(title);
+  const [avatarError, setAvatarError] = useState(false);
 
   const handleShare = () => {
     if (typeof window !== 'undefined') {
@@ -37,6 +39,9 @@ export function ProfileHeroBanner({
       setTimeout(() => setCopied(false), 2500);
     }
   };
+
+  const showAvatarImage = avatar && !avatarError;
+  const avatarInitial = getAvatarInitial(fullName, email);
 
   return (
     <div className="relative rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 overflow-hidden shadow-xs transition-all duration-300">
@@ -64,13 +69,20 @@ export function ProfileHeroBanner({
           
           {/* Avatar & Title Info */}
           <div className="flex flex-col md:flex-row items-center md:items-end gap-5 text-center md:text-left">
-            <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full border-4 border-white dark:border-zinc-900 bg-slate-100 dark:bg-zinc-800 overflow-hidden shadow-md shrink-0 group">
-              <Image
-                src={avatar}
-                alt={fullName}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+            <div className="relative h-24 w-24 md:h-28 md:w-28 rounded-full border-4 border-white dark:border-zinc-900 bg-slate-100 dark:bg-zinc-800 overflow-hidden shadow-md shrink-0 group flex items-center justify-center select-none">
+              {showAvatarImage ? (
+                <Image
+                  src={avatar}
+                  alt={fullName}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  onError={() => setAvatarError(true)}
+                />
+              ) : (
+                <span className="text-3xl md:text-4xl font-bold text-slate-600 dark:text-zinc-300" aria-hidden="true">
+                  {avatarInitial}
+                </span>
+              )}
               <div className="absolute bottom-1 right-1 h-5 w-5 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900" title="Active Learning" />
             </div>
 

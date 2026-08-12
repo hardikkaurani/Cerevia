@@ -17,7 +17,7 @@ import { Logo } from './Logo';
 import { SidebarItem } from './SidebarItem';
 import { cn, getCleanDisplayName } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
-import Image from 'next/image';
+import { Avatar } from '@/components/ui/Avatar';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -60,7 +60,6 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
 
   const displayName = getCleanDisplayName(user);
   const displayEmail = user?.email || 'student@cerevia.edu';
-  const initial = (displayName[0] || 'S').toUpperCase();
 
   return (
     <>
@@ -132,20 +131,13 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
                 : 'mx-2 px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800/60'
             )}
           >
-            {user?.avatar ? (
-              <Image
-                src={user.avatar}
-                alt="Avatar"
-                width={32}
-                height={32}
-                unoptimized
-                className="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shrink-0"
-              />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-500 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0 select-none">
-                {initial}
-              </div>
-            )}
+            <Avatar
+              src={user?.avatar}
+              alt={displayName}
+              fallback={displayName}
+              email={user?.email}
+              size="sm"
+            />
             {!isCollapsed && (
               <div className="flex min-w-0 flex-col">
                 <span className="truncate text-xs font-bold text-zinc-950 dark:text-white">
@@ -216,20 +208,13 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
           </button>
           
           <div className="mx-2 flex items-center gap-3 pt-2.5 mt-2 border-t border-zinc-200/80 dark:border-zinc-800/80 px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800/60">
-            {user?.avatar ? (
-              <Image
-                src={user.avatar}
-                alt="Avatar"
-                width={32}
-                height={32}
-                unoptimized
-                className="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shrink-0"
-              />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-500 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0 select-none">
-                {initial}
-              </div>
-            )}
+            <Avatar
+              src={user?.avatar}
+              alt={displayName}
+              fallback={displayName}
+              email={user?.email}
+              size="sm"
+            />
             <div className="flex min-w-0 flex-col">
               <span className="truncate text-xs font-bold text-zinc-950 dark:text-white">
                 {displayName}
