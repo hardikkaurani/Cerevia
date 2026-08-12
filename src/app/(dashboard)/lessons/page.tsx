@@ -30,15 +30,16 @@ export default function LessonsPage() {
       try {
         const [lessonsRes, progressRes] = await Promise.all([
           api.get<LessonItem[]>('/api/lessons'),
-          api.get<{ completed?: Array<{ lessonId: string }> }>('/api/lessons/progress'),
+          api.get<{ completedLessons?: Array<{ id: string }> }>('/api/lessons/progress'),
         ]);
 
         if (lessonsRes.success && lessonsRes.data) {
           const rawLessons = lessonsRes.data;
           const completedIds = new Set<string>();
 
-          if (progressRes.success && progressRes.data && progressRes.data.completed) {
-            progressRes.data.completed.forEach((p: { lessonId: string }) => completedIds.add(p.lessonId));
+          if (progressRes.success && progressRes.data) {
+            const completedList = progressRes.data.completedLessons || [];
+            completedList.forEach((p: { id: string }) => completedIds.add(p.id));
           }
 
           const mapped = rawLessons.map((l) => ({

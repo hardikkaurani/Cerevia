@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
-import { Code2, Cpu, Server, Database, Cloud, Layers, Terminal, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Code2, Cpu, Server, Database, Layers, Cloud, CheckCircle2, ChevronRight } from 'lucide-react';
 
 interface SkillItem {
   id: string;
@@ -17,107 +17,127 @@ interface SkillItem {
   topics: string[];
 }
 
-export function SkillsRadarCards() {
+interface SkillsRadarCardsProps {
+  completedLessonIds?: string[];
+}
+
+export function SkillsRadarCards({ completedLessonIds = [] }: SkillsRadarCardsProps) {
   const [selectedSkill, setSelectedSkill] = useState<SkillItem | null>(null);
 
-  const skillsList: SkillItem[] = [
-    {
-      id: 'react-next',
-      name: 'React 19 & Next.js App Router',
-      category: 'Frontend Architecture',
-      progress: 92,
-      xp: 1450,
-      level: 'Level 5 Master',
-      icon: Code2,
-      color: 'text-sky-600 dark:text-sky-400',
-      bg: 'bg-sky-50 dark:bg-sky-950/20 border-sky-200 dark:border-sky-800/30',
-      topics: ['Server Components & Server Actions', 'TailwindCSS Design Systems', 'Hydration Safety & Suspense', 'Zustand State Management'],
-    },
-    {
-      id: 'python-ai',
-      name: 'Python for AI & Data Science',
-      category: 'AI & Machine Learning',
-      progress: 88,
-      xp: 1200,
-      level: 'Level 4 Specialist',
-      icon: Cpu,
-      color: 'text-amber-600 dark:text-amber-400',
-      bg: 'bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/30',
-      topics: ['PyTorch & Tensor Operations', 'FastAPI Microservice APIs', 'LangChain & Vector Embeddings', 'Pandas & NumPy Analytics'],
-    },
-    {
-      id: 'node-micro',
-      name: 'Node.js & Scalable Microservices',
-      category: 'Backend Engineering',
-      progress: 85,
-      xp: 980,
-      level: 'Level 4 Architect',
-      icon: Server,
-      color: 'text-emerald-600 dark:text-emerald-400',
-      bg: 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30',
-      topics: ['Express & NestJS Services', 'Event Loop & Worker Threads', 'RabbitMQ & Event Streaming', 'JWT & OAuth2 Security'],
-    },
-    {
-      id: 'postgres-prisma',
-      name: 'PostgreSQL & Prisma Relational ORM',
-      category: 'Database Systems',
-      progress: 90,
-      xp: 1100,
-      level: 'Level 5 Master',
-      icon: Database,
-      color: 'text-indigo-600 dark:text-indigo-400',
-      bg: 'bg-indigo-50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800/30',
-      topics: ['Relational Schema Migration', 'Index Optimization & EXPLAIN ANALYZE', 'Redis Caching Layer', 'Transaction Isolation Levels'],
-    },
-    {
-      id: 'system-design',
-      name: 'Distributed Systems & System Design',
-      category: 'Software Architecture',
-      progress: 78,
-      xp: 750,
-      level: 'Level 3 Practitioner',
-      icon: Layers,
-      color: 'text-purple-600 dark:text-purple-400',
-      bg: 'bg-purple-50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800/30',
-      topics: ['Load Balancing & Consistent Hashing', 'Rate Limiting Algorithms', 'CAP Theorem & Eventual Consistency', 'CDN & Edge Caching'],
-    },
-    {
-      id: 'cloud-docker',
-      name: 'Cloud Native & Docker Containers',
-      category: 'DevOps & Cloud',
-      progress: 72,
-      xp: 620,
-      level: 'Level 3 Practitioner',
-      icon: Cloud,
-      color: 'text-blue-600 dark:text-blue-400',
-      bg: 'bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30',
-      topics: ['Multi-Stage Docker Builds', 'Kubernetes Deployment Pods', 'GitHub Actions CI/CD Pipelines', 'AWS ECS & Lambda Serverless'],
-    },
-    {
-      id: 'dsa',
-      name: 'Data Structures & Algorithms',
-      category: 'Computer Science Core',
-      progress: 84,
-      xp: 890,
-      level: 'Level 4 Master',
-      icon: Terminal,
-      color: 'text-rose-600 dark:text-rose-400',
-      bg: 'bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800/30',
-      topics: ['Dynamic Programming & Graph Traversal', 'Tree Balancing & Trie Search', 'Sliding Window & Two Pointers', 'Big-O Space/Time Complexity'],
-    },
-    {
-      id: 'llm-engineering',
-      name: 'AI Engineering & Prompt System Design',
-      category: 'Emerging Tech',
-      progress: 80,
-      xp: 810,
-      level: 'Level 4 Specialist',
-      icon: Sparkles,
-      color: 'text-violet-600 dark:text-violet-400',
-      bg: 'bg-violet-50 dark:bg-violet-950/20 border-violet-200 dark:border-violet-800/30',
-      topics: ['RAG Vector Search Pipelines', 'Function Calling & Tool Calling Agents', 'Prompt Safety & Moderation', 'Fine-Tuning Open-Weights LLMs'],
-    },
-  ];
+  const completedSet = useMemo(() => new Set(completedLessonIds), [completedLessonIds]);
+
+  const skillsList: SkillItem[] = useMemo(() => {
+    // 1. Next.js App Router (id: 'b9d1a905-4087-6f38-b0a7-2f991158923e')
+    const hasNext = completedSet.has('b9d1a905-4087-6f38-b0a7-2f991158923e');
+    // 2. PostgreSQL & Prisma (id: 'c0e2b016-5198-7f49-c1b8-3fa02269034f')
+    const hasDb = completedSet.has('c0e2b016-5198-7f49-c1b8-3fa02269034f');
+    // 3. Frontend Basics (HTML & CSS: 'e6a8d672-1d54-4f05-87d4-fdf6ee25690b' and 'f7b9e783-2e65-4f16-98e5-0ef7ff36701c')
+    const hasHtml = completedSet.has('e6a8d672-1d54-4f05-87d4-fdf6ee25690b');
+    const hasCss = completedSet.has('f7b9e783-2e65-4f16-98e5-0ef7ff36701c');
+    const htmlCssProgress = (hasHtml ? 50 : 0) + (hasCss ? 50 : 0);
+    const htmlCssXp = (hasHtml ? 10 : 0) + (hasCss ? 15 : 0);
+    // 4. JavaScript Basics (id: 'a8c0f894-3f76-5f27-a9f6-1f880047812d')
+    const hasJs = completedSet.has('a8c0f894-3f76-5f27-a9f6-1f880047812d');
+
+    return [
+      {
+        id: 'react-next',
+        name: 'React 19 & Next.js App Router',
+        category: 'Frontend Architecture',
+        progress: hasNext ? 100 : 0,
+        xp: hasNext ? 30 : 0,
+        level: hasNext ? 'Level 1 Scholar' : 'Locked',
+        icon: Code2,
+        color: 'text-sky-600 dark:text-sky-400',
+        bg: 'bg-sky-50 dark:bg-sky-950/20 border-sky-200 dark:border-sky-800/30',
+        topics: ['Server Components & Server Actions', 'TailwindCSS Design Systems', 'Hydration Safety & Suspense', 'Zustand State Management'],
+      },
+      {
+        id: 'html-css',
+        name: 'HTML5 & CSS3 Essentials',
+        category: 'Frontend Core',
+        progress: htmlCssProgress,
+        xp: htmlCssXp,
+        level: htmlCssProgress === 100 ? 'Level 1 Scholar' : htmlCssProgress > 0 ? 'In Progress' : 'Locked',
+        icon: Code2,
+        color: 'text-orange-600 dark:text-orange-400',
+        bg: 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800/30',
+        topics: ['Semantic Structure & HTML Tags', 'CSS Selectors & Box Model', 'Flexbox & Grid Layouts', 'Responsive Web Design'],
+      },
+      {
+        id: 'javascript',
+        name: 'JavaScript Fundamentals',
+        category: 'Web Programming',
+        progress: hasJs ? 100 : 0,
+        xp: hasJs ? 20 : 0,
+        level: hasJs ? 'Level 1 Scholar' : 'Locked',
+        icon: Code2,
+        color: 'text-yellow-600 dark:text-yellow-400',
+        bg: 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800/30',
+        topics: ['Variables & Primitive Types', 'Control Flow & Loops', 'Functions & Variable Scope', 'DOM Manipulation Basics'],
+      },
+      {
+        id: 'postgres-prisma',
+        name: 'PostgreSQL & Prisma Relational ORM',
+        category: 'Database Systems',
+        progress: hasDb ? 100 : 0,
+        xp: hasDb ? 25 : 0,
+        level: hasDb ? 'Level 1 Scholar' : 'Locked',
+        icon: Database,
+        color: 'text-indigo-600 dark:text-indigo-400',
+        bg: 'bg-indigo-50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-800/30',
+        topics: ['Relational Schema Migration', 'Index Optimization & EXPLAIN ANALYZE', 'Redis Caching Layer', 'Transaction Isolation Levels'],
+      },
+      {
+        id: 'python-ai',
+        name: 'Python for AI & Data Science',
+        category: 'AI & Machine Learning',
+        progress: 0,
+        xp: 0,
+        level: 'Locked',
+        icon: Cpu,
+        color: 'text-amber-600 dark:text-amber-400',
+        bg: 'bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/30',
+        topics: ['PyTorch & Tensor Operations', 'FastAPI Microservice APIs', 'LangChain & Vector Embeddings', 'Pandas & NumPy Analytics'],
+      },
+      {
+        id: 'node-micro',
+        name: 'Node.js & Scalable Microservices',
+        category: 'Backend Engineering',
+        progress: 0,
+        xp: 0,
+        level: 'Locked',
+        icon: Server,
+        color: 'text-emerald-600 dark:text-emerald-400',
+        bg: 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30',
+        topics: ['Express & NestJS Services', 'Event Loop & Worker Threads', 'RabbitMQ & Event Streaming', 'JWT & OAuth2 Security'],
+      },
+      {
+        id: 'system-design',
+        name: 'Distributed Systems & System Design',
+        category: 'Software Architecture',
+        progress: 0,
+        xp: 0,
+        level: 'Locked',
+        icon: Layers,
+        color: 'text-purple-600 dark:text-purple-400',
+        bg: 'bg-purple-50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800/30',
+        topics: ['Load Balancing & Consistent Hashing', 'Rate Limiting Algorithms', 'CAP Theorem & Eventual Consistency', 'CDN & Edge Caching'],
+      },
+      {
+        id: 'cloud-docker',
+        name: 'Cloud Native & Docker Containers',
+        category: 'DevOps & Cloud',
+        progress: 0,
+        xp: 0,
+        level: 'Locked',
+        icon: Cloud,
+        color: 'text-blue-600 dark:text-blue-400',
+        bg: 'bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800/30',
+        topics: ['Multi-Stage Docker Builds', 'Kubernetes Deployment Pods', 'GitHub Actions CI/CD Pipelines', 'AWS ECS & Lambda Serverless'],
+      },
+    ];
+  }, [completedSet]);
 
   return (
     <div className="space-y-4">
@@ -186,13 +206,13 @@ export function SkillsRadarCards() {
                   <selectedSkill.icon className={`h-6 w-6 ${selectedSkill.color}`} />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">{selectedSkill.category}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-550">{selectedSkill.category}</span>
                   <h3 className="text-lg font-black text-slate-900 dark:text-white">{selectedSkill.name}</h3>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedSkill(null)}
-                className="text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 text-sm font-bold p-1 cursor-pointer"
+                className="text-slate-400 hover:text-slate-650 dark:text-zinc-500 dark:hover:text-zinc-300 text-sm font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>

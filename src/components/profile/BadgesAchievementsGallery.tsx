@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { Lock, CheckCircle2 } from 'lucide-react';
 
@@ -16,75 +16,86 @@ interface AchievementBadge {
   status: 'unlocked' | 'locked';
 }
 
-export function BadgesAchievementsGallery() {
+interface BadgesAchievementsGalleryProps {
+  totalXP?: number;
+  completedModules?: number;
+  currentStreak?: number;
+}
+
+export function BadgesAchievementsGallery({
+  totalXP = 0,
+  completedModules = 0,
+  currentStreak = 0,
+}: BadgesAchievementsGalleryProps) {
   const [selectedBadge, setSelectedBadge] = useState<AchievementBadge | null>(null);
 
-  const badgesList: AchievementBadge[] = [
-    {
-      id: 'b1',
-      name: 'Quiz Master 100%',
-      rarity: 'Legendary',
-      description: 'Achieved 100% accuracy on 10 consecutive advanced technical quizzes.',
-      unlockedDate: 'June 20, 2026',
-      progress: 100,
-      xpReward: 500,
-      iconImage: '/images/profile/badges/quiz-master.webp',
-      status: 'unlocked',
-    },
-    {
-      id: 'b2',
-      name: '30-Day Flame Streak',
-      rarity: 'Epic',
-      description: 'Logged in and submitted code for 30 consecutive calendar days.',
-      unlockedDate: 'May 10, 2026',
-      progress: 100,
-      xpReward: 300,
-      iconImage: '/images/profile/badges/streak-flame.webp',
-      status: 'unlocked',
-    },
-    {
-      id: 'b3',
-      name: 'Top 1% Global Scholar',
-      rarity: 'Legendary',
-      description: 'Ranked in the top 1% of all active engineering scholars worldwide.',
-      unlockedDate: 'July 01, 2026',
-      progress: 100,
-      xpReward: 1000,
-      iconImage: '/images/profile/badges/top-learner.webp',
-      status: 'unlocked',
-    },
-    {
-      id: 'b4',
-      name: 'Course Champion',
-      rarity: 'Rare',
-      description: 'Completed 5 core engineering courses with Grade A distinction.',
-      unlockedDate: 'June 05, 2026',
-      progress: 100,
-      xpReward: 250,
-      iconImage: '/images/profile/badges/course-champion.webp',
-      status: 'unlocked',
-    },
-    {
-      id: 'b5',
-      name: 'XP Titan (10,000 XP)',
-      rarity: 'Legendary',
-      description: 'Accumulate a total of 10,000 XP across all platform activities.',
-      progress: 48, // 4,850 / 10,000
-      xpReward: 1500,
-      iconImage: '/images/profile/badges/xp-titan.webp',
-      status: 'locked',
-    },
-    {
-      id: 'b6',
-      name: 'Bug Hunter Grandmaster',
-      rarity: 'Epic',
-      description: 'Successfully debugged 50 complex production code snippets.',
-      progress: 75,
-      xpReward: 400,
-      iconImage: '/images/profile/badges/quiz-master.webp',
-      status: 'locked',
-    },
-  ];
+  const badgesList: AchievementBadge[] = useMemo(() => {
+    return [
+      {
+        id: 'b1',
+        name: 'Quiz Master 100%',
+        rarity: 'Legendary',
+        description: 'Achieved 100% accuracy on 10 consecutive advanced technical quizzes.',
+        progress: 0,
+        xpReward: 500,
+        iconImage: '/images/profile/badges/quiz-master.webp',
+        status: 'locked',
+      },
+      {
+        id: 'b2',
+        name: '30-Day Flame Streak',
+        rarity: 'Epic',
+        description: 'Logged in and submitted code for 30 consecutive calendar days.',
+        progress: Math.min(100, Math.floor((currentStreak / 30) * 100)),
+        xpReward: 300,
+        iconImage: '/images/profile/badges/streak-flame.webp',
+        status: currentStreak >= 30 ? 'unlocked' : 'locked',
+        unlockedDate: currentStreak >= 30 ? 'Recently' : undefined,
+      },
+      {
+        id: 'b3',
+        name: 'Top 1% Global Scholar',
+        rarity: 'Legendary',
+        description: 'Ranked in the top 1% of all active engineering scholars worldwide.',
+        progress: 0,
+        xpReward: 1000,
+        iconImage: '/images/profile/badges/top-learner.webp',
+        status: 'locked',
+      },
+      {
+        id: 'b4',
+        name: 'Course Champion',
+        rarity: 'Rare',
+        description: 'Completed 5 core engineering courses with Grade A distinction.',
+        progress: Math.min(100, Math.floor((completedModules / 5) * 100)),
+        xpReward: 250,
+        iconImage: '/images/profile/badges/course-champion.webp',
+        status: completedModules >= 5 ? 'unlocked' : 'locked',
+        unlockedDate: completedModules >= 5 ? 'Recently' : undefined,
+      },
+      {
+        id: 'b5',
+        name: 'XP Titan (10,000 XP)',
+        rarity: 'Legendary',
+        description: 'Accumulate a total of 10,000 XP across all platform activities.',
+        progress: Math.min(100, Math.floor((totalXP / 10000) * 100)),
+        xpReward: 1500,
+        iconImage: '/images/profile/badges/xp-titan.webp',
+        status: totalXP >= 10000 ? 'unlocked' : 'locked',
+        unlockedDate: totalXP >= 10000 ? 'Recently' : undefined,
+      },
+      {
+        id: 'b6',
+        name: 'Bug Hunter Grandmaster',
+        rarity: 'Epic',
+        description: 'Successfully debugged 50 complex production code snippets.',
+        progress: 0,
+        xpReward: 400,
+        iconImage: '/images/profile/badges/quiz-master.webp',
+        status: 'locked',
+      },
+    ];
+  }, [totalXP, completedModules, currentStreak]);
 
   const getRarityBadge = (rarity: AchievementBadge['rarity']) => {
     switch (rarity) {
@@ -103,8 +114,8 @@ export function BadgesAchievementsGallery() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Achievements & Badges Collection</h2>
-          <p className="text-xs text-slate-500 font-medium">Earn rare emblems and XP bonuses by completing platform milestones.</p>
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Achievements & Badges Collection</h2>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Earn rare emblems and XP bonuses by completing platform milestones.</p>
         </div>
       </div>
 
@@ -133,7 +144,7 @@ export function BadgesAchievementsGallery() {
                 <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md border ${getRarityBadge(badge.rarity)}`}>
                   {badge.rarity}
                 </span>
-                <h3 className="text-xs font-extrabold text-slate-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <h3 className="text-xs font-extrabold text-slate-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-450 transition-colors">
                   {badge.name}
                 </h3>
               </div>
@@ -141,7 +152,7 @@ export function BadgesAchievementsGallery() {
               {/* Progress bar or Unlocked Tag */}
               {isUnlocked ? (
                 <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-450 flex items-center justify-center gap-1">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" /> Unlocked
+                  <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-450" /> Unlocked
                 </span>
               ) : (
                 <div className="space-y-1">
@@ -169,7 +180,7 @@ export function BadgesAchievementsGallery() {
                 {selectedBadge.rarity} Achievement
               </span>
               <h3 className="text-lg font-black text-slate-900 dark:text-white">{selectedBadge.name}</h3>
-              <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">{selectedBadge.description}</p>
+              <p className="text-xs text-slate-650 dark:text-zinc-450 leading-relaxed">{selectedBadge.description}</p>
             </div>
 
             <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-850 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center justify-between">
@@ -179,7 +190,7 @@ export function BadgesAchievementsGallery() {
 
             {selectedBadge.status === 'unlocked' ? (
               <p className="text-xs font-bold text-emerald-700 dark:text-emerald-450">
-                ✓ Earned on {selectedBadge.unlockedDate}
+                ✓ Earned {selectedBadge.unlockedDate}
               </p>
             ) : (
               <p className="text-xs font-bold text-amber-700 dark:text-amber-450">
@@ -189,7 +200,7 @@ export function BadgesAchievementsGallery() {
 
             <button
               onClick={() => setSelectedBadge(null)}
-              className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-zinc-800 text-white dark:text-zinc-200 text-xs font-bold hover:bg-slate-800 dark:hover:bg-zinc-750 transition-colors shadow-sm cursor-pointer"
+              className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-zinc-800 text-white dark:text-zinc-205 text-xs font-bold hover:bg-slate-800 dark:hover:bg-zinc-750 transition-colors shadow-sm cursor-pointer"
             >
               Close Badge Details
             </button>

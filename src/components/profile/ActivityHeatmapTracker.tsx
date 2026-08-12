@@ -1,108 +1,158 @@
-import { Activity, Zap } from 'lucide-react';
+'use client';
 
-interface ActivityHistoryItem {
-  id: string;
-  xpEarned: number;
-  reason: string;
-  timestamp: string;
-}
+import { useMemo } from 'react';
+import { Calendar, GitPullRequest, Circle } from 'lucide-react';
 
 interface ActivityHeatmapTrackerProps {
-  history?: ActivityHistoryItem[];
+  history?: {
+    id: string;
+    xpEarned: number;
+    reason: string;
+    timestamp: string;
+  }[];
 }
 
 export function ActivityHeatmapTracker({ history = [] }: ActivityHeatmapTrackerProps) {
+  
+  // Group activities by date and construct 140 grid cells for the last 20 weeks
+  const gridCells = useMemo(() => {
+    const cells = [];
+    const now = new Date();
+    
+    // Group history by local date string YYYY-MM-DD
+    const xpByDate: Record<string, number> = {};
+    history.forEach((item) => {
+      if (!item.timestamp) return;
+      const d = new Date(item.timestamp);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const date = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${date}`;
+      xpByDate[dateStr] = (xpByDate[dateStr] || 0) + item.xpEarned;
+    });
 
-  // Generate 52 weeks x 7 days mock contribution data grid
-  const daysInGrid = Array.from({ length: 140 }).map((_, idx) => {
-    // Generate variable activity levels (0=none, 1=low, 2=medium, 3=high)
-    const level = (idx * 7 + 3) % 5 === 0 ? 3 : (idx * 3 + 1) % 4 === 0 ? 2 : (idx % 3 === 0) ? 1 : 0;
-    return { id: idx, level };
-  });
+    // Generate past 140 days
+    for (let i = 139; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const date = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${date}`;
+      
+      const xp = xpByDate[dateStr] || 0;
+      let level = 0;
+      if (xp > 75) level = 4;
+      else if (xp > 40) level = 3;
+      else if (xp > 20) level = 2;
+      else if (xp > 0) level = 1;
 
-  const getHeatmapColor = (level: number) => {
-    switch (level) {
-      case 3:
-        return 'bg-blue-600 border-blue-700';
-      case 2:
-        return 'bg-blue-400 border-blue-500';
-      case 1:
-        return 'bg-blue-200 border-blue-300';
-      default:
-        return 'bg-slate-100 border-slate-200/80';
+      cells.push({
+        date: dateStr,
+        level,
+        xp,
+      });
     }
-  };
 
-  const sampleActivities = history.length > 0 ? history : [
-    { id: '1', xpEarned: 150, reason: 'Passed Next.js Server Components Assessment', timestamp: '2 hours ago' },
-    { id: '2', xpEarned: 100, reason: 'Completed PostgreSQL Indexing Coding Lab', timestamp: 'Yesterday' },
-    { id: '3', xpEarned: 50, reason: 'Solved AI Mentor Algorithmic Prompt Quiz', timestamp: '3 days ago' },
-    { id: '4', xpEarned: 200, reason: 'Earned 7-Day Flame Streak Bonus', timestamp: '4 days ago' },
-  ];
+    return cells;
+  }, [history]);
+
+  const totalSubmissions = history.length;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Coding Activity & Contribution Heatmap</h2>
-          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Daily learning cadence and verified platform submissions.</p>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      
+      {/* Activity Heatmap Grid */}
+      <div className="lg:col-span-2 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 space-y-4 shadow-2xs">
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <h3 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <Calendar className="h-4.5 w-4.5 text-blue-600 dark:text-blue-400" /> Coding Contribution Calendar
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Visual log of lesson submissions and XP achievements.</p>
+          </div>
+          <span className="text-xs font-mono font-bold text-slate-800 dark:text-zinc-350 bg-slate-100 dark:bg-zinc-800 px-3 py-1 rounded-xl">
+            {totalSubmissions} Submission{totalSubmissions !== 1 ? 's' : ''}
+          </span>
+        </div>
+
+        {/* Heatmap Grid Wrapper */}
+        <div className="pt-2">
+          <div className="grid grid-flow-col grid-rows-7 gap-1 md:gap-1.5 w-full justify-start overflow-x-auto pb-2">
+            {gridCells.map((cell, idx) => {
+              let colorClass = 'bg-slate-100 dark:bg-zinc-850'; // level 0
+              if (cell.level === 1) colorClass = 'bg-blue-100 dark:bg-blue-950/40';
+              if (cell.level === 2) colorClass = 'bg-blue-300 dark:bg-blue-800/40';
+              if (cell.level === 3) colorClass = 'bg-blue-500 dark:bg-blue-600/70';
+              if (cell.level === 4) colorClass = 'bg-blue-700 dark:bg-blue-500';
+
+              return (
+                <div
+                  key={idx}
+                  className={`h-3 w-3 md:h-3.5 md:w-3.5 rounded-sm transition-all duration-300 hover:scale-125 cursor-pointer ${colorClass}`}
+                  title={`${cell.date}: ${cell.xp} XP`}
+                />
+              );
+            })}
+          </div>
+          
+          <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-zinc-500 pt-2.5 font-bold">
+            <span>140 Days Ago</span>
+            <div className="flex items-center gap-1">
+              <span>Less</span>
+              <div className="h-2.5 w-2.5 rounded-xs bg-slate-100 dark:bg-zinc-850" />
+              <div className="h-2.5 w-2.5 rounded-xs bg-blue-100 dark:bg-blue-950/40" />
+              <div className="h-2.5 w-2.5 rounded-xs bg-blue-300 dark:bg-blue-800/40" />
+              <div className="h-2.5 w-2.5 rounded-xs bg-blue-500 dark:bg-blue-600/70" />
+              <div className="h-2.5 w-2.5 rounded-xs bg-blue-700 dark:bg-blue-500" />
+              <span>More</span>
+            </div>
+            <span>Today</span>
+          </div>
         </div>
       </div>
 
-      <div className="p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 space-y-6 shadow-2xs">
-        {/* Heatmap Grid */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-zinc-400">
-            <span>284 Submissions in 2026</span>
-            <div className="flex items-center gap-1.5 text-[11px]">
-              <span className="text-slate-400 dark:text-zinc-550">Less</span>
-              <div className="h-3 w-3 rounded-xs bg-slate-100 dark:bg-zinc-850 border border-slate-200 dark:border-zinc-800" />
-              <div className="h-3 w-3 rounded-xs bg-blue-200 dark:bg-blue-900/40 border border-blue-300 dark:border-blue-800/40" />
-              <div className="h-3 w-3 rounded-xs bg-blue-400 dark:bg-blue-600/40 border border-blue-500 dark:border-blue-700/45" />
-              <div className="h-3 w-3 rounded-xs bg-blue-600 border border-blue-700" />
-              <span className="text-slate-400 dark:text-zinc-550">More</span>
-            </div>
-          </div>
-
-          <div className="grid grid-flow-col grid-rows-7 gap-1.5 overflow-x-auto pb-2 pt-1">
-            {daysInGrid.map((day) => (
-              <div
-                key={day.id}
-                className={`h-3 w-3 rounded-xs border transition-all duration-200 hover:scale-125 hover:z-10 cursor-pointer ${getHeatmapColor(day.level)}`}
-                title={`Day ${day.id + 1}: ${day.level * 50} XP earned`}
-              />
-            ))}
-          </div>
+      {/* Recent Activity Stream */}
+      <div className="p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 space-y-4 shadow-2xs">
+        <div>
+          <h3 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
+            <GitPullRequest className="h-4.5 w-4.5 text-indigo-600 dark:text-indigo-400" /> Recent Activity Stream
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">Real-time log of learning completions.</p>
         </div>
 
-        {/* Recent Activity Log Feed */}
-        <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-zinc-800/60">
-          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
-            <Activity className="h-4 w-4 text-blue-600 dark:text-blue-450" />
-            <span>Recent Activity Stream</span>
-          </h3>
+        <div className="space-y-3.5 max-h-[175px] overflow-y-auto pr-1">
+          {history.length === 0 ? (
+            <div className="h-32 flex items-center justify-center text-center text-xs font-medium text-slate-400 dark:text-zinc-500 px-4 border border-dashed border-zinc-150 dark:border-zinc-800 rounded-2xl">
+              No recent learning submissions. Complete your first lesson module to start logging activity.
+            </div>
+          ) : (
+            history.map((act) => {
+              const formattedTime = act.timestamp
+                ? new Date(act.timestamp).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                  })
+                : 'Recently';
 
-          <div className="space-y-2">
-            {sampleActivities.map((act) => (
-              <div
-                key={act.id}
-                className="p-3.5 rounded-2xl border border-slate-100 dark:border-zinc-850 bg-slate-50/60 dark:bg-zinc-950/40 flex items-center justify-between gap-4 text-xs hover:bg-slate-100/80 dark:hover:bg-zinc-900 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-blue-600 text-white shrink-0">
-                    <Zap className="h-3.5 w-3.5" />
-                  </div>
-                  <div>
-                    <p className="font-extrabold text-slate-900 dark:text-white">{act.reason}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400 font-medium">{act.timestamp}</p>
+              return (
+                <div key={act.id} className="flex items-start gap-2.5 group">
+                  <Circle className="h-2.5 w-2.5 text-blue-600 dark:text-blue-400 fill-blue-600 dark:fill-blue-400 shrink-0 mt-1" />
+                  <div className="space-y-0.5 min-w-0">
+                    <p className="text-xs font-extrabold text-slate-900 dark:text-white line-clamp-1 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-450 transition-colors">
+                      {act.reason}
+                    </p>
+                    <div className="flex items-center gap-2 text-[10px] text-slate-400 dark:text-zinc-500 font-bold">
+                      <span>{formattedTime}</span>
+                      <span>•</span>
+                      <span className="text-emerald-700 dark:text-emerald-450">+{act.xpEarned} XP</span>
+                    </div>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 font-extrabold text-xs shrink-0 border border-emerald-200 dark:border-emerald-800/40">
-                  +{act.xpEarned} XP
-                </span>
-              </div>
-            ))}
-          </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>

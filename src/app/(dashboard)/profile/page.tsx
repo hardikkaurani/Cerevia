@@ -30,6 +30,7 @@ interface ProfileData {
   createdAt?: string;
   totalXP?: number;
   currentStreak?: number;
+  maxStreak?: number;
   fullName?: string;
   avatar?: string;
   bio?: string;
@@ -46,6 +47,7 @@ interface XpData {
 interface LessonProgressResponse {
   totalCompleted: number;
   remainingLessons: { id: string }[];
+  completedLessons?: { id: string }[];
 }
 
 interface UserStats {
@@ -58,6 +60,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [xpData, setXpData] = useState<XpData | null>(null);
   const [stats, setStats] = useState<UserStats | null>(null);
+  const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -80,6 +83,9 @@ export default function ProfilePage() {
             completedCount: progressRes.data.totalCompleted,
             totalCount: progressRes.data.totalCompleted + progressRes.data.remainingLessons.length,
           });
+          if (progressRes.data.completedLessons) {
+            setCompletedLessonIds(progressRes.data.completedLessons.map((l) => l.id));
+          }
         }
       } catch (err) {
         console.error('Failed to load profile data:', err);
@@ -96,6 +102,21 @@ export default function ProfilePage() {
   const joinedDate = profile?.createdAt
     ? new Date(profile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : 'January 2026';
+
+  const userXP = profile?.totalXP ?? authUser?.totalXP ?? 0;
+  
+  const league = userXP >= 4000
+    ? 'Diamond League'
+    : userXP >= 2000
+    ? 'Gold League'
+    : userXP >= 500
+    ? 'Silver League'
+    : 'Bronze League';
+
+  const defaultHeadline = userXP > 0
+    ? 'Senior Full-Stack & AI Engineer Candidate'
+    : 'Aspiring Software Engineer';
+  const bioHeadline = profile?.bio || defaultHeadline;
 
   if (loading) {
     return <ProfileSkeleton />;
@@ -116,41 +137,55 @@ export default function ProfilePage() {
           email={displayEmail}
           avatar={profile?.avatar || authUser?.avatar || '/images/profile/avatars/student-avatar.webp'}
           joinedDate={joinedDate}
-          totalXP={profile?.totalXP ?? authUser?.totalXP ?? 4850}
-          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 14}
-          level={xpData?.levelInfo?.level || 12}
-          league="Diamond League"
-          title={profile?.bio || 'Senior Full-Stack & AI Engineer Candidate'}
+          totalXP={userXP}
+          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 0}
+          level={xpData?.levelInfo?.level ?? 1}
+          league={league}
+          title={bioHeadline}
         />
 
         {/* 2. Core Metrics & Performance Overview */}
         <ProfileOverviewStats
-          totalXP={profile?.totalXP ?? authUser?.totalXP ?? 4850}
-          completedModules={stats?.completedCount || 8}
-          totalModules={stats?.totalCount || 12}
-          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 14}
+          totalXP={userXP}
+          completedModules={stats?.completedCount ?? 0}
+          totalModules={stats?.totalCount ?? 0}
+          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 0}
+          maxStreak={profile?.maxStreak ?? authUser?.maxStreak ?? 0}
         />
 
         {/* 3. Verified Certificates & Specializations Showcase */}
-        <CertificatesGallery fullName={displayName} email={displayEmail} />
+        <CertificatesGallery 
+          fullName={displayName} 
+          email={displayEmail} 
+          completedModules={stats?.completedCount ?? 0}
+        />
 
         {/* 4. Verified Engineering Skills */}
-        <SkillsRadarCards />
+        <SkillsRadarCards completedLessonIds={completedLessonIds} />
 
         {/* 5. Learning Journey Timeline */}
-        <LearningJourneyTimeline />
+        <LearningJourneyTimeline history={xpData?.history} createdAt={profile?.createdAt} />
 
         {/* 6. Badges & Achievements Collection */}
-        <BadgesAchievementsGallery />
+        <BadgesAchievementsGallery 
+          totalXP={userXP}
+          completedModules={stats?.completedCount ?? 0}
+          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 0}
+        />
 
         {/* 7. Coding Activity & Contribution Heatmap */}
         <ActivityHeatmapTracker history={xpData?.history} />
 
         {/* 8. XP Growth Analytics & Target Goals */}
-        <LearningGoalsAnalytics />
+        <LearningGoalsAnalytics history={xpData?.history} />
 
         {/* 9. Public Portfolio & Capstone Projects Showcase */}
-        <PublicPortfolioShowcase fullName={displayName} email={displayEmail} />
+        <PublicPortfolioShowcase 
+          fullName={displayName} 
+          email={displayEmail} 
+          completedModules={stats?.completedCount ?? 0}
+          totalXP={userXP}
+        />
 
       </ContentWrapper>
     </PageContainer>
