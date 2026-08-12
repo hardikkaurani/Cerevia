@@ -88,7 +88,7 @@ class ApiClient {
         const data = await response.json();
         return {
           success: true,
-          data: data as T,
+          data: data.data as T,
         };
       } catch (error) {
         clearTimeout(timer);

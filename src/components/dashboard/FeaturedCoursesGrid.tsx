@@ -1,8 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BookOpen, Clock, ChevronRight, Award } from 'lucide-react';
+import api from '@/services/api';
 
 interface CourseItem {
   id: string;
@@ -15,35 +17,76 @@ interface CourseItem {
 }
 
 export function FeaturedCoursesGrid() {
-  const courses: CourseItem[] = [
+  const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProgress() {
+      try {
+        const res = await api.get<{ completedLessons?: Array<{ id: string }> }>('/api/lessons/progress');
+        if (res.success && res.data && res.data.completedLessons) {
+          setCompletedIds(new Set(res.data.completedLessons.map((l) => l.id)));
+        }
+      } catch (err) {
+        console.error('Failed to load user progress for tracks:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProgress();
+  }, []);
+
+  const tracks = [
     {
-      id: 'fullstack-nextjs',
-      title: 'Full-Stack Next.js 15 & Prisma',
+      id: 'frontend-dev',
+      title: 'Frontend Development Track',
       category: 'Software Engineering',
-      difficulty: 'Intermediate',
-      duration: '14 hrs',
-      progress: 65,
+      difficulty: 'Beginner',
+      duration: '4 hrs',
+      lessons: ['e6a8d672-1d54-4f05-87d4-fdf6ee25690b', 'f7b9e783-2e65-4f16-98e5-0ef7ff36701c'],
       image: '/images/dashboard/courses.webp',
     },
     {
-      id: 'ai-agents-llm',
-      title: 'Building Production AI Agents & Copilots',
-      category: 'Artificial Intelligence',
-      difficulty: 'Advanced',
-      duration: '18 hrs',
-      progress: 30,
+      id: 'backend-databases',
+      title: 'Backend & Databases Track',
+      category: 'Software Engineering',
+      difficulty: 'Intermediate',
+      duration: '8 hrs',
+      lessons: ['a8c0f894-3f76-5f27-a9f6-1f880047812d', 'c0e2b016-5198-7f49-c1b8-3fa02269034f'],
       image: '/images/dashboard/mentor.webp',
     },
     {
-      id: 'dsa-system-design',
-      title: 'Data Structures & System Architecture',
-      category: 'Computer Science',
-      difficulty: 'Beginner',
-      duration: '22 hrs',
-      progress: 90,
+      id: 'advanced-nextjs',
+      title: 'Advanced Next.js Architecture',
+      category: 'Software Engineering',
+      difficulty: 'Advanced',
+      duration: '6 hrs',
+      lessons: ['b9d1a905-4087-6f38-b0a7-2f991158923e'],
       image: '/images/dashboard/progress.webp',
     },
   ];
+
+  const courses: CourseItem[] = tracks.map((track) => {
+    const completedCount = track.lessons.filter((id) => completedIds.has(id)).length;
+    const progress = Math.round((completedCount / track.lessons.length) * 100);
+    return {
+      id: track.id,
+      title: track.title,
+      category: track.category,
+      difficulty: track.difficulty,
+      duration: track.duration,
+      progress,
+      image: track.image,
+    };
+  });
+
+  if (loading) {
+    return (
+      <div className="flex h-48 items-center justify-center rounded-3xl border border-zinc-800 bg-zinc-950">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-t-transparent border-blue-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

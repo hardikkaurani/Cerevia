@@ -29,12 +29,12 @@ export default function LessonsPage() {
     async function loadLessons() {
       try {
         const [lessonsRes, progressRes] = await Promise.all([
-          api.get<LessonItem[]>('/api/lessons'),
+          api.get<{ lessons: LessonItem[] }>('/api/lessons'),
           api.get<{ completedLessons?: Array<{ id: string }> }>('/api/lessons/progress'),
         ]);
 
         if (lessonsRes.success && lessonsRes.data) {
-          const rawLessons = lessonsRes.data;
+          const rawLessons = lessonsRes.data.lessons || [];
           const completedIds = new Set<string>();
 
           if (progressRes.success && progressRes.data) {
