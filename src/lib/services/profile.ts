@@ -58,8 +58,8 @@ export async function getUserProfile(
     }
   }
 
-  // Exclude lastActivityAt from the returned type matching UserProfileResponse
-  const { lastActivityAt, ...profileData } = { ...user, currentStreak };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { lastActivityAt: _, ...profileData } = { ...user, currentStreak };
   return profileData;
 }
 

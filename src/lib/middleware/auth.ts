@@ -81,6 +81,7 @@ export async function authenticateRequest(
     }
   }
 
-  const { lastActivityAt, ...userData } = { ...user, currentStreak };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { lastActivityAt: _, ...userData } = { ...user, currentStreak };
   return userData;
 }

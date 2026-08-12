@@ -126,7 +126,7 @@ export async function getUserStreak(userId: string, now: Date = new Date()) {
     throw new Error('User not found');
   }
 
-  let status = evaluateStreakStatus(
+  const status = evaluateStreakStatus(
     user.currentStreak,
     user.lastActivityAt,
     now,
