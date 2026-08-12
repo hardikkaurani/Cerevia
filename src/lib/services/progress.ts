@@ -2,7 +2,6 @@ import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { calculateStreak } from './streak';
 import { awardXp } from './gamification';
-import { deleteCachePattern } from '@/lib/redis';
 
 export interface LessonProgressItem {
   id: string;
@@ -142,17 +141,7 @@ export async function completeLesson(
     }
 
     return progress;
-  }, {
-    maxWait: 15000,
-    timeout: 25000,
   });
-
-  // Invalidate leaderboard cache wildcard keys
-  try {
-    await deleteCachePattern('leaderboard:weekly:*');
-  } catch (error) {
-    console.error('❌ Failed to invalidate leaderboard cache:', error);
-  }
 
   return result;
 }
