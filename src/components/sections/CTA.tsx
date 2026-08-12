@@ -56,7 +56,7 @@ export function CTA() {
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-blue-400" />
-            <span>Free Access to Core Syllabi</span>
+            <span>Free Access to Core Syllabus</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-amber-400" />
