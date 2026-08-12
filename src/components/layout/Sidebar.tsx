@@ -17,7 +17,7 @@ import { Logo } from './Logo';
 import { SidebarItem } from './SidebarItem';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
-import Image from 'next/image';
+import { Avatar } from '@/components/ui/Avatar';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -127,20 +127,14 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
               isCollapsed ? 'justify-center' : 'px-3 py-1.5'
             )}
           >
-            {user?.avatar ? (
-              <Image
-                src={user.avatar}
-                alt="Avatar"
-                width={32}
-                height={32}
-                unoptimized
-                className="h-8 w-8 rounded-full object-cover border border-border shrink-0"
-              />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-secondary/50 flex items-center justify-center text-xs font-sans font-medium text-foreground border border-border select-none shrink-0">
-                {(user?.fullName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
-              </div>
-            )}
+            <Avatar
+              src={user?.avatar}
+              alt={user?.fullName || 'User avatar'}
+              fallback={user?.fullName}
+              email={user?.email}
+              size="sm"
+              className="border-border"
+            />
             {!isCollapsed && (
               <div className="flex min-w-0 flex-col">
                 <span className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
@@ -210,20 +204,14 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
           </button>
           
           <div className="flex items-center gap-3 pt-3 border-t border-border">
-            {user?.avatar ? (
-              <Image
-                src={user.avatar}
-                alt="Avatar"
-                width={32}
-                height={32}
-                unoptimized
-                className="h-8 w-8 rounded-full object-cover border border-border shrink-0"
-              />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-secondary/50 flex items-center justify-center text-xs font-sans font-medium text-foreground border border-border select-none shrink-0">
-                {(user?.fullName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
-              </div>
-            )}
+            <Avatar
+              src={user?.avatar}
+              alt={user?.fullName || 'User avatar'}
+              fallback={user?.fullName}
+              email={user?.email}
+              size="sm"
+              className="border-border"
+            />
             <div className="flex min-w-0 flex-col">
               <span className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
                 {user?.fullName || 'Student Account'}

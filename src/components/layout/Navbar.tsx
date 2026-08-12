@@ -6,7 +6,7 @@ import { Menu, Search, Flame, Zap, ChevronRight } from 'lucide-react';
 import { Logo } from './Logo';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useAuth } from '@/providers/AuthProvider';
-import Image from 'next/image';
+import { Avatar } from '@/components/ui/Avatar';
 import Link from 'next/link';
 import { NotificationsMenu } from './NotificationsMenu';
 import { SearchCommandModal } from './SearchCommandModal';
@@ -119,20 +119,14 @@ export function Navbar({ onMenuClick }: NavbarProps) {
 
         {/* User Profile Link */}
         <Link href="/profile" className="flex items-center gap-2 group">
-          {user?.avatar ? (
-            <Image
-              src={user.avatar}
-              alt="Avatar"
-              width={32}
-              height={32}
-              unoptimized
-              className="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 group-hover:border-blue-500 transition-colors shrink-0"
-            />
-          ) : (
-            <div className="h-8 w-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xs font-bold shrink-0 group-hover:border-blue-500 transition-colors select-none">
-              {(user?.fullName?.[0] || user?.email?.[0] || 'S').toUpperCase()}
-            </div>
-          )}
+          <Avatar
+            src={user?.avatar}
+            alt={user?.fullName || 'User avatar'}
+            fallback={user?.fullName}
+            email={user?.email}
+            size="sm"
+            className="border-zinc-200 dark:border-zinc-800 group-hover:border-blue-500 transition-colors"
+          />
         </Link>
 
       </div>

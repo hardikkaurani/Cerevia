@@ -108,7 +108,7 @@ export default function ProfilePage() {
         <ProfileHeroBanner
           fullName={profile?.fullName || 'Hardik Kaurani'}
           email={profile?.email || 'hardik@cerevia.edu'}
-          avatar={profile?.avatar || '/images/profile/avatars/student-avatar.webp'}
+          avatar={profile?.avatar || undefined}
           joinedDate={joinedDate}
           totalXP={profile?.totalXP || 4850}
           currentStreak={profile?.currentStreak || 14}
