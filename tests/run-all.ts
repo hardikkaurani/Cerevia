@@ -2,6 +2,8 @@ import { execSync } from 'child_process';
 import path from 'path';
 
 const testFiles = [
+  'streak-pure.test.ts',
+  'leaderboard-cache-mock.test.ts',
   'auth.test.ts',
   'lessons.test.ts',
   'progress.test.ts',

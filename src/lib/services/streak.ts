@@ -29,6 +29,18 @@ export function calculateStreak(
     };
   }
 
+  const timeDifferenceMs = now.getTime() - lastActivityAt.getTime();
+
+  if (timeDifferenceMs > 24 * 60 * 60 * 1000) {
+    // Over 24 hours of inactivity: reset streak to 1
+    return {
+      currentStreak: 1,
+      maxStreak: Math.max(maxStreak, 1),
+      status: 'active',
+      action: 'reset',
+    };
+  }
+
   // Calculate day difference in UTC
   const lastDate = Date.UTC(
     lastActivityAt.getUTCFullYear(),
@@ -41,11 +53,7 @@ export function calculateStreak(
     now.getUTCDate(),
   );
 
-  const dayDifference = Math.floor(
-    (nowDate - lastDate) / (1000 * 60 * 60 * 24),
-  );
-
-  if (dayDifference <= 0) {
+  if (nowDate === lastDate) {
     // Same calendar day: streak continues (no increase, no reset)
     return {
       currentStreak,
@@ -53,24 +61,16 @@ export function calculateStreak(
       status: 'active',
       action: 'continue',
     };
-  } else if (dayDifference === 1) {
-    // Consecutive calendar day: streak increases by 1
-    const nextStreak = currentStreak + 1;
-    return {
-      currentStreak: nextStreak,
-      maxStreak: Math.max(maxStreak, nextStreak),
-      status: 'active',
-      action: 'increase',
-    };
-  } else {
-    // Missed day(s): streak resets to 1
-    return {
-      currentStreak: 1,
-      maxStreak: Math.max(maxStreak, 1),
-      status: 'active',
-      action: 'reset',
-    };
   }
+
+  // Different calendar day, and <= 24 hours of inactivity: streak increases by 1
+  const nextStreak = currentStreak + 1;
+  return {
+    currentStreak: nextStreak,
+    maxStreak: Math.max(maxStreak, nextStreak),
+    status: 'active',
+    action: 'increase',
+  };
 }
 
 /**
@@ -85,6 +85,12 @@ export function evaluateStreakStatus(
     return 'inactive';
   }
 
+  const timeDifferenceMs = now.getTime() - lastActivityAt.getTime();
+
+  if (timeDifferenceMs > 24 * 60 * 60 * 1000) {
+    return 'inactive';
+  }
+
   const lastDate = Date.UTC(
     lastActivityAt.getUTCFullYear(),
     lastActivityAt.getUTCMonth(),
@@ -96,17 +102,11 @@ export function evaluateStreakStatus(
     now.getUTCDate(),
   );
 
-  const dayDifference = Math.floor(
-    (nowDate - lastDate) / (1000 * 60 * 60 * 24),
-  );
-
-  if (dayDifference <= 0) {
+  if (nowDate === lastDate) {
     return 'active';
-  } else if (dayDifference === 1) {
-    return 'at_risk';
-  } else {
-    return 'inactive';
   }
+
+  return 'at_risk';
 }
 
 /**
