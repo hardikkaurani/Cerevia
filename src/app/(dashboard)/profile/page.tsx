@@ -16,6 +16,8 @@ import { ActivityHeatmapTracker } from '@/components/profile/ActivityHeatmapTrac
 import { LearningGoalsAnalytics } from '@/components/profile/LearningGoalsAnalytics';
 import { PublicPortfolioShowcase } from '@/components/profile/PublicPortfolioShowcase';
 import { ProfileSkeleton } from '@/components/profile/ProfileSkeleton';
+import { useAuth } from '@/providers/AuthProvider';
+import { getCleanDisplayName } from '@/lib/utils';
 
 interface ActivityItem {
   id: string;
@@ -52,6 +54,7 @@ interface UserStats {
 }
 
 export default function ProfilePage() {
+  const { user: authUser } = useAuth();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [xpData, setXpData] = useState<XpData | null>(null);
   const [stats, setStats] = useState<UserStats | null>(null);
@@ -87,6 +90,9 @@ export default function ProfilePage() {
     loadProfileData();
   }, []);
 
+  const displayName = getCleanDisplayName(profile?.fullName ? profile : authUser);
+  const displayEmail = profile?.email || authUser?.email || '';
+
   const joinedDate = profile?.createdAt
     ? new Date(profile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : 'January 2026';
@@ -106,12 +112,12 @@ export default function ProfilePage() {
         
         {/* 1. Profile Hero Banner */}
         <ProfileHeroBanner
-          fullName={profile?.fullName || 'Hardik Kaurani'}
-          email={profile?.email || 'hardik@cerevia.edu'}
-          avatar={profile?.avatar || undefined}
+          fullName={displayName}
+          email={displayEmail}
+          avatar={profile?.avatar || authUser?.avatar || '/images/profile/avatars/student-avatar.webp'}
           joinedDate={joinedDate}
-          totalXP={profile?.totalXP || 4850}
-          currentStreak={profile?.currentStreak || 14}
+          totalXP={profile?.totalXP ?? authUser?.totalXP ?? 4850}
+          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 14}
           level={xpData?.levelInfo?.level || 12}
           league="Diamond League"
           title={profile?.bio || 'Senior Full-Stack & AI Engineer Candidate'}
@@ -119,14 +125,14 @@ export default function ProfilePage() {
 
         {/* 2. Core Metrics & Performance Overview */}
         <ProfileOverviewStats
-          totalXP={profile?.totalXP || 4850}
+          totalXP={profile?.totalXP ?? authUser?.totalXP ?? 4850}
           completedModules={stats?.completedCount || 8}
           totalModules={stats?.totalCount || 12}
-          currentStreak={profile?.currentStreak || 14}
+          currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 14}
         />
 
         {/* 3. Verified Certificates & Specializations Showcase */}
-        <CertificatesGallery />
+        <CertificatesGallery fullName={displayName} email={displayEmail} />
 
         {/* 4. Verified Engineering Skills */}
         <SkillsRadarCards />
@@ -144,7 +150,7 @@ export default function ProfilePage() {
         <LearningGoalsAnalytics />
 
         {/* 9. Public Portfolio & Capstone Projects Showcase */}
-        <PublicPortfolioShowcase />
+        <PublicPortfolioShowcase fullName={displayName} email={displayEmail} />
 
       </ContentWrapper>
     </PageContainer>

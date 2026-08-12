@@ -6,9 +6,9 @@ import { Menu, Search, Flame, Zap, ChevronRight } from 'lucide-react';
 import { Logo } from './Logo';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useAuth } from '@/providers/AuthProvider';
-import { Avatar } from '@/components/ui/Avatar';
 import Link from 'next/link';
 import { NotificationsMenu } from './NotificationsMenu';
+import { ProfileMenu } from './ProfileMenu';
 import { SearchCommandModal } from './SearchCommandModal';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
@@ -117,17 +117,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         {/* Notifications Dropdown Trigger */}
         <NotificationsMenu />
 
-        {/* User Profile Link */}
-        <Link href="/profile" className="flex items-center gap-2 group">
-          <Avatar
-            src={user?.avatar}
-            alt={user?.fullName || 'User avatar'}
-            fallback={user?.fullName}
-            email={user?.email}
-            size="sm"
-            className="border-zinc-200 dark:border-zinc-800 group-hover:border-blue-500 transition-colors"
-          />
-        </Link>
+        {/* User Profile Dropdown Menu */}
+        <ProfileMenu />
 
       </div>
 

@@ -31,7 +31,7 @@ const FEATURES: Feature[] = [
     description:
       'Get instant feedback on your code syntax, memory optimization, and architectural decisions as you type.',
     icon: Bot,
-    illustration: '/images/illustrations/ai-mentor-visual.webp',
+    illustration: '/images/illustrations/pair-programmer.webp',
     badge: 'AI Powered',
     highlights: [
       'Instant AST code inspection',
@@ -46,7 +46,7 @@ const FEATURES: Feature[] = [
     description:
       'Turn study habits into an addictive RPG experience. Earn XP, maintain daily streaks, and unlock achievement badges.',
     icon: Flame,
-    illustration: '/images/illustrations/gamified-xp-visual.webp',
+    illustration: '/images/illustrations/daily-streaks.webp',
     badge: 'High Engagement',
     highlights: [
       'Daily streak multiplier',
@@ -61,7 +61,7 @@ const FEATURES: Feature[] = [
     description:
       'Execute code instantly in isolated sandboxes supporting React, Node.js, Python, Java, and C++ with full terminal output.',
     icon: Code2,
-    illustration: '/images/illustrations/hands-on-coding.webp',
+    illustration: '/images/illustrations/in-browser-ide.webp',
     badge: 'Zero Setup',
     highlights: [
       'Real-time execution',
@@ -76,7 +76,7 @@ const FEATURES: Feature[] = [
     description:
       'Track your growth across algorithms, backend design, and frontend systems with granular performance charts.',
     icon: LineChart,
-    illustration: '/images/illustrations/ai-mentor-visual.webp',
+    illustration: '/images/illustrations/skill-analytics.webp',
     badge: 'Data Driven',
     highlights: ['Weak spot detection', 'Completion velocity', 'Skill heatmap'],
   },
@@ -87,7 +87,7 @@ const FEATURES: Feature[] = [
     description:
       'Compete against thousands of global engineering students in timed coding sprints and weekly leaderboard ranks.',
     icon: Trophy,
-    illustration: '/images/illustrations/gamified-xp-visual.webp',
+    illustration: '/images/illustrations/peer-leaderboards.webp',
     badge: 'Social Learning',
     highlights: [
       'Global & regional ranks',
@@ -102,7 +102,7 @@ const FEATURES: Feature[] = [
     description:
       'Earn cryptographic certificates upon course completion that can be embedded on your LinkedIn profile and resume.',
     icon: Award,
-    illustration: '/images/illustrations/certificate-badge.webp',
+    illustration: '/images/illustrations/verified-certificates.webp',
     badge: 'Career Ready',
     highlights: [
       'LinkedIn integration',
@@ -183,14 +183,15 @@ export function WhyCerevia() {
                 </div>
 
                 {/* Subdued Bottom WebP Illustration strip */}
-                <div className="relative mt-6 h-14 w-full overflow-hidden rounded-xl opacity-70 transition-opacity group-hover:opacity-100">
+                <div className="relative mt-6 h-28 w-full overflow-hidden rounded-2xl opacity-90 transition-opacity group-hover:opacity-100">
                   <Image
                     src={feature.illustration}
                     alt={feature.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent dark:from-zinc-900/90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent opacity-60 dark:from-zinc-900/80" />
                 </div>
               </div>
             );

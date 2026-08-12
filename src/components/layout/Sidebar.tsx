@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { SidebarItem } from './SidebarItem';
-import { cn } from '@/lib/utils';
+import { cn, getCleanDisplayName } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
 import { Avatar } from '@/components/ui/Avatar';
 
@@ -57,6 +57,10 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  const displayName = getCleanDisplayName(user);
+  const displayEmail = user?.email || 'student@cerevia.edu';
+  const initial = (displayName[0] || 'S').toUpperCase();
 
   return (
     <>
@@ -100,47 +104,56 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
         </nav>
 
         {/* Footer Area: Settings, Logout, Profile */}
-        <div className="border-t border-border bg-card p-3 space-y-1">
+        <div className="border-t border-zinc-200/80 dark:border-zinc-800/80 bg-card p-2 space-y-1">
           <SidebarItem
             href="/settings"
             icon={Settings}
             label="Settings"
             isCollapsed={isCollapsed}
-            className="opacity-80 hover:opacity-100"
           />
           <button
             type="button"
             onClick={logout}
-            className={cn(
-              'w-full flex items-center gap-3 rounded-md p-2 text-sm font-sans font-medium text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive cursor-pointer',
-              isCollapsed ? 'justify-center' : 'px-4 py-3'
-            )}
             title={isCollapsed ? 'Logout' : undefined}
+            className={cn(
+              'group flex items-center gap-3 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 cursor-pointer',
+              isCollapsed ? 'justify-center mx-2 p-2.5' : 'mx-2 px-3.5 py-2.5'
+            )}
           >
-            <LogOut className="h-4 w-4 shrink-0" aria-hidden="true" />
-            {!isCollapsed && <span>Logout</span>}
+            <LogOut className="h-4 w-4 shrink-0 text-red-500" aria-hidden="true" />
+            {!isCollapsed && <span className="truncate">Logout</span>}
           </button>
 
           <div
             className={cn(
-              'flex items-center gap-3 border-t border-border pt-3 mt-3',
-              isCollapsed ? 'justify-center' : 'px-3 py-1.5'
+              'flex items-center gap-3 border-t border-zinc-200/80 dark:border-zinc-800/80 pt-2.5 mt-2',
+              isCollapsed
+                ? 'justify-center mx-2'
+                : 'mx-2 px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800/60'
             )}
           >
-            <Avatar
-              src={user?.avatar}
-              alt={user?.fullName || 'User avatar'}
-              fallback={user?.fullName}
-              email={user?.email}
-              size="sm"
-              className="border-border"
-            />
+            {user?.avatar ? (
+              <Image
+                src={user.avatar}
+                alt="Avatar"
+                width={32}
+                height={32}
+                unoptimized
+                className="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shrink-0"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-500 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0 select-none">
+                {initial}
+              </div>
+            )}
             {!isCollapsed && (
               <div className="flex min-w-0 flex-col">
-                <span className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
-                  {user?.fullName || 'Student Account'}
+                <span className="truncate text-xs font-bold text-zinc-950 dark:text-white">
+                  {displayName}
                 </span>
-                <span className="truncate text-[9px] text-muted-foreground/70">{user?.email || 'student@byjus.com'}</span>
+                <span className="truncate text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                  {displayEmail}
+                </span>
               </div>
             )}
           </div>
@@ -183,13 +196,12 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
           ))}
         </nav>
 
-        <div className="p-4 border-t border-border bg-card space-y-2">
+        <div className="p-3 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-card space-y-1">
           <SidebarItem
             href="/settings"
             icon={Settings}
             label="Settings"
             onClick={onClose}
-            className="opacity-75 hover:opacity-100"
           />
           <button
             type="button"
@@ -197,26 +209,34 @@ export function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: Side
               logout();
               onClose();
             }}
-            className="w-full flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-sans font-medium text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive cursor-pointer"
+            className="mx-2 flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 cursor-pointer"
           >
-            <LogOut className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <LogOut className="h-4 w-4 shrink-0 text-red-500" aria-hidden="true" />
             <span>Logout</span>
           </button>
           
-          <div className="flex items-center gap-3 pt-3 border-t border-border">
-            <Avatar
-              src={user?.avatar}
-              alt={user?.fullName || 'User avatar'}
-              fallback={user?.fullName}
-              email={user?.email}
-              size="sm"
-              className="border-border"
-            />
+          <div className="mx-2 flex items-center gap-3 pt-2.5 mt-2 border-t border-zinc-200/80 dark:border-zinc-800/80 px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800/60">
+            {user?.avatar ? (
+              <Image
+                src={user.avatar}
+                alt="Avatar"
+                width={32}
+                height={32}
+                unoptimized
+                className="h-8 w-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shrink-0"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-500 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0 select-none">
+                {initial}
+              </div>
+            )}
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
-                {user?.fullName || 'Student Account'}
+              <span className="truncate text-xs font-bold text-zinc-950 dark:text-white">
+                {displayName}
               </span>
-              <span className="truncate text-[9px] text-muted-foreground/70">{user?.email || 'student@byjus.com'}</span>
+              <span className="truncate text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+                {displayEmail}
+              </span>
             </div>
           </div>
         </div>
