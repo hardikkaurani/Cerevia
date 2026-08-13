@@ -20,7 +20,7 @@ interface ProfileHeroBannerProps {
 export function ProfileHeroBanner({
   fullName = 'Student',
   email = '',
-  avatar = '/images/profile/avatars/student-avatar.webp',
+  avatar = '',
   joinedDate = 'January 2026',
   level = 12,
   league = 'Diamond League',

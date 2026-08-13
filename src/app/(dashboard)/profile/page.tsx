@@ -135,7 +135,7 @@ export default function ProfilePage() {
         <ProfileHeroBanner
           fullName={displayName}
           email={displayEmail}
-          avatar={profile?.avatar || authUser?.avatar || '/images/profile/avatars/student-avatar.webp'}
+          avatar={profile?.avatar || authUser?.avatar || ''}
           joinedDate={joinedDate}
           totalXP={userXP}
           currentStreak={profile?.currentStreak ?? authUser?.currentStreak ?? 0}
