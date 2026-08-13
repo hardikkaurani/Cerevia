@@ -19,9 +19,9 @@ export function ProfileOverviewStats({
 }: ProfileOverviewStatsProps) {
   const completionRate = totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0;
   const unlockedCerts = completedModules >= 5 ? 3 : completedModules >= 3 ? 2 : completedModules >= 2 ? 1 : 0;
-  const labsSubmitted = completedModules * 3;
+  const labsSubmitted = completedModules;
   const hasProgress = completedModules > 0;
-  const studyHours = completedModules * 8.1;
+  const studyHours = completedModules * 1.5;
 
   const statMetrics = [
     {

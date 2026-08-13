@@ -23,7 +23,7 @@ export default function LessonsPage() {
   const [lessons, setLessons] = useState<LessonItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState('ALL');
+  const [difficultyFilter, setDifficultyFilter] = useState('All');
 
   useEffect(() => {
     async function loadLessons() {
@@ -61,7 +61,7 @@ export default function LessonsPage() {
   const filteredLessons = lessons.filter((lesson) => {
     const matchesSearch = lesson.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (lesson.description || '').toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDiff = difficultyFilter === 'ALL' || lesson.difficulty === difficultyFilter;
+    const matchesDiff = difficultyFilter === 'All' || lesson.difficulty === difficultyFilter;
     return matchesSearch && matchesDiff;
   });
 
@@ -87,18 +87,23 @@ export default function LessonsPage() {
           </div>
 
           <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-            {['ALL', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED'].map((diff) => (
+            {[
+              { value: 'All', label: 'ALL' },
+              { value: 'Beginner', label: 'BEGINNER' },
+              { value: 'Intermediate', label: 'INTERMEDIATE' },
+              { value: 'Advanced', label: 'ADVANCED' },
+            ].map((diff) => (
               <button
-                key={diff}
-                onClick={() => setDifficultyFilter(diff)}
+                key={diff.value}
+                onClick={() => setDifficultyFilter(diff.value)}
                 className={cn(
                   'px-3.5 py-2 rounded-xl text-xs font-bold transition-all border shrink-0 cursor-pointer',
-                  difficultyFilter === diff
+                  difficultyFilter === diff.value
                     ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                     : 'bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 border-slate-200 dark:border-zinc-700 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:text-slate-900 dark:hover:text-white'
                 )}
               >
-                {diff}
+                {diff.label}
               </button>
             ))}
           </div>
